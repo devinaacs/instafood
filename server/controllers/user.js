@@ -58,7 +58,14 @@ class Controller {
 
   static async listUsers(req, res, next) {
     try {
-      const users = await User.find();
+      let users = await User.find();
+
+      users = users.map(v => {
+        v = v.toObject();
+        delete v.password;
+
+        return v;
+      });
 
       res.status(200).json(users);
     } catch (err) {
@@ -70,9 +77,12 @@ class Controller {
     try {
       const { id } = req.params;
 
-      const user = await User.findOne({ _id: id });
+      let user = await User.findOne({ _id: id });
 
       if (!user) throw { name: 'NOT_FOUND' };
+
+      user = user.toObject();
+      delete user.password;
 
       res.status(200).json(user);
     } catch (err) {

@@ -11,6 +11,13 @@ let userOne = {
   imageUrl: 'http://image.com/profile.jpg',
 };
 
+let userTwo = {
+  username: 'user.two',
+  email: 'user.two@mail.com',
+  password: '12345aaa',
+  imageUrl: 'http://image.com/profile.jpg',
+};
+
 beforeAll(async () => {
   await mongoose.connect('mongodb://localhost', { useNewUrlParser: true });
 
@@ -18,6 +25,9 @@ beforeAll(async () => {
 
   const createdUserOne = await User.create(userOne);
   userOne.id = createdUserOne.id;
+
+  const createdUserTwo = await User.create(userTwo);
+  userTwo.id = createdUserTwo.id;
 });
 
 describe('test /users endpoint', () => {
@@ -81,6 +91,60 @@ describe('test /users endpoint', () => {
         if (err) return done(err);
 
         expect(res.body).toBeInstanceOf(Array);
+        res.body.forEach(v => {
+          expect(v).toHaveProperty('username', expect.any(String));
+          expect(v).toHaveProperty('email', expect.any(String));
+          expect(v).not.toHaveProperty('password');
+        });
+
+        done();
+      });
+  });
+
+  test('successfully get user by id', done => {
+    const payload = {
+      id: userOne.id,
+      name: userOne.username,
+      email: userOne.email,
+    };
+
+    const token = createToken(payload);
+
+    request(app)
+      .get(`/users/${userOne.id}`)
+      .set('Accept', 'application/json')
+      .set('access_token', token)
+      .expect(200)
+      .end((err, res) => {
+        if (err) return done(err);
+
+        expect(res.body).toHaveProperty('username', expect.any(String));
+        expect(res.body).toHaveProperty('email', expect.any(String));
+        expect(res.body).not.toHaveProperty('password');
+
+        done();
+      });
+  });
+
+  test('successfully delete user', done => {
+    const payload = {
+      id: userOne.id,
+      name: userOne.username,
+      email: userOne.email,
+    };
+
+    const token = createToken(payload);
+
+    request(app)
+      .delete(`/users/${userTwo.id}`)
+      .set('Accept', 'application/json')
+      .set('access_token', token)
+      .expect(200)
+      .end(async err => {
+        if (err) return done(err);
+
+        const deletedUser = await User.findById(userTwo.id);
+        expect(deletedUser).toBeNull();
 
         done();
       });
