@@ -1,21 +1,28 @@
 import React from 'react';
-import { StyleSheet, View, Text } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { Box, Center, Flex, Input, ScrollView, StatusBar, Text } from 'native-base';
+import { AntDesign } from '@expo/vector-icons';
 
 export default function Discover() {
   return (
-    <SafeAreaView style={styles.container}>
-      <View>
-        <Text>Discover</Text>
-      </View>
-    </SafeAreaView>
+    <Box bg={'white'} flex={1} safeAreaTop>
+      <StatusBar />
+      <Box px={'3'} py={'3'}>
+        <Flex direction={'row'} bg={'gray.100'} borderRadius={'xl'}>
+          <Center px={'3'}>
+            <AntDesign name="search1" size={24} color="black" />
+          </Center>
+          <Input placeholder="Search" w={'full'} borderWidth={'0'} fontSize={'xl'} />
+        </Flex>
+      </Box>
+      <ScrollView>
+        <Box w={'full'} bg={'blue.200'} h={'96'}></Box>
+        <Box w={'full'} bg={'green.200'} h={'96'}></Box>
+        <Box w={'full'} bg={'red.200'} h={'96'}></Box>
+        <Box w={'full'} bg={'yellow.200'} h={'96'}></Box>
+        <Box w={'full'} bg={'orange.200'} h={'96'}></Box>
+        <Box w={'full'} bg={'pink.200'} h={'96'}></Box>
+        <Box w={'full'} bg={'blue.200'} h={'96'}></Box>
+      </ScrollView>
+    </Box>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    backgroundColor: 'white',
-  },
-});
