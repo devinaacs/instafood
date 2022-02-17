@@ -1,11 +1,14 @@
 const mongoose = require("mongoose")
 
 const schema = mongoose.Schema({
+    UserId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User"
+    },
     PostId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Post"
     },
-    tag: String,
     createdAt: {
         type: Date,
         required: true,
@@ -18,4 +21,4 @@ const schema = mongoose.Schema({
     },
 })
 
-module.exports = mongoose.model("PostTag", schema)
+module.exports = mongoose.model("Like", schema)

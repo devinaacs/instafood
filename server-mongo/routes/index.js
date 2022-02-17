@@ -1,59 +1,23 @@
 const router = require('express').Router();
-const Post = require("../models/Post")
+const Controller = require('../controllers/user');
+const authentication = require('../middlewares/authentication');
 
-router.get("/posts", async (req, res) => {
-    const posts = await Post.find()
-    res.send(posts)
-})
+router.post('/login', Controller.login)             // done with error handler
+router.post('/register', Controller.register)       // done with validation and error handler
 
-router.post("/posts", async (req, res) => {
-    const post = new Post({
-        title: req.body.title,
-        content: req.body.content,
-    })
-    await post.save()
-    res.send(post)
-})
+router.use(authentication)
 
-router.get("/posts/:id", async (req, res) => {
-    try {
-        const post = await Post.findOne({ _id: req.params.id })
-        res.send(post)
-    } catch {
-        res.status(404)
-        res.send({ error: "Post doesn't exist!" })
-    }
-})
 
-router.patch("/posts/:id", async (req, res) => {
-    try {
-        const post = await Post.findOne({ _id: req.params.id })
+router.use('/', require('./post'))
+router.use('/users', require('./user'))
+// router.use('/tags', require('./tag'))
+router.use('/likes', require('./like'))
+router.use('/comments', require('./comment'))
+// router.use('/postImages', require('/postImage'))
+// router.use('/places', require('/place'))
+// router.use('/placeImages', require('/placeImage'))
 
-        if (req.body.title) {
-            post.title = req.body.title
-        }
 
-        if (req.body.content) {
-            post.content = req.body.content
-        }
-
-        await post.save()
-        res.send(post)
-    } catch {
-        res.status(404)
-        res.send({ error: "Post doesn't exist!" })
-    }
-})
-
-router.delete("/posts/:id", async (req, res) => {
-    try {
-        await Post.deleteOne({ _id: req.params.id })
-        res.status(204).send()
-    } catch {
-        res.status(404)
-        res.send({ error: "Post doesn't exist!" })
-    }
-})
 
 
 

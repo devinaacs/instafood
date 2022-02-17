@@ -12,10 +12,12 @@ app.use(express.urlencoded({ extended: true }))
 
 
 app.use(require('./routes'))
+app.use(require('./middlewares/errorHandler'))
 
 
 
-mongoose.connect('mongodb+srv://instafood:instafood@instafood.mar0e.mongodb.net/instafood?retryWrites=true&w=majority',
+
+mongoose.connect('mongodb+srv://instafood:instafood@instafood.mar0e.mongodb.net/myFirstDatabase?retryWrites=true&w=majority',
     { useNewUrlParser: true },
     () => console.log('connected to DB')
 )
