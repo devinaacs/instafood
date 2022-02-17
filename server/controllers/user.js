@@ -37,8 +37,20 @@ class Controller {
         password: password,
         imageUrl: imageUrl,
       });
+
       await user.save();
-      res.status(201).json(user);
+
+      const payload = {
+        id: user.id,
+        name: user.username,
+        email: user.email,
+      };
+
+      const accessToken = createToken(payload);
+
+      res.status(201).json({
+        access_token: accessToken,
+      });
     } catch (err) {
       next(err);
     }
