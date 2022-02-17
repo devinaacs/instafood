@@ -1,11 +1,11 @@
 const { default: axios } = require('axios');
+const redis = require('../helpers/redis');
 
 const TEXT_SEARCH_URL =
   'https://maps.googleapis.com/maps/api/place/textsearch/json';
 const PHOTO_URL = 'https://maps.googleapis.com/maps/api/place/photo';
 const PLACE_DETAIL_URL =
   'https://maps.googleapis.com/maps/api/place/details/json';
-const CACHE = require('../helpers/cache')();
 
 module.exports = {
   async searchPlaces(req, res, next) {
@@ -20,7 +20,7 @@ module.exports = {
       }
 
       const cacheKey = `${locationKey}.${req.query.name}`;
-      const cachedResult = CACHE.get(cacheKey);
+      const cachedResult = await redis.get(cacheKey);
 
       if (cachedResult) {
         return res.json(cachedResult);
@@ -37,10 +37,16 @@ module.exports = {
       }
 
       const { data } = await axios.get(TEXT_SEARCH_URL, { params });
+      const result = data.results.map(v => ({
+        PlaceId: v.icon,
+        name: v.name,
+        icon: v.icon,
+        photo_reference: v.photos ? v.photos[0].photo_reference : undefined,
+      }));
 
-      CACHE.set(cacheKey, data.results);
+      redis.set(cacheKey, result);
 
-      res.json(data.results);
+      res.json(result);
     } catch (err) {
       next(err);
     }
