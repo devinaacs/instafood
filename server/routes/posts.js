@@ -1,58 +1,10 @@
 const router = require('express').Router();
-const Post = require('../models/Post');
+const Controller = require('../controllers/post');
 
-router.get('/', async (req, res) => {
-  const posts = await Post.find();
-  res.send(posts);
-});
-
-router.post('/', async (req, res) => {
-  const post = new Post({
-    title: req.body.title,
-    content: req.body.content,
-  });
-  await post.save();
-  res.send(post);
-});
-
-router.get('/:id', async (req, res) => {
-  try {
-    const post = await Post.findOne({ _id: req.params.id });
-    res.send(post);
-  } catch {
-    res.status(404);
-    res.send({ error: 'Post doesn\'t exist!' });
-  }
-});
-
-router.patch('/:id', async (req, res) => {
-  try {
-    const post = await Post.findOne({ _id: req.params.id });
-
-    if (req.body.title) {
-      post.title = req.body.title;
-    }
-
-    if (req.body.content) {
-      post.content = req.body.content;
-    }
-
-    await post.save();
-    res.send(post);
-  } catch {
-    res.status(404);
-    res.send({ error: 'Post doesn\'t exist!' });
-  }
-});
-
-router.delete('/:id', async (req, res) => {
-  try {
-    await Post.deleteOne({ _id: req.params.id });
-    res.status(204).send();
-  } catch {
-    res.status(404);
-    res.send({ error: 'Post doesn\'t exist!' });
-  }
-});
+router.post('/', Controller.createPost);
+router.get('/', Controller.listPosts);
+router.get('/:id', Controller.findPostById);
+router.put('/:id', Controller.editPostById);
+router.delete('/:id', Controller.deletePost);
 
 module.exports = router;
