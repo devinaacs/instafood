@@ -6,7 +6,7 @@ import {
   Image,
   TouchableOpacity,
 } from 'react-native';
-import { Entypo, AntDesign } from '@expo/vector-icons';
+import { Entypo } from '@expo/vector-icons';
 
 export default function Navbar() {
   return (
@@ -24,14 +24,6 @@ export default function Navbar() {
           />
         </View>
         <View style={{ flexDirection: 'row' }}>
-          <TouchableOpacity>
-            <AntDesign
-              name="shoppingcart"
-              size={24}
-              color="#9F9F9F"
-              style={{ paddingVertical: 13 }}
-            />
-          </TouchableOpacity>
           <TouchableOpacity>
             <Entypo
               name="heart-outlined"
