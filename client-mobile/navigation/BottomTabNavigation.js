@@ -1,7 +1,7 @@
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import Highlights from "../screens/Highlights";
-import Discover from "../screens/Discover";
+import Highlights from '../screens/Highlights';
+import Discover from '../screens/Discover';
 
 const Tab = createBottomTabNavigator();
 
@@ -25,8 +25,16 @@ export default function BottomTabNavigation() {
         tabBarInactiveTintColor: 'gray',
       })}
     >
-      <Tab.Screen name='Highlights' component={Highlights} options={{ headerShown: false }} />
-      <Tab.Screen name='Discover' component={Discover} options={{ headerShown: false }} />
+      <Tab.Screen
+        name="Highlights"
+        component={Highlights}
+        options={{ headerShown: false }}
+      />
+      <Tab.Screen
+        name="Discover"
+        component={Discover}
+        options={{ headerShown: false }}
+      />
     </Tab.Navigator>
   );
 }

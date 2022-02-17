@@ -1,13 +1,13 @@
-import React from "react";
-import { StyleSheet, View, ScrollView, FlatList, Image, Text} from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import React from 'react';
+import { StyleSheet, View, Text } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function Discover() {
   return (
     <SafeAreaView style={styles.container}>
-        <View>
+      <View>
         <Text>Discover</Text>
-        </View>
+      </View>
     </SafeAreaView>
   );
 }
@@ -15,7 +15,7 @@ export default function Discover() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
-    backgroundColor: "white",
+    justifyContent: 'center',
+    backgroundColor: 'white',
   },
 });
