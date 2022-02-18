@@ -5,6 +5,7 @@ import Navbar from '../components/Navbar';
 import TrendingPostCard from '../components/TrendingPostCard';
 import TrendingPlacesCard from '../components/TrendingPlacesCard';
 import TrendingTags from '../components/TrendingTags';
+import PostButton from '../components/PostButton';
 
 export default function Highlights() {
   return (
@@ -54,6 +55,7 @@ export default function Highlights() {
           <TrendingPostCard />
         </View>
       </ScrollView>
+      <PostButton />
     </SafeAreaView>
   );
 }

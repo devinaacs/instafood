@@ -78,13 +78,13 @@ export default function TrendingPostCard() {
 const styles = StyleSheet.create({
   trendingPostCardContainer: {
     backgroundColor: 'white',
-    height: 380,
+    height: 420,
     flexDirection: 'column',
     borderRadius: 15,
-    marginBottom: 24,
+    marginBottom: 32,
   },
   imageContainer: {
-    height: '72%',
+    height: '74%',
     width: '100%',
     backgroundColor: 'white',
     borderTopLeftRadius: 15,
@@ -121,7 +121,7 @@ const styles = StyleSheet.create({
     paddingTop: 1,
   },
   bottomContainer: {
-    height: '28%',
+    height: '29%',
     width: '100%',
     backgroundColor: 'white',
     borderBottomLeftRadius: 15,
