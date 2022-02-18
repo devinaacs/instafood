@@ -1,37 +1,39 @@
-const errorHandler = (err, req, res, next) => {
+module.exports = (err, req, res, next) => {
   if (res.headersSent) {
     return next(err);
   }
 
-  console.log(err);
-  let statusCode = 500;
-  let errMessage = 'Internal server error';
+  let status = 500;
+  let message = 'internal server error';
 
-  if (err.name === 'ValidationError') {
-    statusCode = 400;
-    let errors = {};
-    Object.keys(err.errors).forEach(key => {
-      errors[key] = err.errors[key].message;
-      console.log(errMessage);
-    });
-    errMessage = errors;
-  } else if (err.name === 'JsonWebTokenError' || err.name == 'UNAUTHORIZED') {
-    statusCode = 401;
-    errMessage = 'Invalid token';
-  } else if (err.name === 'INVALID_EMAIL_PASSWORD') {
-    statusCode = 401;
-    errMessage = 'Invalid email/password';
-  } else if (err.name === 'NOT_FOUND') {
-    statusCode = 404;
-    errMessage = 'Data not found';
-
-    // } else if (err.name === "FORBIDDEN") {
-    //     statusCode = 403
-    //     errMessage = "You are not authorized"
+  switch (err.name) {
+  case 'ValidationError':
+    status = 400;
+    message = Object.keys(err.errors).reduce(
+      (errors, key) => ((errors[key] = err.errors[key].message), errors),
+      {}
+    );
+    break;
+  case 'JsonWebTokenError':
+  case 'UNAUTHORIZED':
+    status = 401;
+    message = 'invalid token';
+    break;
+  case 'INVALID_EMAIL_PASSWORD':
+    status = 401;
+    message = 'invalid email/password';
+    break;
+  case 'NOT_FOUND':
+    status = 404;
+    message = 'data not found';
+    break;
+  case 'FORBIDDEN':
+    status = 403;
+    message = 'you are not authorized';
+    break;
+  default:
+    console.log(err);
   }
 
-  res.status(statusCode).json({
-    message: errMessage,
-  });
+  res.status(status).json({ message });
 };
-module.exports = errorHandler;

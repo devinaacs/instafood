@@ -4,7 +4,6 @@ class Controller {
   static async createComment(req, res, next) {
     try {
       const { PostId, comment } = req.body;
-      // console.log({ PlaceId, caption, tags })
 
       const newcomment = new Comment({
         UserId: req.currentUser._id,
@@ -21,7 +20,6 @@ class Controller {
 
   static async listComments(req, res, next) {
     try {
-      console.log('masok');
       const comments = await Comment.find();
 
       res.status(200).json(comments);
