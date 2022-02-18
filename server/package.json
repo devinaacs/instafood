@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
-    "test": "npx jest --forceExit --verbose"
+    "test": "npx jest --forceExit --verbose",
+    "coverage": "npx jest --forceExit --verbose --coverage"
   },
   "keywords": [],
   "author": "",
