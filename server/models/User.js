@@ -22,13 +22,13 @@ const schema = mongoose.Schema({
       }
     },
   },
-  imageUrl: String,
-  createdAt: {
+  image_url: String,
+  created_at: {
     type: Date,
     required: true,
     default: Date.now,
   },
-  updatedAt: {
+  updated_at: {
     type: Date,
     required: true,
     default: Date.now,
@@ -37,6 +37,7 @@ const schema = mongoose.Schema({
 
 schema.pre('save', async function save(next) {
   if (!this.isModified('password')) return next();
+
   try {
     this.password = await createHash(this.password);
     return next();

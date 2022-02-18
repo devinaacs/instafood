@@ -4,8 +4,7 @@ const Post = require('../models/Post');
 const PostTag = require('../models/PostTag');
 const Like = require('../models/Like');
 const Comment = require('../models/Comment');
-const { getStorage } = require('firebase-admin/storage');
-const bucket = getStorage().bucket();
+const bucket = require('../helpers/fstorage').getBucket();
 
 class Controller {
   static async createPost(req, res, next) {
