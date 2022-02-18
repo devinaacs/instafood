@@ -29,13 +29,12 @@ class Controller {
 
   static async register(req, res, next) {
     try {
-      const { username, email, password, imageUrl } = req.body;
+      const { username, email, password } = req.body;
 
       const user = new User({
         username: username,
         email: email,
         password: password,
-        imageUrl: imageUrl,
       });
 
       await user.save();
@@ -58,11 +57,12 @@ class Controller {
 
   static async listUsers(req, res, next) {
     try {
-      let users = await User.find();
+      let users = await User.find({}, { email: 0, password: 0, __v: 0 });
 
       users = users.map(v => {
         v = v.toObject();
-        delete v.password;
+        v.id = v._id;
+        delete v._id;
 
         return v;
       });
@@ -77,30 +77,15 @@ class Controller {
     try {
       const { id } = req.params;
 
-      let user = await User.findOne({ _id: id });
+      let user = await User.findOne({ _id: id }, { password: 0, __v: 0 });
 
       if (!user) throw { name: 'NOT_FOUND' };
 
       user = user.toObject();
-      delete user.password;
+      user.id = user._id;
+      delete user._id;
 
       res.status(200).json(user);
-    } catch (err) {
-      next(err);
-    }
-  }
-
-  static async deleteUser(req, res, next) {
-    try {
-      const { id } = req.params;
-      const user = await User.findOne({ _id: id });
-
-      if (!user) throw { name: 'NOT_FOUND' };
-
-      await User.deleteOne({ _id: id });
-      res.status(200).json({
-        message: `User ${user.username} has been deleted successfully.`,
-      });
     } catch (err) {
       next(err);
     }
