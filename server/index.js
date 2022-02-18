@@ -1,5 +1,13 @@
 require('dotenv').config();
 
+process.env.NODE_ENV = process.env.NODE_ENV || 'development';
+
+const { initializeApp, cert } = require('firebase-admin/app');
+initializeApp({
+  credential: cert(require('./certs/google-service.json')),
+  storageBucket: 'gs://hacktiv8-instafood.appspot.com',
+});
+
 const mongoose = require('mongoose');
 const app = require('./app');
 

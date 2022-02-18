@@ -1,18 +1,14 @@
 const mongoose = require('mongoose');
 
 const schema = mongoose.Schema({
-  UserId: {
+  user_id: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
   },
-  PlaceId: String,
+  place_id: String,
   caption: String,
-  createdAt: {
-    type: Date,
-    required: true,
-    default: Date.now,
-  },
-  updatedAt: {
+  images: [String],
+  created_at: {
     type: Date,
     required: true,
     default: Date.now,
