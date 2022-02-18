@@ -9,14 +9,14 @@ const Post = ({ post }) => {
   return (
     <Box w={windowWidth}>
       <Box mx={'4'} mb={'4'} borderWidth={'1'} borderRadius={'xl'} borderColor={'gray.200'}>
-        <Box maxHeight={500}>
+        <Box maxHeight={470}>
           <Box
             borderTopRadius={'xl'}
             flexDirection={'row'}
             alignItems={'center'}
             bg={{
               linearGradient: {
-                colors: ["black", "transparent"],
+                colors: ['black', 'transparent'],
                 start: [0, 0],
                 end: [0, 1]
               }
@@ -24,10 +24,10 @@ const Post = ({ post }) => {
             position={'absolute'}
             zIndex={10}
             height={'20'}
-            width={"full"}
+            width={'full'}
             px={'3'}
           >
-            <Ionicons name="ios-location-sharp" size={30} color="white" />
+            <Ionicons name='ios-location-sharp' size={30} color='white' />
             <Text ml={'3'} fontSize={'lg'} fontWeight={'bold'} color={'white'}>{post.place}</Text>
           </Box>
           <Image
@@ -46,10 +46,10 @@ const Post = ({ post }) => {
           <Flex direction='row' justify={'space-between'}>
             <Flex direction='row' px={'3'} py={'2'}>
               <Box mr={'4'}>
-                <AntDesign name="like2" size={30} color="black" />
+                <AntDesign name='like2' size={30} color='black' />
               </Box>
               <Box>
-                <FontAwesome name="comment-o" size={30} color="black" />
+                <FontAwesome name='comment-o' size={30} color='black' />
               </Box>
             </Flex>
           </Flex>
