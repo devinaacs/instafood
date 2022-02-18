@@ -37,12 +37,15 @@ module.exports = {
       }
 
       const { data } = await axios.get(TEXT_SEARCH_URL, { params });
-      const result = data.results.map(v => ({
-        place_id: v.place_id,
-        name: v.name,
-        icon: v.icon,
-        photo_reference: v.photos ? v.photos[0].photo_reference : undefined,
-      }));
+      const result = data.results
+        .map(v => ({
+          place_id: v.place_id,
+          name: v.name,
+          address: v.formatted_address,
+          icon: v.icon,
+          photo_reference: v.photos ? v.photos[0].photo_reference : undefined,
+        }))
+        .slice(0, 10);
 
       redis.set(cacheKey, result);
 
@@ -73,6 +76,13 @@ module.exports = {
 
   async getPlaceDetail(req, res, next) {
     try {
+      const cacheKey = `place.${req.params.id}`;
+      const cachedResult = await redis.get(cacheKey);
+
+      if (cachedResult) {
+        return res.json(cachedResult);
+      }
+
       const { data } = await axios.get(PLACE_DETAIL_URL, {
         params: {
           place_id: req.params.id,
@@ -81,7 +91,17 @@ module.exports = {
         },
       });
 
-      res.json(data.result);
+      const result = {
+        name: data.result.name,
+        address: data.result.formatted_address,
+        icon: data.result.icon,
+        photos: data.result.photos
+          ? data.result.photos.map(v => v.photo_reference)
+          : [],
+      };
+      redis.set(cacheKey, result);
+
+      res.json(result);
     } catch (err) {
       next(err);
     }
