@@ -10,6 +10,7 @@ List of available endpoints:
 - [GET /places/photo](#get-placesphoto)
 - [GET /places/:id](#get-placesid)
 - [POST /posts](#post-posts)
+- [GET /posts](#get-posts)
 
 ### POST /register
 
@@ -123,12 +124,12 @@ _Response 200 - OK_
 ```json
 [
   {
-    "PlaceId": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/restaurant-71.png",
+    "place_id": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/restaurant-71.png",
     "name": "Warung Jepara",
     "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/restaurant-71.png"
   },
   {
-    "PlaceId": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/restaurant-71.png",
+    "place_id": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/restaurant-71.png",
     "name": "Warung Tekko",
     "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/restaurant-71.png",
     "photo_reference": "Aap_uECBix5HF972L1HL7DEO7yqsZYerVhE5qmElD5LHT96sqQ9wsNQN-DnPSgfVsVYRPNzPQ5ikGY5hlhKwIqx5BJPgn4-92hfeHkG4779AWTljPbEGUqyYkui6ftorZlNgemGyPdVA5KoRqMKZeA5ybk4JyAN-HnSzVIOJxin4iNDvf_ld"
@@ -227,4 +228,26 @@ _Response 201 - Created_
 	],
 	"created_at": "2022-02-18T03:07:29.959Z"
 }
+```
+
+### GET /posts
+
+Getting list of posts.
+
+**Responses**
+
+_Response 200 - OK_
+```json
+[
+	{
+		"id": "620eb4f177ecd84dd0b4a7ec",
+		"user_id": "620eb0001b28613ab1d5b310",
+		"place_id": "ChIJmzRSGeD1aS4RELtI48vhrb8",
+		"images": [
+			"https://storage.googleapis.com/hacktiv8-instafood.appspot.com/development/posts/620f6055bf705044a6b1148c/img-1.png",
+			"https://storage.googleapis.com/hacktiv8-instafood.appspot.com/development/posts/620f6055bf705044a6b1148c/img-2.png"
+		],
+		"created_at": "2022-02-18T08:51:00.868Z"
+	}
+]
 ```
