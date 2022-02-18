@@ -7,6 +7,7 @@ import {
   Text,
   TouchableOpacity,
 } from 'react-native';
+import { Box } from 'native-base';
 import { Ionicons } from '@expo/vector-icons';
 
 export default function TrendingPostCard() {
@@ -20,7 +21,16 @@ export default function TrendingPostCard() {
               uri: 'https://images.unsplash.com/photo-1476224203421-9ac39bcb3327?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80',
             }}
           />
-          <View style={styles.topImageShadow} />
+          <Box
+            style={styles.topImageShadow}
+            bg={{
+              linearGradient: {
+                colors: ['black', 'transparent'],
+                start: [0, 0],
+                end: [0, 1],
+              },
+            }}
+          />
           <View style={styles.topImageStyling}>
             <Ionicons
               name="ios-location-sharp"
@@ -34,18 +44,32 @@ export default function TrendingPostCard() {
         <View style={styles.bottomContainer}>
           <View style={styles.bottomContent}>
             <View style={styles.bottomContentProfilePicContainer}>
-              <View style={{ width: 80, height: 80, borderRadius: 80 / 2, borderColor: '#D5D5D5', borderWidth: 1, justifyContent: 'center' }}>
+              <View
+                style={styles.bottomProfPicBorder}
+              >
                 <Image
-                  style={{ width: 80, height: 80, resizeMode: "cover", borderRadius: 80 / 2 }}
+                  style={styles.bottomProfPicStyle}
                   source={{
                     uri: 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png',
                   }}
                 />
               </View>
             </View>
-            <View style={{ backgroundColor: 'white', width: '75%', borderBottomRightRadius: 15, paddingTop: 15 }}>
-              <Text style={{ fontWeight: 'bold', fontSize: 20, paddingTop: 3 }}>Bambang</Text>
-              <Text style={{ fontSize: 17, paddingTop: 6 }}>Enak banget pizza-nya! <Text style={{ color: 'purple' }}>#pizza</Text></Text>
+            <View
+              style={{
+                backgroundColor: 'white',
+                width: '75%',
+                borderBottomRightRadius: 15,
+                paddingTop: 15,
+              }}
+            >
+              <Text style={{ fontWeight: 'bold', fontSize: 20, paddingTop: 3 }}>
+                Bambang
+              </Text>
+              <Text style={{ fontSize: 17, paddingTop: 6 }}>
+                Enak banget pizza-nya!{' '}
+                <Text style={{ color: 'purple' }}>#pizza</Text>
+              </Text>
             </View>
           </View>
         </View>
@@ -76,12 +100,28 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 15,
   },
   topImageShadow: {
-    position: 'absolute', top: 0, alignSelf: 'center', backgroundColor: 'rgba(0, 0, 0, 0.34)', height: "22%", width: '100%', borderTopLeftRadius: 15, borderTopRightRadius: 15,
+    position: 'absolute',
+    top: 0,
+    alignSelf: 'center',
+    height: '30%',
+    width: '100%',
+    borderTopLeftRadius: 15,
+    borderTopRightRadius: 15,
   },
   topImageStyling: {
-    flexDirection: 'row', position: 'absolute', top: 12, left: 6, alignSelf: 'center'
+    flexDirection: 'row',
+    position: 'absolute',
+    top: 12,
+    left: 6,
+    alignSelf: 'center',
   },
-  topImageText: { color: 'white', fontSize: 20, fontWeight: 'bold', marginHorizontal: 3, paddingTop: 1 },
+  topImageText: {
+    color: 'white',
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginHorizontal: 3,
+    paddingTop: 1,
+  },
   bottomContainer: {
     height: '28%',
     width: '100%',
@@ -91,7 +131,26 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#D2D2D2',
   },
-  bottomContent: { flexDirection: 'row', height: '100%', },
-  bottomContentProfilePicContainer: { width: '25%', backgroundColor: 'white', padding: 12, borderBottomLeftRadius: 15, alignItems: 'center' },
-
+  bottomContent: { flexDirection: 'row', height: '100%' },
+  bottomContentProfilePicContainer: {
+    width: '25%',
+    backgroundColor: 'white',
+    padding: 12,
+    borderBottomLeftRadius: 15,
+    alignItems: 'center',
+  },
+  bottomProfPicBorder: {
+    width: 80,
+    height: 80,
+    borderRadius: 80 / 2,
+    borderColor: '#D5D5D5',
+    borderWidth: 1,
+    justifyContent: 'center',
+  },
+  bottomProfPicStyle: {
+    width: 80,
+    height: 80,
+    resizeMode: 'cover',
+    borderRadius: 80 / 2,
+  }
 });
