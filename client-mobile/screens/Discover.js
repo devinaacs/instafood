@@ -1,28 +1,43 @@
 import React from 'react';
-import { Box, Center, Flex, Input, ScrollView, StatusBar, Text } from 'native-base';
+import { Box, Center, Flex, Image, Input, ScrollView, StatusBar, Text } from 'native-base';
 import { AntDesign } from '@expo/vector-icons';
+import { SafeAreaView, View } from 'react-native';
 
 export default function Discover() {
   return (
-    <Box bg={'white'} flex={1} safeAreaTop>
-      <StatusBar />
-      <Box px={'3'} py={'3'}>
-        <Flex direction={'row'} bg={'gray.100'} borderRadius={'xl'}>
-          <Center px={'3'}>
-            <AntDesign name="search1" size={24} color="black" />
-          </Center>
-          <Input placeholder="Search" w={'full'} borderWidth={'0'} fontSize={'xl'} />
-        </Flex>
-      </Box>
-      <ScrollView>
-        <Box w={'full'} bg={'blue.200'} h={'96'}></Box>
-        <Box w={'full'} bg={'green.200'} h={'96'}></Box>
-        <Box w={'full'} bg={'red.200'} h={'96'}></Box>
-        <Box w={'full'} bg={'yellow.200'} h={'96'}></Box>
-        <Box w={'full'} bg={'orange.200'} h={'96'}></Box>
-        <Box w={'full'} bg={'pink.200'} h={'96'}></Box>
-        <Box w={'full'} bg={'blue.200'} h={'96'}></Box>
-      </ScrollView>
-    </Box>
+    <SafeAreaView style={{ backgroundColor: "white", flex: 1 }}>
+      <View style={{ paddingVertical: 3, paddingHorizontal: 3 }}>
+        <View style={{ flexDirection: 'row', backgroundColor: '#e4e4e7', borderRadius: 3 }}>
+
+        </View>
+      </View>
+    </SafeAreaView>
+    // <Box bg={'white'} flex={1} safeAreaTop>
+    //   <StatusBar />
+    //   <Box px={'3'} py={'3'}>
+    //     <Flex direction={'row'} bg={'gray.100'} borderRadius={'xl'}>
+    //       <Center px={'3'}>
+    //         <AntDesign name="search1" size={24} color="black" />
+    //       </Center>
+    //       <Input placeholder="Search" w={'full'} borderWidth={'0'} fontSize={'xl'} />
+    //     </Flex>
+    //   </Box>
+    //   <ScrollView>
+    //     <Box w={'full'} maxHeight={700}>
+    //       <Box p={'3'} w={'full'}>
+    //         <Text fontSize={'xl'}>Jakarta</Text>
+    //       </Box>
+    //       <Image
+    //         width={'full'}
+    //         height={'full'}
+    //         resizeMode={'cover'}
+    //         source={{
+    //           uri: 'https://images.unsplash.com/photo-1529042410759-befb1204b468?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=686&q=80',
+    //         }}
+    //         alt={'alternate picture'}
+    //       />
+    //     </Box>
+    //   </ScrollView>
+    // </Box>
   );
 }
