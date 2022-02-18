@@ -1,22 +1,15 @@
 import React from 'react';
 import { Box, Center, Divider, Flex, Input, ScrollView, StatusBar } from 'native-base';
-import { AntDesign } from '@expo/vector-icons';
+
 import Post from '../components/Post';
 import PostButton from '../components/PostButton';
+import SearchButton from '../components/SearchButton';
 
 export default function Discover() {
   return (
     <Box bg={'white'} flex={1} safeAreaTop>
       <StatusBar />
-      <Box px={'3'} py={'3'} position={'relative'}>
-        <Flex direction={'row'} bg={'gray.100'} borderRadius={'xl'}>
-          <Center px={'3'}>
-            <AntDesign name="search1" size={24} color="black" />
-          </Center>
-          <Input placeholder="Search" w={'full'} borderWidth={'0'} fontSize={'xl'} />
-        </Flex>
-      </Box>
-      <Divider mb={'4'} />
+      <SearchButton />
       <ScrollView>
         {
           posts.map((post) => (
