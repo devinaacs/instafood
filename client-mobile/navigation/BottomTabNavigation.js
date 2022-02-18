@@ -23,6 +23,7 @@ export default function BottomTabNavigation() {
         },
         tabBarActiveTintColor: '#FF1F00',
         tabBarInactiveTintColor: 'gray',
+        tabBarHideOnKeyboard: true
       })}
     >
       <Tab.Screen
