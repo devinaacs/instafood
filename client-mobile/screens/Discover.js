@@ -2,6 +2,7 @@ import React from 'react';
 import { Box, Center, Divider, Flex, Input, ScrollView, StatusBar } from 'native-base';
 import { AntDesign } from '@expo/vector-icons';
 import Post from '../components/Post';
+import PostButton from '../components/PostButton';
 
 export default function Discover() {
   return (
@@ -15,7 +16,7 @@ export default function Discover() {
           <Input placeholder="Search" w={'full'} borderWidth={'0'} fontSize={'xl'} />
         </Flex>
       </Box>
-      <Divider />
+      <Divider mb={'4'} />
       <ScrollView>
         {
           posts.map((post) => (
@@ -23,6 +24,7 @@ export default function Discover() {
           ))
         }
       </ScrollView>
+      <PostButton />
     </Box>
   );
 }
