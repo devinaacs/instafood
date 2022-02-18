@@ -2,10 +2,59 @@
 
 List of available endpoints:
 
+- [POST /register](#post-register)
+- [POST /login](#post-login)
 - [GET /places](#get-places)
 - [GET /places/photo](#get-placesphoto)
 - [GET /places/:id](#get-placesid)
 - [POST /posts](#post-posts)
+
+### POST /register
+
+Register new user.
+
+**Request**
+
+_Body_
+```json
+{
+  "username": "string",
+  "email": "string",
+  "password": "string"
+}
+```
+
+**Responses**
+
+_Response 201 - Created_
+```json
+{
+  "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyMGYxMjFjZDUwNDBjNzM4MGZjN2RlYSIsIm5hbWUiOiJ1c2VyLm9uZSIsImVtYWlsIjoidXNlci5vbmVAbWFpbC5jb20iLCJpYXQiOjE2NDUxNTQ4NDV9.oIymYBnOn7TAA_0Kgf1raJVvibDt6JJiEgpet3twi5s"
+}
+```
+
+### POST /login
+
+Login using existing user credentials.
+
+**Request**
+
+_Body_
+```json
+{
+  "email": "string",
+  "password": "string"
+}
+```
+
+**Responses**
+
+_Response 200 - Created_
+```json
+{
+  "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyMGYxMjFjZDUwNDBjNzM4MGZjN2RlYSIsIm5hbWUiOiJ1c2VyLm9uZSIsImVtYWlsIjoidXNlci5vbmVAbWFpbC5jb20iLCJpYXQiOjE2NDUxNTQ4NDV9.oIymYBnOn7TAA_0Kgf1raJVvibDt6JJiEgpet3twi5s"
+}
+```
 
 ### GET /places
 
