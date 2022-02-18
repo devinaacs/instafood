@@ -17,7 +17,7 @@ export default function Navbar() {
             source={require('../assets/logo_black.png')}
             style={{
               width: 140,
-              height: 52,
+              height: 54,
               resizeMode: 'contain',
               marginLeft: 10,
             }}
@@ -29,7 +29,7 @@ export default function Navbar() {
               name="heart-outlined"
               size={24}
               color="#9F9F9F"
-              style={{ paddingVertical: 15, paddingHorizontal: 13 }}
+              style={{ paddingVertical: 17, paddingHorizontal: 13 }}
             />
           </TouchableOpacity>
           <TouchableOpacity>
@@ -37,7 +37,7 @@ export default function Navbar() {
               name="menu"
               size={24}
               color="#9F9F9F"
-              style={{ paddingVertical: 13, paddingRight: 13 }}
+              style={{ paddingVertical: 15, paddingRight: 13 }}
             />
           </TouchableOpacity>
         </View>
@@ -49,9 +49,9 @@ export default function Navbar() {
 const styles = StyleSheet.create({
   nav: {
     flex: 1,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: 'white',
     width: '100%',
-    height: 52,
+    height: 63,
     justifyContent: 'space-between',
     flexDirection: 'row',
     borderTopWidth: 1,

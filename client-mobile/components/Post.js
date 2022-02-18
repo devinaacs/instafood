@@ -79,23 +79,23 @@ const Post = ({ post }) => {
         </Box>
       </Box>
     </Box>
-  )
-}
+  );
+};
 
-const likesFormat = (likes) => {
-  let stringifiedLikes = likes + "";
-  stringifiedLikes = stringifiedLikes.split("").reverse();
-  let formattedLikes = "";
+const likesFormat = likes => {
+  let stringifiedLikes = likes + '';
+  stringifiedLikes = stringifiedLikes.split('').reverse();
+  let formattedLikes = '';
 
   stringifiedLikes.forEach((el, i) => {
     if ((i + 1) % 3 === 0 && i !== stringifiedLikes.length - 1) {
-      formattedLikes += el + ",";
+      formattedLikes += el + ',';
     } else {
       formattedLikes += el;
     }
-  })
+  });
 
-  return formattedLikes.split("").reverse();
-}
+  return formattedLikes.split('').reverse();
+};
 
 export default Post;
