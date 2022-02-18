@@ -38,7 +38,7 @@ module.exports = {
 
       const { data } = await axios.get(TEXT_SEARCH_URL, { params });
       const result = data.results.map(v => ({
-        PlaceId: v.place_id,
+        place_id: v.place_id,
         name: v.name,
         icon: v.icon,
         photo_reference: v.photos ? v.photos[0].photo_reference : undefined,

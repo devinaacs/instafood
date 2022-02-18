@@ -53,7 +53,15 @@ class Controller {
 
   static async listPosts(req, res, next) {
     try {
-      const posts = await Post.find();
+      let posts = await Post.find({}, { __v: 0 });
+
+      posts = posts.map(v => {
+        v = v.toObject();
+        v.id = v._id;
+        delete v._id;
+
+        return v;
+      });
 
       res.status(200).json(posts);
     } catch (err) {

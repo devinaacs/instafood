@@ -8,8 +8,8 @@ const windowWidth = Dimensions.get('window').width;
 const Post = ({ post }) => {
   return (
     <Box w={windowWidth}>
-      <Box m={'4'} borderRadius={'xl'}>
-        <Box maxHeight={450}>
+      <Box mx={'4'} mb={'4'} borderWidth={'1'} borderRadius={'xl'} borderColor={'gray.200'}>
+        <Box maxHeight={500}>
           <Box
             borderTopRadius={'xl'}
             flexDirection={'row'}
