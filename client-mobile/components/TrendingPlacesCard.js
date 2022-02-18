@@ -41,12 +41,14 @@ export default function TrendingPlacesCard() {
           <Text style={styles.textStyle}>Place Name Here!</Text>
         </View>
       </TouchableOpacity>
+ 
+      
     </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  cardContainer: { height: 240, width: 232, marginLeft: 13, borderRadius: 10 },
+  cardContainer: { height: 240, width: 232, marginLeft: 15, borderRadius: 10 },
   imageStyle: {
     height: 240,
     width: 232,

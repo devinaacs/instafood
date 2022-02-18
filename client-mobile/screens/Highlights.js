@@ -1,12 +1,5 @@
 import React from 'react';
-import {
-  StyleSheet,
-  View,
-  ScrollView,
-  Image,
-  Text,
-  TouchableOpacity,
-} from 'react-native';
+import { StyleSheet, View, ScrollView, Text, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Navbar from '../components/Navbar';
 import TrendingPostCard from '../components/TrendingPostCard';
@@ -30,7 +23,7 @@ export default function Highlights() {
             <Text style={{ color: '#FF8F00', fontSize: 18 }}>see all</Text>
           </TouchableOpacity>
         </View>
-        <View style={{ backgroundColor: 'white', height: 260, paddingVertical: 10 }}>
+        <View style={{ backgroundColor: 'white', height: 260, paddingVertical: 10}}>
           <TrendingPlacesCard />
         </View>
         <View style={styles.trendingTags}>
@@ -83,7 +76,7 @@ const styles = StyleSheet.create({
     width: '100%',
     backgroundColor: 'white',
     padding: 13,
-    paddingBottom: 20,
+    paddingHorizontal: 15,
   },
   trendingTags: {
     marginTop: 12,
