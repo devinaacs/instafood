@@ -4,6 +4,8 @@ List of available endpoints:
 
 - [POST /register](#post-register)
 - [POST /login](#post-login)
+- [GET /users](#get-users)
+- [GET /users/:id](#get-usersid)
 - [GET /places](#get-places)
 - [GET /places/photo](#get-placesphoto)
 - [GET /places/:id](#get-placesid)
@@ -54,6 +56,49 @@ _Response 200 - Created_
 {
   "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyMGYxMjFjZDUwNDBjNzM4MGZjN2RlYSIsIm5hbWUiOiJ1c2VyLm9uZSIsImVtYWlsIjoidXNlci5vbmVAbWFpbC5jb20iLCJpYXQiOjE2NDUxNTQ4NDV9.oIymYBnOn7TAA_0Kgf1raJVvibDt6JJiEgpet3twi5s"
 }
+```
+
+### GET /users
+
+**Responses**
+
+_Response 200 - Created_
+```json
+[
+  {
+    "id": "620f477a903febe22132c9d4",
+    "username": "user.two",
+    "email": "user.two@mail.com",
+    "created_at": "2022-02-18T07:15:06.837Z",
+    "updated_at": "2022-02-18T07:15:06.837Z"
+  }
+]
+```
+
+### GET /users/:id
+
+**Request**
+
+_Params_
+```json
+{
+  "id": "string (required)"
+}
+```
+
+**Responses**
+
+_Response 200 - Created_
+```json
+[
+  {
+    "id": "620f477a903febe22132c9d4",
+    "username": "user.two",
+    "email": "user.two@mail.com",
+    "created_at": "2022-02-18T07:15:06.837Z",
+    "updated_at": "2022-02-18T07:15:06.837Z"
+  }
+]
 ```
 
 ### GET /places
