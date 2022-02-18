@@ -1,0 +1,4 @@
+*.json
+
+# put google-service.json in this directory
+# that is required to use google storage APIs

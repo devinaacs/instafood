@@ -1,7 +1,8 @@
 const router = require('express').Router();
 const Controller = require('../controllers/post');
+const uploader = require('../middlewares/images-uploader');
 
-router.post('/', Controller.createPost);
+router.post('/', uploader, Controller.createPost);
 router.get('/', Controller.listPosts);
 router.get('/:id', Controller.findPostById);
 router.put('/:id', Controller.editPostById);

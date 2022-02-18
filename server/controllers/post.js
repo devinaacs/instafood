@@ -1,32 +1,51 @@
+const fs = require('fs');
+const path = require('path');
 const Post = require('../models/Post');
 const PostTag = require('../models/PostTag');
 const Like = require('../models/Like');
 const Comment = require('../models/Comment');
+const { getStorage } = require('firebase-admin/storage');
+const bucket = getStorage().bucket();
 
 class Controller {
   static async createPost(req, res, next) {
     try {
-      const { PlaceId, caption, tags } = req.body;
-      // console.log({ PlaceId, caption, tags })
+      const { place_id, caption, tags } = req.body;
 
-      const post = new Post({
-        UserId: req.currentUser._id,
-        PlaceId: PlaceId,
+      let post = await Post.create({
+        user_id: req.currentUser._id,
+        place_id: place_id,
         caption: caption,
       });
+
+      const images = [];
+
+      for (let i = 0; i < req.files.length; i++) {
+        const file = req.files[i];
+        const fileUrl = await uploadFile(post.id, file, i + 1);
+        images.push(fileUrl);
+        cleanTempFile(file);
+      }
+
+      post.images = images;
       await post.save();
 
       let seedPostTags = [];
 
-      await tags.forEach(e => {
+      tags.forEach(e => {
         seedPostTags.push({
           PostId: post._id,
           tag: e,
         });
       });
-      console.log(seedPostTags);
 
       await PostTag.insertMany(seedPostTags);
+
+      post = post.toObject();
+      post.id = post._id;
+      delete post._id;
+      delete post.__v;
+
       res.status(201).json(post);
     } catch (err) {
       next(err);
@@ -107,6 +126,41 @@ class Controller {
       next(err);
     }
   }
+}
+
+async function uploadFile(postId, file, index) {
+  const options = {
+    destination: `${
+      process.env.NODE_ENV
+    }/posts/${postId}/img-${index}${path.extname(file.filename)}`,
+    validation: 'crc32c',
+    resumable: true,
+    public: true,
+  };
+
+  return new Promise((resolve, reject) => {
+    bucket.upload(
+      path.join(__dirname, `../uploads/${file.filename}`),
+      options,
+      (err, file) => {
+        if (err) return reject(err);
+
+        file.makePublic(err => {
+          if (err) reject(err);
+          else resolve(file.publicUrl());
+        });
+      }
+    );
+  });
+}
+
+function cleanTempFile(file) {
+  return new Promise((resolve, reject) => {
+    fs.unlink(path.join(__dirname, `../uploads/${file.filename}`), err => {
+      if (err) reject(err);
+      else resolve();
+    });
+  });
 }
 
 module.exports = Controller;

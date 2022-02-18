@@ -5,6 +5,7 @@ List of available endpoints:
 - [GET /places](#get-places)
 - [GET /places/photo](#get-placesphoto)
 - [GET /places/:id](#get-placesid)
+- [POST /posts](#post-posts)
 
 ### GET /places
 
@@ -91,5 +92,45 @@ _Response 200 - OK_
 			"width": 1080
 		}
 	]
+}
+```
+
+### POST /posts
+
+Creating new post.
+
+**Request**
+
+_Headers_
+```json
+{
+  "content-type": "multipart/form-data",
+  "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjQxMjcwNDMwfQ.EpaOTmbHDYRuW1ytTXvuMA22OcCOaeulPf88Asq4u9s"
+}
+```
+
+_Body_
+```json
+{
+  "place_id": "string",
+  "caption": "string",
+  "tags": "array of string",
+  "images": "array of files"
+}
+```
+
+**Responses**
+
+_Response 201 - Created_
+```json
+{
+  "id": "620f0d71f63c8e7e064611c9",
+	"user_id": "620eb0001b28613ab1d5b310",
+	"place_id": "ChIJd9SUqtb1aS4RJmrIUtK58-s",
+	"images": [
+		"https://storage.googleapis.com/hacktiv8-instafood.appspot.com/development/posts/620f0d71f63c8e7e064611c9/img-1.png",
+		"https://storage.googleapis.com/hacktiv8-instafood.appspot.com/development/posts/620f0d71f63c8e7e064611c9/img-2.png"
+	],
+	"created_at": "2022-02-18T03:07:29.959Z"
 }
 ```
