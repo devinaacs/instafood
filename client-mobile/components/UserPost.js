@@ -1,6 +1,5 @@
 import React from 'react';
-import { StyleSheet, TouchableOpacity, Image, FlatList } from 'react-native';
-import { Dimensions } from 'react-native';
+import { StyleSheet, TouchableOpacity, Image, FlatList, Dimensions } from 'react-native';
 const windowWidth = Dimensions.get('window').width;
 
 const numColumns = 3;
@@ -8,14 +7,14 @@ const numColumns = 3;
 export default function UserPost() {
   return (
     <FlatList
+      nestedScrollEnabled={true}
       data={posts}
       style={styles.container}
       numColumns={numColumns}
-      scrollEnabled={false}
       renderItem={({ item }) => (
         <TouchableOpacity>
           <Image
-            style={{ width: windowWidth / 3, height: 176, margin: 1 }}
+            style={{ width: windowWidth / 3.04, height: 175, margin: 1 }}
             source={{
               uri: item.imageUrl,
             }}
@@ -100,7 +99,7 @@ const posts = [
   {
     id: 3,
     imageUrl:
-      'https://images.unsplash.com/photo-1529042410759-befb1204b468?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=686&q=80',
+      'https://images.unsplash.com/photo-1555949258-eb67b1ef0ceb?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80',
     user: {
       name: 'Bambang',
       profilePicture:
@@ -132,7 +131,7 @@ const posts = [
   {
     id: 4,
     imageUrl:
-      'https://images.unsplash.com/photo-1529042410759-befb1204b468?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=686&q=80',
+      'https://images.unsplash.com/photo-1611270629569-8b357cb88da9?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80',
     user: {
       name: 'Bambang',
       profilePicture:

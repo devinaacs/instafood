@@ -62,9 +62,9 @@ export default function Profile() {
               <Text style={styles.postsText}>Posts</Text>
             </View>
           </View>
-          <View style={{ marginBottom: 80 }}>
+          <ScrollView horizontal={true} style={{ marginBottom: 80 }}>
             <UserPost />
-          </View>
+          </ScrollView>
         </ScrollView>
       </View>
       <PostButton />
