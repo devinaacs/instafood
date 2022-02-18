@@ -44,16 +44,13 @@ export default function TrendingPostCard() {
         <View style={styles.bottomContainer}>
           <View style={styles.bottomContent}>
             <View style={styles.bottomContentProfilePicContainer}>
-              <View
-                style={styles.bottomProfPicBorder}
-              >
-                <Image
-                  style={styles.bottomProfPicStyle}
-                  source={{
-                    uri: 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png',
-                  }}
-                />
-              </View>
+              <Image
+                style={styles.bottomProfPicStyle}
+                source={{
+                  uri: 'https://cdn.pixabay.com/photo/2015/03/04/22/35/head-659651__340.png',
+                }}
+              />
+
             </View>
             <View
               style={{
@@ -84,6 +81,7 @@ const styles = StyleSheet.create({
     height: 380,
     flexDirection: 'column',
     borderRadius: 15,
+    marginBottom: 24,
   },
   imageContainer: {
     height: '72%',
@@ -129,7 +127,7 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: 15,
     borderBottomRightRadius: 15,
     borderWidth: 1,
-    borderColor: '#D2D2D2',
+    borderColor: '#6C6C6C',
   },
   bottomContent: { flexDirection: 'row', height: '100%' },
   bottomContentProfilePicContainer: {
@@ -139,18 +137,12 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: 15,
     alignItems: 'center',
   },
-  bottomProfPicBorder: {
-    width: 80,
-    height: 80,
-    borderRadius: 80 / 2,
-    borderColor: '#D5D5D5',
-    borderWidth: 1,
-    justifyContent: 'center',
-  },
   bottomProfPicStyle: {
     width: 80,
     height: 80,
     resizeMode: 'cover',
     borderRadius: 80 / 2,
+    borderWidth: 1,
+    borderColor: '#D1D1D1'
   }
 });
