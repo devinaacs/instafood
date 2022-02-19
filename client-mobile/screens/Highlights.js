@@ -2,10 +2,12 @@ import React from 'react';
 import { StyleSheet, View, ScrollView, Text, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Navbar from '../components/Navbar';
-import TrendingPostCard from '../components/TrendingPostCard';
 import TrendingPlacesCard from '../components/TrendingPlacesCard';
 import TrendingTags from '../components/TrendingTags';
 import PostButton from '../components/PostButton';
+import TrendingPostCard from '../components/TrendingPostCard';
+import TrendingPost2 from '../components/TrendingPost2';
+import Post from '../components/Post';
 
 export default function Highlights() {
   return (
@@ -24,7 +26,7 @@ export default function Highlights() {
             <Text style={{ color: '#FF8F00', fontSize: 18 }}>see all</Text>
           </TouchableOpacity>
         </View>
-        <View style={{ backgroundColor: 'white', height: 260, paddingVertical: 10}}>
+        <View style={{ backgroundColor: 'white', height: 260, paddingVertical: 10 }}>
           <TrendingPlacesCard />
         </View>
         <View style={styles.trendingTags}>
@@ -52,7 +54,11 @@ export default function Highlights() {
         </View>
 
         <View style={styles.trendingPostContainer}>
-          <TrendingPostCard />
+          {
+            posts.map((post) => (
+              <TrendingPost2 post={post} key={post.id} />
+            ))
+          }
         </View>
       </ScrollView>
       <PostButton />
@@ -77,8 +83,7 @@ const styles = StyleSheet.create({
   trendingPostContainer: {
     width: '100%',
     backgroundColor: 'white',
-    padding: 13,
-    paddingHorizontal: 15,
+
   },
   trendingTags: {
     marginTop: 12,
@@ -94,6 +99,70 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingHorizontal: 10,
-    paddingBottom: 5
+    paddingBottom: 15
   },
 });
+
+
+const posts = [
+  {
+    id: 1,
+    imageUrl: 'https://images.unsplash.com/photo-1529042410759-befb1204b468?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=686&q=80',
+    user: {
+      name: 'Bambang',
+      profilePicture: 'https://cdn.pixabay.com/photo/2015/03/04/22/35/head-659651__340.png'
+    },
+    likes: 781019389,
+    place: 'Pizza Hut',
+    createdAt: 'February 16, 2022',
+    caption: 'Enak bangett!',
+    comments: [
+      {
+        user: 'Daniel',
+        comment: 'Bener bangett!'
+      },
+      {
+        user: 'Devina',
+        comment: 'Setuju!'
+      },
+      {
+        user: 'Rafi',
+        comment: 'Harus coba sih..'
+      },
+      {
+        user: 'Bima',
+        comment: 'Jadi pengen..'
+      }
+    ]
+  },
+  {
+    id: 2,
+    imageUrl: 'https://images.unsplash.com/photo-1476224203421-9ac39bcb3327?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80',
+    user: {
+      name: 'Jefri',
+      profilePicture: 'https://cdn.pixabay.com/photo/2015/03/04/22/35/head-659651__340.png'
+    },
+    likes: 7810,
+    place: 'Holy Cow',
+    createdAt: 'February 12, 2022',
+    caption: 'Enak bangett!',
+    comments: [
+      {
+        user: 'Daniel',
+        comment: 'Bener bangett!'
+      },
+      {
+        user: 'Devina',
+        comment: 'Setuju!'
+      },
+      {
+        user: 'Rafi',
+        comment: 'Harus coba sih..'
+      },
+      {
+        user: 'Bima',
+        comment: 'Jadi pengen..'
+      }
+    ]
+  }
+]

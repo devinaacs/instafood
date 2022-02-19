@@ -11,7 +11,7 @@ import { Box } from 'native-base';
 
 export default function TrendingPlacesCard() {
   return (
-    <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+    <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} contentContainerStyle={{paddingEnd: 13}}>
       <TouchableOpacity style={styles.cardContainer}>
         <Image
           style={styles.imageStyle}
@@ -41,14 +41,14 @@ export default function TrendingPlacesCard() {
           <Text style={styles.textStyle}>Place Name Here!</Text>
         </View>
       </TouchableOpacity>
- 
+
       
     </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  cardContainer: { height: 240, width: 232, marginLeft: 15, borderRadius: 10 },
+  cardContainer: { height: 240, width: 232, marginLeft: 10, borderRadius: 10 },
   imageStyle: {
     height: 240,
     width: 232,

@@ -5,11 +5,11 @@ import { Dimensions } from 'react-native';
 
 const windowWidth = Dimensions.get('window').width;
 
-const Post = ({ post }) => {
+const TrendingPost2 = ({ post }) => {
   return (
     <Box w={windowWidth}>
-      <Box mx={'4'} mb={'4'} borderRadius={'xl'} borderColor={'gray.200'}>
-        <Box maxHeight={470}>
+      <Box style={{paddingHorizontal: 14}} mb={'4'} borderColor={'gray.200'}>
+        <Box maxHeight={400}>
           <Box
             borderTopRadius={'xl'}
             flexDirection={'row'}
@@ -31,7 +31,7 @@ const Post = ({ post }) => {
             <Text ml={'3'} fontSize={'lg'} fontWeight={'bold'} color={'white'}>{post.place}</Text>
           </Box>
           <Image
-            borderTopRadius={'lg'}
+            borderTopRadius={15}
             width={'full'}
             height={'full'}
             resizeMode={'cover'}
@@ -102,4 +102,4 @@ const likesFormat = likes => {
   return formattedLikes.split('').reverse();
 };
 
-export default Post;
+export default TrendingPost2;
