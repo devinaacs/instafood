@@ -3,6 +3,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import Highlights from '../screens/Highlights';
 import Discover from '../screens/Discover';
 import Profile from '../screens/Profile';
+import Login from '../screens/LoginPage';
 
 const Tab = createBottomTabNavigator();
 
@@ -26,7 +27,7 @@ export default function BottomTabNavigation() {
         },
         tabBarActiveTintColor: '#FF1F00',
         tabBarInactiveTintColor: 'gray',
-        tabBarHideOnKeyboard: true
+        tabBarHideOnKeyboard: true,
       })}
     >
       <Tab.Screen
@@ -42,6 +43,11 @@ export default function BottomTabNavigation() {
       <Tab.Screen
         name="Profile"
         component={Profile}
+        options={{ headerShown: false }}
+      />
+      <Tab.Screen
+        name="Login"
+        component={Login}
         options={{ headerShown: false }}
       />
     </Tab.Navigator>

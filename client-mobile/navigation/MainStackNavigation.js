@@ -3,6 +3,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import BottomTabNavigation from './BottomTabNavigation';
 import CreatePostScreen from '../screens/CreatePostScreen';
 import SearchScreen from '../screens/SearchScreen';
+import Register from '../screens/Register';
 
 const Stack = createNativeStackNavigator();
 
@@ -14,13 +15,15 @@ export default function MainStackNavigation() {
         component={BottomTabNavigation}
         options={{ headerShown: false }}
       />
-      <Stack.Screen
-        name="CreatePostScreen"
-        component={CreatePostScreen}
-      />
+      <Stack.Screen name="CreatePostScreen" component={CreatePostScreen} />
       <Stack.Screen
         name="SearchScreen"
         component={SearchScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Register"
+        component={Register}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>

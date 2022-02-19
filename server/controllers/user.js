@@ -6,8 +6,10 @@ class Controller {
   static async login(req, res, next) {
     try {
       const { email, password } = req.body;
-
-      const user = await User.findOne({ email: email });
+      const user = await User.findOne({ email: email }).select([
+        'email',
+        'password',
+      ]);
 
       if (!user || !compareHash(password, user.password)) {
         throw { name: 'INVALID_EMAIL_PASSWORD' };
@@ -56,7 +58,18 @@ class Controller {
 
   static async listUsers(req, res, next) {
     try {
-      let users = await User.find({}, { email: 0, password: 0, __v: 0 });
+      const filter = {};
+
+      if (req.query.username) {
+        filter.username = {
+          $regex: req.query.username,
+        };
+      }
+
+      let users = await User.find(filter, {
+        email: 0,
+        __v: 0,
+      });
 
       users = users.map(v => {
         v = v.toObject();

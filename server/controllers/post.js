@@ -1,7 +1,6 @@
 const fs = require('fs');
 const path = require('path');
 const Post = require('../models/Post');
-const PostTag = require('../models/PostTag');
 const Like = require('../models/Like');
 const Comment = require('../models/Comment');
 const bucket = require('../helpers/fstorage').getBucket();
@@ -9,12 +8,18 @@ const bucket = require('../helpers/fstorage').getBucket();
 class Controller {
   static async createPost(req, res, next) {
     try {
-      const { place_id, caption, tags } = req.body;
+      const { place_id, caption } = req.body;
+      let { tags } = req.body;
+
+      if (typeof tags == 'string') {
+        tags = [tags];
+      }
 
       let post = await Post.create({
-        user_id: req.currentUser._id,
-        place_id: place_id,
-        caption: caption,
+        user: req.currentUser._id,
+        place_id,
+        caption,
+        tags,
       });
 
       const images = [];
@@ -29,23 +34,14 @@ class Controller {
       post.images = images;
       await post.save();
 
-      if (tags) {
-        let seedPostTags = [];
-
-        tags.forEach(e => {
-          seedPostTags.push({
-            PostId: post._id,
-            tag: e,
-          });
-        });
-
-        await PostTag.insertMany(seedPostTags);
-      }
-
       post = post.toObject();
       post.id = post._id;
+      post.tags = tags;
       delete post._id;
       delete post.__v;
+      delete post.like_ids;
+      delete post.comment_ids;
+      delete post.updated_at;
 
       res.status(201).json(post);
     } catch (err) {
@@ -55,37 +51,90 @@ class Controller {
 
   static async listPosts(req, res, next) {
     try {
-      let posts = await Post
-        .find({}, { __v: 0 })
+      const filter = {};
+      let pageSize = 20;
+      let pageNumber = 1;
+
+      if (req.query.place_id) {
+        filter.place_id = req.query.place_id;
+      }
+
+      if (req.query.user_id) {
+        filter.user = req.query.user_id;
+      }
+
+      if (req.query.tag) {
+        filter.tags = req.query.tag;
+      }
+
+      if (req.query.page_size) {
+        pageSize = req.query.page_size;
+      }
+
+      if (req.query.page_number) {
+        pageNumber = req.query.page_number;
+      }
+
+      const postsCount = await Post.countDocuments(filter);
+      let posts = await Post.find(filter, { __v: 0 })
         .populate({
-          path: 'user_id',
-          select: { 'username': 1 }
+          path: 'user',
+          select: { username: 1 },
         })
         .populate({
           path: 'like_ids',
           select: { UserId: 1 },
           populate: {
             path: 'UserId',
-            select: { 'username': 1 }
-          }
+            select: { username: 1 },
+          },
         })
         .populate({
           path: 'comment_ids',
           select: { comment: 1 },
           populate: {
             path: 'UserId',
-            select: { 'username': 1 }
-          }
+            select: { username: 1 },
+          },
         })
+        .skip((pageNumber - 1) * pageSize)
+        .limit(pageSize)
+        .sort({ created_at: -1 });
 
-      posts = posts.map(v => {
-        v = v.toObject();
-        v.id = v._id;
-        delete v._id;
+      posts = posts.map(post => {
+        post = post.toObject();
+        post.id = post._id;
+        post.user.id = post.user._id;
 
-        return v;
+        post.likes = post.like_ids.map(like => ({
+          id: like._id,
+          user: {
+            id: like.UserId._id,
+            username: like.UserId.username,
+          },
+        }));
+
+        post.comments = post.comment_ids.map(comment => ({
+          id: comment._id,
+          comment: comment.comment,
+          user: {
+            id: comment.UserId._id,
+            username: comment.UserId.username,
+          },
+        }));
+
+        delete post._id;
+        delete post.user._id;
+        delete post.like_ids;
+        delete post.comment_ids;
+
+        return post;
       });
-      res.status(200).json(posts);
+
+      res.status(200).json({
+        pages_count: Math.ceil(postsCount / pageSize),
+        items: posts,
+      });
     } catch (err) {
       next(err);
     }
@@ -93,11 +142,55 @@ class Controller {
 
   static async findPostById(req, res, next) {
     try {
-      const { id } = req.params;
-
-      const post = await Post.findOne({ _id: id });
+      let post = await Post.findOne({ _id: req.params.id }, { __v: 0 })
+        .populate({
+          path: 'user',
+          select: { username: 1 },
+        })
+        .populate({
+          path: 'like_ids',
+          select: { UserId: 1 },
+          populate: {
+            path: 'UserId',
+            select: { username: 1 },
+          },
+        })
+        .populate({
+          path: 'comment_ids',
+          select: { comment: 1 },
+          populate: {
+            path: 'UserId',
+            select: { username: 1 },
+          },
+        });
 
       if (!post) throw { name: 'NOT_FOUND' };
+
+      post = post.toObject();
+      post.id = post._id;
+      post.user.id = post.user._id;
+
+      post.likes = post.like_ids.map(like => ({
+        id: like._id,
+        user: {
+          id: like.UserId._id,
+          username: like.UserId.username,
+        },
+      }));
+
+      post.comments = post.comment_ids.map(comment => ({
+        id: comment._id,
+        comment: comment.comment,
+        user: {
+          id: comment.UserId._id,
+          username: comment.UserId.username,
+        },
+      }));
+
+      delete post._id;
+      delete post.user._id;
+      delete post.like_ids;
+      delete post.comment_ids;
 
       res.status(200).json(post);
     } catch (err) {
@@ -107,32 +200,15 @@ class Controller {
 
   static async editPostById(req, res, next) {
     try {
-      const { id } = req.params;
-      const { caption, tags } = req.body;
-
-      const post = await Post.findOne({ _id: id });
+      const post = await Post.findOne({ _id: req.params.id });
 
       if (!post) throw { name: 'NOT_FOUND' };
 
-      post.caption = caption;
-
-      if (tags) {
-        let seedPostTags = [];
-        await tags.forEach(e => {
-          seedPostTags.push({
-            PostId: post._id,
-            tag: e,
-          });
-        });
-
-        await PostTag.deleteMany({ PostId: { $gte: post._id } });
-
-        await PostTag.insertMany(seedPostTags);
-      }
-
-      post.updatedAt = Date.now();
-
+      post.caption = req.body.caption;
+      post.tags = req.body.tags;
+      post.updated_at = Date.now();
       await post.save();
+
       res.status(200).json(post);
     } catch (err) {
       next(err);
@@ -147,12 +223,10 @@ class Controller {
       if (!post) throw { name: 'NOT_FOUND' };
 
       await Post.deleteOne({ _id: id });
-      await PostTag.deleteMany({ PostId: { $gte: post._id } });
-      await Like.deleteMany({ PostId: { $gte: post._id } });
-      await Comment.deleteMany({ PostId: { $gte: post._id } });
-
+      await Like.deleteMany({ PostId: { $eq: post._id } });
+      await Comment.deleteMany({ PostId: { $eq: post._id } });
       res.status(200).json({
-        message: 'Post has been deleted successfully.',
+        message: 'post has been deleted successfully',
       });
     } catch (err) {
       next(err);
@@ -162,8 +236,9 @@ class Controller {
 
 async function uploadFile(postId, file, index) {
   const options = {
-    destination: `${process.env.NODE_ENV
-      }/posts/${postId}/img-${index}${path.extname(file.filename)}`,
+    destination: `${
+      process.env.NODE_ENV
+    }/posts/${postId}/img-${index}${path.extname(file.filename)}`,
     validation: 'crc32c',
     resumable: true,
     public: true,

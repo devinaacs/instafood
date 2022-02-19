@@ -3,7 +3,6 @@ import {
   StyleSheet,
   View,
   ScrollView,
-  Image,
   Text,
   TouchableOpacity,
 } from 'react-native';
@@ -13,7 +12,7 @@ export default function TrendingTags() {
     <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
       <TouchableOpacity style={styles.tagsContainer}>
         <View style={styles.tagsBox}>
-          <Text style={{ color: '#545454', fontSize: 20 }}>#Enak</Text>
+          <Text style={styles.text}>#enak</Text>
         </View>
       </TouchableOpacity>
     </ScrollView>
@@ -21,14 +20,12 @@ export default function TrendingTags() {
 }
 
 const styles = StyleSheet.create({
-  tagsContainer: { paddingLeft: 15, justifyContent: 'center' },
+  tagsContainer: { paddingLeft: 10, justifyContent: 'center' },
   tagsBox: {
-    backgroundColor: 'white',
-    paddingVertical: 5,
+    backgroundColor: '#BBBBBB',
+    paddingVertical: 8,
     paddingHorizontal: 14,
-    borderRadius: 10,
-    borderWidth: 1,
-    borderColor: '#9F9F9F',
+    borderRadius: 15,
   },
-
+  text: { color: 'white', fontSize: 20, fontWeight: 'bold' },
 });

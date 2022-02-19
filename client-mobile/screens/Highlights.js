@@ -1,10 +1,17 @@
 import React from 'react';
-import { StyleSheet, View, ScrollView, Text, TouchableOpacity } from 'react-native';
+import {
+  StyleSheet,
+  View,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Navbar from '../components/Navbar';
 import TrendingPostCard from '../components/TrendingPostCard';
 import TrendingPlacesCard from '../components/TrendingPlacesCard';
 import TrendingTags from '../components/TrendingTags';
+import PostButton from '../components/PostButton';
 
 export default function Highlights() {
   return (
@@ -23,7 +30,9 @@ export default function Highlights() {
             <Text style={{ color: '#FF8F00', fontSize: 18 }}>see all</Text>
           </TouchableOpacity>
         </View>
-        <View style={{ backgroundColor: 'white', height: 260, paddingVertical: 10}}>
+        <View
+          style={{ backgroundColor: 'white', height: 260, paddingVertical: 10 }}
+        >
           <TrendingPlacesCard />
         </View>
         <View style={styles.trendingTags}>
@@ -54,6 +63,7 @@ export default function Highlights() {
           <TrendingPostCard />
         </View>
       </ScrollView>
+      <PostButton />
     </SafeAreaView>
   );
 }
@@ -70,7 +80,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingHorizontal: 10,
-    paddingBottom: 5
+    paddingBottom: 5,
   },
   trendingPostContainer: {
     width: '100%',
@@ -84,7 +94,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingHorizontal: 10,
-    paddingBottom: 5
+    paddingBottom: 5,
   },
   trendingPosts: {
     marginTop: 6,
@@ -92,6 +102,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingHorizontal: 10,
-    paddingBottom: 5
+    paddingBottom: 5,
   },
 });

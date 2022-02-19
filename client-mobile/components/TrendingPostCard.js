@@ -50,7 +50,6 @@ export default function TrendingPostCard() {
                   uri: 'https://cdn.pixabay.com/photo/2015/03/04/22/35/head-659651__340.png',
                 }}
               />
-
             </View>
             <View
               style={{
@@ -78,13 +77,13 @@ export default function TrendingPostCard() {
 const styles = StyleSheet.create({
   trendingPostCardContainer: {
     backgroundColor: 'white',
-    height: 380,
+    height: 420,
     flexDirection: 'column',
     borderRadius: 15,
-    marginBottom: 24,
+    marginBottom: 32,
   },
   imageContainer: {
-    height: '72%',
+    height: '74%',
     width: '100%',
     backgroundColor: 'white',
     borderTopLeftRadius: 15,
@@ -121,7 +120,7 @@ const styles = StyleSheet.create({
     paddingTop: 1,
   },
   bottomContainer: {
-    height: '28%',
+    height: '29%',
     width: '100%',
     backgroundColor: 'white',
     borderBottomLeftRadius: 15,
@@ -143,6 +142,6 @@ const styles = StyleSheet.create({
     resizeMode: 'cover',
     borderRadius: 80 / 2,
     borderWidth: 1,
-    borderColor: '#D1D1D1'
-  }
+    borderColor: '#D1D1D1',
+  },
 });
