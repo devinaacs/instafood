@@ -249,7 +249,9 @@ _Query_
 {
   "user_id": "string",
   "place_id": "string",
-  "tag": "string"
+  "tag": "string",
+  "page_size": "string",
+  "page_number": "string"
 }
 ```
 
@@ -257,41 +259,44 @@ _Query_
 
 _Response 200 - OK_
 ```json
-[
-	{
-		"id": "620eb4f177ecd84dd0b4a7ec",
-		"user": {
-			"username": "user.one",
-			"id": "621054ef0837fb236cd55b7c"
-		},
-		"place_id": "ChIJmzRSGeD1aS4RELtI48vhrb8",
-		"images": [
-			"https://storage.googleapis.com/hacktiv8-instafood.appspot.com/development/posts/620f6055bf705044a6b1148c/img-1.png",
-			"https://storage.googleapis.com/hacktiv8-instafood.appspot.com/development/posts/620f6055bf705044a6b1148c/img-2.png"
-		],
-    "likes": [
-			{
-				"id": "62105694b36a64d38945f588",
-				"user": {
-					"id": "621054ef0837fb236cd55b7c",
-					"username": "user.one"
-				}
-			}
-		],
-		"comments": [
-			{
-				"id": "62105604b36a64d38945f57f",
-				"comment": "hello",
-				"user": {
-					"id": "621054ef0837fb236cd55b7c",
-					"username": "user.one"
-				}
-			}
-		],
-		"created_at": "2022-02-18T08:51:00.868Z",
-    "updated_at": "2022-02-19T02:26:34.385Z"
-	}
-]
+{
+  "pages_count": 5,
+  "items": [
+    {
+      "id": "620eb4f177ecd84dd0b4a7ec",
+      "user": {
+        "username": "user.one",
+        "id": "621054ef0837fb236cd55b7c"
+      },
+      "place_id": "ChIJmzRSGeD1aS4RELtI48vhrb8",
+      "images": [
+        "https://storage.googleapis.com/hacktiv8-instafood.appspot.com/development/posts/620f6055bf705044a6b1148c/img-1.png",
+        "https://storage.googleapis.com/hacktiv8-instafood.appspot.com/development/posts/620f6055bf705044a6b1148c/img-2.png"
+      ],
+      "likes": [
+        {
+          "id": "62105694b36a64d38945f588",
+          "user": {
+            "id": "621054ef0837fb236cd55b7c",
+            "username": "user.one"
+          }
+        }
+      ],
+      "comments": [
+        {
+          "id": "62105604b36a64d38945f57f",
+          "comment": "hello",
+          "user": {
+            "id": "621054ef0837fb236cd55b7c",
+            "username": "user.one"
+          }
+        }
+      ],
+      "created_at": "2022-02-18T08:51:00.868Z",
+      "updated_at": "2022-02-19T02:26:34.385Z"
+    }
+  ]
+}
 ```
 
 ### DELETE /posts/:id
