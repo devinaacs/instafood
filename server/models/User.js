@@ -6,12 +6,13 @@ const schema = mongoose.Schema({
   username: {
     type: String,
     required: [true, 'Username is required'],
+    unique: [true, 'Username must be unique'],
   },
   email: {
     type: String,
     required: [true, 'Email is required'],
     unique: [true, 'Email must be unique'],
-    validate: [validator.isEmail, 'Please enter a valid E-mail!'],
+    validate: [validator.isEmail, 'Invalid email format'],
   },
   password: {
     type: String,
@@ -21,17 +22,20 @@ const schema = mongoose.Schema({
         throw Error('Length of the password should be between 6-1000');
       }
     },
+    select: false
   },
   image_url: String,
   created_at: {
     type: Date,
     required: true,
     default: Date.now,
+    select: false
   },
   updated_at: {
     type: Date,
     required: true,
     default: Date.now,
+    select: false
   },
 });
 
