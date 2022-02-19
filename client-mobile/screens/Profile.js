@@ -29,7 +29,8 @@ export default function Profile() {
                 onPress={() => {
                   navigation.goBack();
                 }}
-                style={{ width: '39%', paddingHorizontal: 12 }}>
+                style={{ width: '39%', paddingHorizontal: 12 }}
+              >
                 <Ionicons name="arrow-back" size={34} color="#929292" />
               </TouchableOpacity>
               <Text style={styles.myProfileText}>My Profile</Text>

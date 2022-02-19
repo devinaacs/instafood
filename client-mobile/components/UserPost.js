@@ -1,5 +1,11 @@
 import React from 'react';
-import { StyleSheet, TouchableOpacity, Image, FlatList, Dimensions } from 'react-native';
+import {
+  StyleSheet,
+  TouchableOpacity,
+  Image,
+  FlatList,
+  Dimensions,
+} from 'react-native';
 const windowWidth = Dimensions.get('window').width;
 
 const numColumns = 3;

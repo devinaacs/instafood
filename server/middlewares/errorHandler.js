@@ -14,6 +14,14 @@ module.exports = (err, req, res, next) => {
       {}
     );
     break;
+  case 'MongoServerError':
+    if (err.keyValue.email != null) {
+      message = 'Email must be unique';
+    } else {
+      message = 'Username must be unique';
+    }
+    status = 400;
+    break;
   case 'JsonWebTokenError':
   case 'UNAUTHORIZED':
     status = 401;
@@ -25,7 +33,7 @@ module.exports = (err, req, res, next) => {
     break;
   case 'NOT_FOUND':
     status = 404;
-    message = 'data not found';
+    message = 'Data not found';
     break;
   case 'FORBIDDEN':
     status = 403;

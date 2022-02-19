@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import { Box, Flex, Image, Text } from 'native-base';
 import { AntDesign, FontAwesome, Ionicons } from '@expo/vector-icons';
 import { Dimensions } from 'react-native';
@@ -8,7 +8,13 @@ const windowWidth = Dimensions.get('window').width;
 const Post = ({ post }) => {
   return (
     <Box w={windowWidth}>
-      <Box mx={'4'} mb={'4'} borderRadius={'xl'} borderColor={'gray.200'}>
+      <Box
+        mx={'4'}
+        mb={'4'}
+        borderWidth={'1'}
+        borderRadius={'xl'}
+        borderColor={'gray.200'}
+      >
         <Box maxHeight={470}>
           <Box
             borderTopRadius={'xl'}
@@ -18,8 +24,8 @@ const Post = ({ post }) => {
               linearGradient: {
                 colors: ['black', 'transparent'],
                 start: [0, 0],
-                end: [0, 1]
-              }
+                end: [0, 1],
+              },
             }}
             position={'absolute'}
             zIndex={10}
@@ -27,8 +33,10 @@ const Post = ({ post }) => {
             width={'full'}
             px={'3'}
           >
-            <Ionicons name='ios-location-sharp' size={30} color='white' />
-            <Text ml={'3'} fontSize={'lg'} fontWeight={'bold'} color={'white'}>{post.place}</Text>
+            <Ionicons name="ios-location-sharp" size={30} color="white" />
+            <Text ml={'3'} fontSize={'lg'} fontWeight={'bold'} color={'white'}>
+              {post.place}
+            </Text>
           </Box>
           <Image
             borderTopRadius={'lg'}
@@ -41,23 +49,27 @@ const Post = ({ post }) => {
             alt={'alternate picture'}
           />
         </Box>
-        <Box borderColor={'gray.300'} borderWidth={'1'} borderBottomRadius={'xl'}>
-
-          <Flex direction='row' justify={'space-between'}>
-            <Flex direction='row' px={'3'} py={'2'}>
+        <Box
+          borderColor={'gray.300'}
+          borderWidth={'1'}
+          borderBottomRadius={'xl'}
+        >
+          <Flex direction="row" justify={'space-between'}>
+            <Flex direction="row" px={'3'} py={'2'}>
               <Box mr={'4'}>
-                <AntDesign name='like2' size={30} color='black' />
+                <AntDesign name="like2" size={30} color="black" />
               </Box>
               <Box>
-                <FontAwesome name='comment-o' size={30} color='black' />
+                <FontAwesome name="comment-o" size={30} color="black" />
               </Box>
             </Flex>
           </Flex>
           <Box px={'3'}>
-            <Text fontSize={'md'} fontWeight={'bold'}>{likesFormat(post.likes)} likes</Text>
+            <Text fontSize={'md'} fontWeight={'bold'}>
+              {likesFormat(post.likes)} likes
+            </Text>
           </Box>
-          <Flex direction='row' px={'3'} mt={'4'} mb={'3'}>
-
+          <Flex direction="row" px={'3'} mt={'4'} mb={'3'}>
             <Box size={'16'} borderRadius={'full'} borderColor={'gray.200'}>
               <Image
                 width={'full'}
@@ -71,14 +83,18 @@ const Post = ({ post }) => {
               />
             </Box>
             <Box ml={'3'}>
-              <Text fontSize={'md'} fontWeight={'bold'}>{post.user.name}</Text>
-              <Flex direction='row'>
+              <Text fontSize={'md'} fontWeight={'bold'}>
+                {post.user.name}
+              </Text>
+              <Flex direction="row">
                 <Text fontSize={'md'}>{post.caption}</Text>
               </Flex>
             </Box>
           </Flex>
           <Box px={'3'} mt={'1'} mb={'5'}>
-            <Text fontSize={'xs'} color={'gray.400'}>{post.createdAt}</Text>
+            <Text fontSize={'xs'} color={'gray.400'}>
+              {post.createdAt}
+            </Text>
           </Box>
         </Box>
       </Box>

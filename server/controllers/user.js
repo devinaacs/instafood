@@ -11,10 +11,7 @@ class Controller {
         'password',
       ]);
 
-      if (!user) {
-        throw { name: 'INVALID_EMAIL_PASSWORD' };
-      }
-      if (!compareHash(password, user.password)) {
+      if (!user || !compareHash(password, user.password)) {
         throw { name: 'INVALID_EMAIL_PASSWORD' };
       }
 

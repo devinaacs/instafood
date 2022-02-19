@@ -50,7 +50,6 @@ export default function TrendingPostCard() {
                   uri: 'https://cdn.pixabay.com/photo/2015/03/04/22/35/head-659651__340.png',
                 }}
               />
-
             </View>
             <View
               style={{
@@ -143,6 +142,6 @@ const styles = StyleSheet.create({
     resizeMode: 'cover',
     borderRadius: 80 / 2,
     borderWidth: 1,
-    borderColor: '#D1D1D1'
-  }
+    borderColor: '#D1D1D1',
+  },
 });
