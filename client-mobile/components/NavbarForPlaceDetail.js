@@ -1,27 +1,20 @@
 import React from 'react';
-import {
-  StyleSheet,
-  View,
-  ScrollView,
-  Image,
-  TouchableOpacity,
-} from 'react-native';
-import { Entypo } from '@expo/vector-icons';
+import { StyleSheet, View, TouchableOpacity } from 'react-native';
+import { Entypo, Ionicons } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
 
-export default function Navbar() {
+export default function NavbarForPlaceDetail() {
+  const navigation = useNavigation();
   return (
-
     <View style={styles.nav}>
       <View>
-        <Image
-          source={require('../assets/logo_black.png')}
-          style={{
-            width: 140,
-            height: 54,
-            resizeMode: 'contain',
-            marginLeft: 10,
+        <TouchableOpacity
+          onPress={() => {
+            navigation.goBack();
           }}
-        />
+          style={{ paddingVertical: 10, paddingHorizontal: 13  }}>
+          <Ionicons name="arrow-back" size={34} color="#929292" />
+        </TouchableOpacity>
       </View>
       <View style={{ flexDirection: 'row' }}>
         <TouchableOpacity>
@@ -42,13 +35,11 @@ export default function Navbar() {
         </TouchableOpacity>
       </View>
     </View>
-
   );
 }
 
 const styles = StyleSheet.create({
   nav: {
-
     backgroundColor: 'white',
     width: '100%',
     height: 63,

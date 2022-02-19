@@ -4,6 +4,8 @@ import Highlights from '../screens/Highlights';
 import Discover from '../screens/Discover';
 import Profile from '../screens/Profile';
 import Login from '../screens/LoginPage';
+import PlaceDetail from '../screens/PlaceDetail';
+import CommentSection from '../screens/CommentSection';
 
 const Tab = createBottomTabNavigator();
 
@@ -17,7 +19,7 @@ export default function BottomTabNavigation() {
           if (route.name === 'Highlights') {
             iconName = focused ? 'home' : 'home-outline';
           } else if (route.name === 'Discover') {
-            iconName = focused ? 'search-circle' : 'search-circle-outline';
+            iconName = focused ? 'ios-search' : 'ios-search';
           } else if (route.name === 'Profile') {
             iconName = focused ? 'person' : 'person-outline';
           }
@@ -48,6 +50,16 @@ export default function BottomTabNavigation() {
       <Tab.Screen
         name="Login"
         component={Login}
+        options={{ headerShown: false }}
+      />
+      <Tab.Screen
+        name="Place Detail"
+        component={PlaceDetail}
+        options={{ headerShown: false }}
+      />
+      <Tab.Screen
+        name="Comment Section"
+        component={CommentSection}
         options={{ headerShown: false }}
       />
     </Tab.Navigator>

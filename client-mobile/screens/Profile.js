@@ -27,7 +27,7 @@ export default function Profile() {
             <View style={{ flexDirection: 'row' }}>
               <TouchableOpacity
                 onPress={() => {
-                  navigation.goBack()
+                  navigation.goBack();
                 }}
                 style={{ width: '39%', paddingHorizontal: 12 }}>
                 <Ionicons name="arrow-back" size={34} color="#929292" />

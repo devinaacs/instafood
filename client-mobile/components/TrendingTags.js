@@ -9,7 +9,7 @@ import {
 
 export default function TrendingTags() {
   return (
-    <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+    <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} contentContainerStyle={{paddingEnd: 10}}>
       <TouchableOpacity style={styles.tagsContainer}>
         <View style={styles.tagsBox}>
           <Text style={styles.text}>#enak</Text>
