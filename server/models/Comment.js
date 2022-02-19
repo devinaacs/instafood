@@ -1,11 +1,11 @@
 const mongoose = require('mongoose');
 
 const schema = mongoose.Schema({
-  UserId: {
+  user_id: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
   },
-  PostId: {
+  post_id: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Post',
   },

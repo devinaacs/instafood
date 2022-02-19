@@ -4,17 +4,17 @@ const Post = require('../models/Post');
 class Controller {
   static async createLike(req, res, next) {
     try {
-      const { PostId } = req.body;
+      const { post_id } = req.body;
 
       // create Like
       const like = new Like({
         UserId: req.currentUser._id,
-        PostId: PostId,
+        post_id: post_id,
       });
       await like.save();
 
       // update to Post
-      const post = await Post.findOne({ _id: PostId });
+      const post = await Post.findOne({ _id: post_id });
       post.like_ids.push(like.id)
       await post.save();
 
@@ -27,7 +27,15 @@ class Controller {
 
   static async listLikes(req, res, next) {
     try {
-      const likes = await Like.find().populate('PostId');
+      const likes = await Like.find({}, { __v: 0, created_at: 0, updated_at: 0 })
+        .populate({
+          path: 'UserId',
+          select: { username: 1 },
+        })
+        .populate({
+          path: 'post_id',
+          select: { __v: 0 },
+        });
 
       res.status(200).json(likes);
     } catch (err) {
@@ -37,11 +45,11 @@ class Controller {
 
   static async findLikeByPostId(req, res, next) {
     try {
-      const { postId } = req.params;
+      const { post_id } = req.params;
 
-      const likes = await Like.find({ PostId: postId });
+      const likes = await Like.find({ post_id: post_id });
 
-      if (!likes) throw { name: 'NOT_FOUND' };
+      if (likes.length === 0) throw { name: 'NOT_FOUND' };
 
       res.status(200).json(likes);
     } catch (err) {

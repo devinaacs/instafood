@@ -5,9 +5,6 @@ const schema = mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
   },
-  place_id: String,
-  caption: String,
-  images: [String],
   like_ids: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Like',
@@ -16,6 +13,9 @@ const schema = mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Comment',
   }],
+  place_id: String,
+  caption: String,
+  images: [String],
   created_at: {
     type: Date,
     required: true,

@@ -5,7 +5,7 @@ const schema = mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
   },
-  PostId: {
+  post_id: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Post',
   },
@@ -13,11 +13,13 @@ const schema = mongoose.Schema({
     type: Date,
     required: true,
     default: Date.now,
+    // select: false,
   },
   updated_at: {
     type: Date,
     required: true,
     default: Date.now,
+    select: false
   },
 });
 

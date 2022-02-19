@@ -4,17 +4,17 @@ const Post = require('../models/Post');
 class Controller {
   static async createComment(req, res, next) {
     try {
-      const { PostId, comment } = req.body;
+      const { post_id, comment } = req.body;
 
       const newcomment = new Comment({
         UserId: req.currentUser._id,
-        PostId: PostId,
+        post_id: post_id,
         comment: comment,
       });
       await newcomment.save();
 
       // update to Post
-      const post = await Post.findOne({ _id: PostId });
+      const post = await Post.findOne({ _id: post_id });
       post.comment_ids.push(newcomment._id)
       await post.save();
 
@@ -34,13 +34,13 @@ class Controller {
     }
   }
 
-  static async findCommentById(req, res, next) {
+  static async findCommentByPostId(req, res, next) {
     try {
       const { postId } = req.params;
 
-      const comment = await Comment.find({ PostId: postId });
+      const comment = await Comment.find({ post_id: postId });
 
-      if (!comment) throw { name: 'NOT_FOUND' };
+      if (comment.length === 0) throw { name: 'NOT_FOUND' };
 
       res.status(200).json(comment);
     } catch (err) {
