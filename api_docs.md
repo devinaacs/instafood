@@ -62,6 +62,16 @@ _Response 200 - Created_
 
 ### GET /users
 
+**Request**
+
+_Query_
+```json
+{
+  "username": "string"
+}
+```
+
+
 **Responses**
 
 _Response 200 - Created_
