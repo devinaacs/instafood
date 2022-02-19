@@ -6,14 +6,13 @@ class Controller {
   static async login(req, res, next) {
     try {
       const { email, password } = req.body;
+
       const user = await User.findOne({ email: email });
 
-      if (!user) {
+      if (!user || !compareHash(password, user.password)) {
         throw { name: 'INVALID_EMAIL_PASSWORD' };
       }
-      if (!compareHash(password, user.password)) {
-        throw { name: 'INVALID_EMAIL_PASSWORD' };
-      }
+
       const payload = {
         id: user.id,
         name: user.username,

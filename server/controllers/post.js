@@ -29,16 +29,18 @@ class Controller {
       post.images = images;
       await post.save();
 
-      let seedPostTags = [];
+      if (tags) {
+        let seedPostTags = [];
 
-      tags.forEach(e => {
-        seedPostTags.push({
-          PostId: post._id,
-          tag: e,
+        tags.forEach(e => {
+          seedPostTags.push({
+            PostId: post._id,
+            tag: e,
+          });
         });
-      });
 
-      await PostTag.insertMany(seedPostTags);
+        await PostTag.insertMany(seedPostTags);
+      }
 
       post = post.toObject();
       post.id = post._id;
@@ -128,7 +130,6 @@ class Controller {
         await PostTag.insertMany(seedPostTags);
       }
 
-
       post.updatedAt = Date.now();
 
       await post.save();
@@ -149,6 +150,7 @@ class Controller {
       await PostTag.deleteMany({ PostId: { $gte: post._id } });
       await Like.deleteMany({ PostId: { $gte: post._id } });
       await Comment.deleteMany({ PostId: { $gte: post._id } });
+
       res.status(200).json({
         message: 'Post has been deleted successfully.',
       });

@@ -7,7 +7,7 @@
     "start": "node index.js",
     "dev": "nodemon index.js",
     "test": "npx jest --detectOpenHandles --forceExit --verbose",
-    "coverage": "npx jest --forceExit --verbose --coverage"
+    "coverage": "npx jest --detectOpenHandles --forceExit --verbose --coverage"
   },
   "keywords": [],
   "author": "",
