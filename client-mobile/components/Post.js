@@ -41,41 +41,45 @@ const Post = ({ post }) => {
             alt={'alternate picture'}
           />
         </Box>
-        <Flex direction='row' justify={'space-between'}>
-          <Flex direction='row' px={'3'} py={'2'}>
-            <Box mr={'4'}>
-              <AntDesign name="like2" size={30} color="black" />
+        <Box borderColor={'gray.300'} borderWidth={'1'} borderBottomRadius={'xl'}>
+
+          <Flex direction='row' justify={'space-between'}>
+            <Flex direction='row' px={'3'} py={'2'}>
+              <Box mr={'4'}>
+                <AntDesign name="like2" size={30} color="black" />
+              </Box>
+              <Box>
+                <FontAwesome name="comment-o" size={30} color="black" />
+              </Box>
+            </Flex>
+          </Flex>
+          <Box px={'3'}>
+            <Text fontSize={'md'} fontWeight={'bold'}>{likesFormat(post.likes)} likes</Text>
+          </Box>
+          <Flex direction='row' px={'3'} mt={'4'} mb={'3'}>
+
+            <Box size={'16'} borderRadius={'full'} borderColor={'gray.200'}>
+              <Image
+                width={'full'}
+                height={'full'}
+                resizeMode={'cover'}
+                borderRadius={'full'}
+                source={{
+                  uri: post.user.profilePicture,
+                }}
+                alt={'alternate picture'}
+              />
             </Box>
-            <Box>
-              <FontAwesome name="comment-o" size={30} color="black" />
+            <Box ml={'3'}>
+              <Text fontSize={'md'} fontWeight={'bold'}>{post.user.name}</Text>
+              <Flex direction='row'>
+                <Text fontSize={'md'}>{post.caption}</Text>
+              </Flex>
             </Box>
           </Flex>
-        </Flex>
-        <Box px={'3'}>
-          <Text fontSize={'md'} fontWeight={'bold'}>{likesFormat(post.likes)} likes</Text>
-        </Box>
-        <Flex direction='row' px={'3'} mt={'4'} mb={'3'}>
-          <Box size={'16'} borderRadius={'full'} borderColor={'gray.200'}>
-            <Image
-              width={'full'}
-              height={'full'}
-              resizeMode={'cover'}
-              borderRadius={'full'}
-              source={{
-                uri: post.user.profilePicture,
-              }}
-              alt={'alternate picture'}
-            />
+          <Box px={'3'} mt={'1'} mb={'5'}>
+            <Text fontSize={'xs'} color={'gray.400'}>{post.createdAt}</Text>
           </Box>
-          <Box ml={'3'}>
-            <Text fontSize={'md'} fontWeight={'bold'}>{post.user.name}</Text>
-            <Flex direction='row'>
-              <Text fontSize={'md'}>{post.caption}</Text>
-            </Flex>
-          </Box>
-        </Flex>
-        <Box px={'3'} mt={'1'} mb={'5'}>
-          <Text fontSize={'xs'} color={'gray.400'}>{post.createdAt}</Text>
         </Box>
       </Box>
     </Box>

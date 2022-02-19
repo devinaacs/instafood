@@ -124,13 +124,15 @@ _Response 200 - OK_
 ```json
 [
   {
-    "place_id": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/restaurant-71.png",
+    "place_id": "ChIJx7nxVtb1aS4Rjhv-oVcYKl8",
     "name": "Warung Jepara",
+    "address": "RRPH+GVR, RT.8/RW.8, Pasar Baru, Sawah Besar, Central Jakarta City, Jakarta 10120, Indonesia",
     "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/restaurant-71.png"
   },
   {
-    "place_id": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/restaurant-71.png",
+    "place_id": "ChIJx7nxVtb1aS4Rjhv-oVcYKl8",
     "name": "Warung Tekko",
+    "address": "Jl. Suryopranoto No.14, RT.14/RW.8, Petojo Sel., Kecamatan Gambir, Kota Jakarta Pusat, Daerah Khusus Ibukota Jakarta 10160, Indonesia",
     "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/restaurant-71.png",
     "photo_reference": "Aap_uECBix5HF972L1HL7DEO7yqsZYerVhE5qmElD5LHT96sqQ9wsNQN-DnPSgfVsVYRPNzPQ5ikGY5hlhKwIqx5BJPgn4-92hfeHkG4779AWTljPbEGUqyYkui6ftorZlNgemGyPdVA5KoRqMKZeA5ybk4JyAN-HnSzVIOJxin4iNDvf_ld"
   }
@@ -174,18 +176,12 @@ _Params_
 _Response 200 - OK_
 ```json
 {
-	"formatted_address": "16, Jl. Denpasar Raya No.109, RT.16/RW.4...",
-	"icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/restaurant-71.png",
 	"name": "Warung Tenda Biru",
+	"address": "16, Jl. Denpasar Raya No.109, RT.16/RW.4...",
+	"icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/restaurant-71.png",
 	"photos": [
-		{
-			"height": 1080,
-			"html_attributions": [
-				"<a href=\"https://maps.google.com/maps/contrib/103401590865745977740\">Someone</a>"
-			],
-			"photo_reference": "Aap_uEBLO7SdLaWXC7x1WOxNnV5-4Yy2vsByS-VikkreR8LnwvlkJXsOGrRV17sz8l7iV4yumXClVn-jTqEJbQKQE_2MzrMBGZe1lYyZBscuirvB0Y9xJ8yJLU4zTxhgdhps3oNqtuDMJD6BbsuwPo8Gwi_DHVnC0L4hML12345_a_R7szu0",
-			"width": 1080
-		}
+		"Aap_uEA3jWRmw3BqBK7M2x_c2c-T1NL9JWRrT6URovSlDDnaDkaufu_84bxnQbCsAXZoS3whGQ8kIrzT2JIkcXpanrv2Ykigr2JUjM-ZKldCHOG6jDKIOdgRCo1QkCLWtQgRcgJTP0zF6si_ki49MbazwKxUlGFBXdjkL483ocZscO5hcBS8",
+		"Aap_uEAW8dFvuDlJLW-_t-175lJY7OmMLqGxK3OHyOk70q3oqhgWFB9FuRW_FbdgoS7BrBD6yyVNbHTGPp93sE6bhTepuLT2C9wpjW3yI63XLLEYLQ3iyEQT6i6ijcOrueyaL49KA-pQgI3XK4X3L3lxamhhFME-04g29K2DPVdqLY7t-U0H"
 	]
 }
 ```

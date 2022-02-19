@@ -27,17 +27,17 @@ export default function Navbar() {
           <TouchableOpacity>
             <Entypo
               name="heart-outlined"
-              size={24}
-              color="#9F9F9F"
-              style={{ paddingVertical: 17, paddingHorizontal: 13 }}
+              size={31}
+              color="#929292"
+              style={{ paddingVertical: 13, paddingHorizontal: 13 }}
             />
           </TouchableOpacity>
           <TouchableOpacity>
             <Entypo
               name="menu"
-              size={24}
-              color="#9F9F9F"
-              style={{ paddingVertical: 15, paddingRight: 13 }}
+              size={32}
+              color="#929292"
+              style={{ paddingVertical: 12, paddingRight: 13 }}
             />
           </TouchableOpacity>
         </View>
