@@ -29,6 +29,17 @@ class Controller {
       post.images = images;
       await post.save();
 
+      let seedPostTags = [];
+
+      tags.forEach(e => {
+        seedPostTags.push({
+          PostId: post._id,
+          tag: e,
+        });
+      });
+
+      await PostTag.insertMany(seedPostTags);
+
       post = post.toObject();
       post.id = post._id;
       post.tags = tags;
@@ -215,9 +226,8 @@ class Controller {
 
 async function uploadFile(postId, file, index) {
   const options = {
-    destination: `${
-      process.env.NODE_ENV
-    }/posts/${postId}/img-${index}${path.extname(file.filename)}`,
+    destination: `${process.env.NODE_ENV
+      }/posts/${postId}/img-${index}${path.extname(file.filename)}`,
     validation: 'crc32c',
     resumable: true,
     public: true,
