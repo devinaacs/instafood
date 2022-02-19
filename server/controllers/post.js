@@ -8,7 +8,12 @@ const bucket = require('../helpers/fstorage').getBucket();
 class Controller {
   static async createPost(req, res, next) {
     try {
-      const { place_id, caption, tags } = req.body;
+      const { place_id, caption } = req.body;
+      let { tags } = req.body;
+
+      if (typeof tags == 'string') {
+        tags = [tags];
+      }
 
       let post = await Post.create({
         user: req.currentUser._id,
@@ -29,17 +34,6 @@ class Controller {
       post.images = images;
       await post.save();
 
-      let seedPostTags = [];
-
-      tags.forEach(e => {
-        seedPostTags.push({
-          PostId: post._id,
-          tag: e,
-        });
-      });
-
-      await PostTag.insertMany(seedPostTags);
-
       post = post.toObject();
       post.id = post._id;
       post.tags = tags;
@@ -58,6 +52,8 @@ class Controller {
   static async listPosts(req, res, next) {
     try {
       const filter = {};
+      let pageSize = 20;
+      let pageNumber = 1;
 
       if (req.query.place_id) {
         filter.place_id = req.query.place_id;
@@ -71,6 +67,15 @@ class Controller {
         filter.tags = req.query.tag;
       }
 
+      if (req.query.page_size) {
+        pageSize = req.query.page_size;
+      }
+
+      if (req.query.page_number) {
+        pageNumber = req.query.page_number;
+      }
+
+      const postsCount = await Post.countDocuments(filter);
       let posts = await Post.find(filter, { __v: 0 })
         .populate({
           path: 'user',
@@ -92,6 +97,8 @@ class Controller {
             select: { username: 1 },
           },
         })
+        .skip((pageNumber - 1) * pageSize)
+        .limit(pageSize)
         .sort({ created_at: -1 });
 
       posts = posts.map(post => {
@@ -124,7 +131,10 @@ class Controller {
         return post;
       });
 
-      res.status(200).json(posts);
+      res.status(200).json({
+        pages_count: Math.ceil(postsCount / pageSize),
+        items: posts,
+      });
     } catch (err) {
       next(err);
     }
@@ -226,8 +236,9 @@ class Controller {
 
 async function uploadFile(postId, file, index) {
   const options = {
-    destination: `${process.env.NODE_ENV
-      }/posts/${postId}/img-${index}${path.extname(file.filename)}`,
+    destination: `${
+      process.env.NODE_ENV
+    }/posts/${postId}/img-${index}${path.extname(file.filename)}`,
     validation: 'crc32c',
     resumable: true,
     public: true,
