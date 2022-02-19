@@ -9,6 +9,7 @@ const bucket = require('../helpers/fstorage').getBucket();
 class Controller {
   static async createPost(req, res, next) {
     try {
+      console.log(req.body)
       const { place_id, caption, tags } = req.body;
 
       let post = await Post.create({
@@ -31,12 +32,12 @@ class Controller {
 
       let seedPostTags = [];
 
-      tags.forEach(e => {
-        seedPostTags.push({
-          PostId: post._id,
-          tag: e,
-        });
-      });
+      // tags.forEach(e => {
+      //   seedPostTags.push({
+      //     PostId: post._id,
+      //     tag: e,
+      //   });
+      // });
 
       await PostTag.insertMany(seedPostTags);
 
@@ -137,9 +138,8 @@ class Controller {
 
 async function uploadFile(postId, file, index) {
   const options = {
-    destination: `${
-      process.env.NODE_ENV
-    }/posts/${postId}/img-${index}${path.extname(file.filename)}`,
+    destination: `${process.env.NODE_ENV
+      }/posts/${postId}/img-${index}${path.extname(file.filename)}`,
     validation: 'crc32c',
     resumable: true,
     public: true,
