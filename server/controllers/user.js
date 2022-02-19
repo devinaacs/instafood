@@ -6,7 +6,7 @@ class Controller {
   static async login(req, res, next) {
     try {
       const { email, password } = req.body;
-      const user = await User.findOne({ email: email });
+      const user = await User.findOne({ email: email }).select('password');
 
       if (!user) {
         throw { name: 'INVALID_EMAIL_PASSWORD' };
