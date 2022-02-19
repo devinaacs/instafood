@@ -1,4 +1,5 @@
 const Comment = require('../models/Comment');
+const Post = require('../models/Post');
 
 class Controller {
   static async createComment(req, res, next) {
@@ -11,6 +12,11 @@ class Controller {
         comment: comment,
       });
       await newcomment.save();
+
+      // update to Post
+      const post = await Post.findOne({ _id: PostId });
+      post.comment_ids.push(newcomment._id)
+      await post.save();
 
       res.status(201).json(newcomment);
     } catch (err) {
