@@ -53,7 +53,28 @@ class Controller {
 
   static async listPosts(req, res, next) {
     try {
-      let posts = await Post.find({}, { __v: 0 });
+      let posts = await Post
+        .find({}, { __v: 0 })
+        .populate({
+          path: 'user_id',
+          select: { 'username': 1 }
+        })
+        .populate({
+          path: 'like_ids',
+          select: { UserId: 1 },
+          populate: {
+            path: 'UserId',
+            select: { 'username': 1 }
+          }
+        })
+        .populate({
+          path: 'comment_ids',
+          select: { comment: 1 },
+          populate: {
+            path: 'UserId',
+            select: { 'username': 1 }
+          }
+        })
 
       posts = posts.map(v => {
         v = v.toObject();
@@ -62,7 +83,6 @@ class Controller {
 
         return v;
       });
-
       res.status(200).json(posts);
     } catch (err) {
       next(err);
@@ -94,17 +114,20 @@ class Controller {
 
       post.caption = caption;
 
-      let seedPostTags = [];
-      await tags.forEach(e => {
-        seedPostTags.push({
-          PostId: post._id,
-          tag: e,
+      if (tags) {
+        let seedPostTags = [];
+        await tags.forEach(e => {
+          seedPostTags.push({
+            PostId: post._id,
+            tag: e,
+          });
         });
-      });
 
-      await PostTag.deleteMany({ PostId: { $gte: post._id } });
+        await PostTag.deleteMany({ PostId: { $gte: post._id } });
 
-      await PostTag.insertMany(seedPostTags);
+        await PostTag.insertMany(seedPostTags);
+      }
+
 
       post.updatedAt = Date.now();
 
@@ -137,9 +160,8 @@ class Controller {
 
 async function uploadFile(postId, file, index) {
   const options = {
-    destination: `${
-      process.env.NODE_ENV
-    }/posts/${postId}/img-${index}${path.extname(file.filename)}`,
+    destination: `${process.env.NODE_ENV
+      }/posts/${postId}/img-${index}${path.extname(file.filename)}`,
     validation: 'crc32c',
     resumable: true,
     public: true,

@@ -8,10 +8,25 @@ const schema = mongoose.Schema({
   place_id: String,
   caption: String,
   images: [String],
+  like_ids: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Like',
+  }],
+  comment_ids: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Comment',
+  }],
   created_at: {
     type: Date,
     required: true,
     default: Date.now,
+    select: false
+  },
+  updated_at: {
+    type: Date,
+    required: true,
+    default: Date.now,
+    select: false
   },
 });
 

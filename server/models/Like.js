@@ -9,12 +9,12 @@ const schema = mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Post',
   },
-  createdAt: {
+  created_at: {
     type: Date,
     required: true,
     default: Date.now,
   },
-  updatedAt: {
+  updated_at: {
     type: Date,
     required: true,
     default: Date.now,

@@ -1,15 +1,23 @@
 const Like = require('../models/Like');
+const Post = require('../models/Post');
 
 class Controller {
   static async createLike(req, res, next) {
     try {
       const { PostId } = req.body;
 
+      // create Like
       const like = new Like({
         UserId: req.currentUser._id,
         PostId: PostId,
       });
       await like.save();
+
+      // update to Post
+      const post = await Post.findOne({ _id: PostId });
+      post.like_ids.push(like.id)
+      await post.save();
+
 
       res.status(201).json(like);
     } catch (err) {
@@ -19,7 +27,7 @@ class Controller {
 
   static async listLikes(req, res, next) {
     try {
-      const likes = await Like.find();
+      const likes = await Like.find().populate('PostId');
 
       res.status(200).json(likes);
     } catch (err) {
