@@ -15,7 +15,7 @@ export default function MainStackNavigation() {
         component={BottomTabNavigation}
         options={{ headerShown: false }}
       />
-      <Stack.Screen name="CreatePostScreen" component={CreatePostScreen} />
+      <Stack.Screen name="CreatePostScreen" component={CreatePostScreen} options={{ headerShown: false }} />
       <Stack.Screen
         name="SearchScreen"
         component={SearchScreen}
