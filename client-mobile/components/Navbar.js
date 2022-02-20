@@ -24,14 +24,14 @@ export default function Navbar() {
         />
       </View>
       <View style={{ flexDirection: 'row' }}>
-        <TouchableOpacity>
+        {/* <TouchableOpacity>
           <Entypo
             name="heart-outlined"
             size={31}
             color="#929292"
             style={{ paddingVertical: 13, paddingHorizontal: 13 }}
           />
-        </TouchableOpacity>
+        </TouchableOpacity> */}
         <TouchableOpacity>
           <Entypo
             name="menu"

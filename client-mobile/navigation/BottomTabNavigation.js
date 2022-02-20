@@ -27,7 +27,7 @@ export default function BottomTabNavigation() {
           // You can return any component that you like here!
           return <Ionicons name={iconName} size={size} color={color} />;
         },
-        tabBarActiveTintColor: '#FF1F00',
+        tabBarActiveTintColor: '#ef4444',
         tabBarInactiveTintColor: 'gray',
         tabBarHideOnKeyboard: true,
       })}

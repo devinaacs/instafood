@@ -25,7 +25,7 @@ export default function PlaceDetail() {
         <View>
           <ScrollView>
             <View style={styles.placeContainer}>
-              <View style={{ backgroundColor: 'white', paddingHorizontal: 13, flexDirection: 'row', justifyContent: 'space-between' }}>
+              <View style={{ backgroundColor: 'white', paddingHorizontal: 16, paddingBottom: 10, flexDirection: 'row', justifyContent: 'space-between' }}>
                 <Text style={styles.placeDetailName}>Kitchen & Coffee</Text>
                 <Image
                   source={{ uri: 'https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/restaurant-71.png' }}
@@ -33,22 +33,22 @@ export default function PlaceDetail() {
                     width: 33,
                     height: 33,
                     resizeMode: 'contain',
-                    margin: 6
+                    marginVertical: 6
                   }}
                 />
               </View>
-              <View style={{ flex: 1, backgroundColor: 'white', margin: 18 }}>
+              <View style={{ flex: 1, backgroundColor: 'white' }}>
                 <SwiperFlatList
                   autoplay
                   autoplayDelay={6}
                   autoplayLoop
-                  index={2}
+                  index={0}
                   showPagination
                   paginationStyle={{ height: 13 }}
-                  paginationStyleItem={{ width: 14, height: 14, borderRadius: 14 / 2, marginHorizontal: 9 }}
+                  paginationStyleItem={{ width: 10, height: 10, borderRadius: 10 / 2, marginHorizontal: 6 }}
                   data={images}
                   renderItem={({ item }) => (
-                    <View style={{ width: windowWidth, justifyContent: 'center', }}>
+                    <View style={{ width: windowWidth, justifyContent: 'center', alignItems: 'center', }}>
                       <Image
                         style={{ width: windowWidth * 0.93, height: 320, resizeMode: 'cover', borderRadius: 13 }}
                         source={{
@@ -100,6 +100,7 @@ const styles = StyleSheet.create({
   placeDetailName: {
     fontSize: 35,
     fontWeight: 'normal',
+    paddingLeft: 1
   },
   containerSwiper: { flex: 1, backgroundColor: 'white', margin: 18 },
 });
@@ -107,10 +108,14 @@ const styles = StyleSheet.create({
 const posts = [
   {
     id: 1,
-    imageUrl: 'https://images.unsplash.com/photo-1529042410759-befb1204b468?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=686&q=80',
+    imageUrl: [
+      'https://images.pexels.com/photos/3779791/pexels-photo-3779791.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260',
+      'https://images.unsplash.com/photo-1529042410759-befb1204b468?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=686&q=80',
+      'https://images.unsplash.com/photo-1529042410759-befb1204b468?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=686&q=80'],
     user: {
       name: 'Bambang',
-      profilePicture: 'https://cdn.pixabay.com/photo/2015/03/04/22/35/head-659651__340.png'
+      profilePicture:
+        'https://cdn.pixabay.com/photo/2015/03/04/22/35/head-659651__340.png',
     },
     likes: 781019389,
     place: 'Pizza Hut',
@@ -119,28 +124,34 @@ const posts = [
     comments: [
       {
         user: 'Daniel',
-        comment: 'Bener bangett!'
+        comment: 'Bener bangett!',
       },
       {
         user: 'Devina',
-        comment: 'Setuju!'
+        comment: 'Setuju!',
       },
       {
         user: 'Rafi',
-        comment: 'Harus coba sih..'
+        comment: 'Harus coba sih..',
       },
       {
         user: 'Bima',
-        comment: 'Jadi pengen..'
-      }
-    ]
+        comment: 'Jadi pengen..',
+      },
+    ],
   },
   {
     id: 2,
-    imageUrl: 'https://images.unsplash.com/photo-1476224203421-9ac39bcb3327?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80',
+    imageUrl: [
+      'https://images.unsplash.com/photo-1529042410759-befb1204b468?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=686&q=80',
+      'https://images.unsplash.com/photo-1529042410759-befb1204b468?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=686&q=80',
+      'https://images.unsplash.com/photo-1529042410759-befb1204b468?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=686&q=80',
+      'https://images.unsplash.com/photo-1529042410759-befb1204b468?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=686&q=80',
+    ],
     user: {
       name: 'Jefri',
-      profilePicture: 'https://cdn.pixabay.com/photo/2015/03/04/22/35/head-659651__340.png'
+      profilePicture:
+        'https://cdn.pixabay.com/photo/2015/03/04/22/35/head-659651__340.png',
     },
     likes: 7810,
     place: 'Holy Cow',
@@ -149,20 +160,20 @@ const posts = [
     comments: [
       {
         user: 'Daniel',
-        comment: 'Bener bangett!'
+        comment: 'Bener bangett!',
       },
       {
         user: 'Devina',
-        comment: 'Setuju!'
+        comment: 'Setuju!',
       },
       {
         user: 'Rafi',
-        comment: 'Harus coba sih..'
+        comment: 'Harus coba sih..',
       },
       {
         user: 'Bima',
-        comment: 'Jadi pengen..'
-      }
-    ]
-  }
-]
+        comment: 'Jadi pengen..',
+      },
+    ],
+  },
+];

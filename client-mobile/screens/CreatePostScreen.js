@@ -192,7 +192,7 @@ export default function CreatePostScreen({ navigation }) {
     return (
       <Center
         onTouchEnd={pickImage}
-        bg={'#be5960'}
+        bg={'#ef4444'}
         height={'1/6'}
         borderBottomRadius={'lg'}
       >
@@ -212,7 +212,7 @@ export default function CreatePostScreen({ navigation }) {
         </Center>
         <Center px={'4'}>
           <Pressable onPress={handleUploadPhoto}>
-            <Text fontSize={'lg'} fontWeight={'bold'} color={'#be5960'}>POST</Text>
+            <Text fontSize={'lg'} fontWeight={'bold'} color={'#ef4444'}>POST</Text>
           </Pressable>
         </Center>
       </Flex>
@@ -303,7 +303,7 @@ export default function CreatePostScreen({ navigation }) {
                   ) : null
                 }
                 <Input onChangeText={handlePlaceInputChange} value={place} width={'5/6'} height={'5/6'} bg={'white'} borderWidth={'0'} borderRadius={'none'} borderLeftRadius={'md'} fontSize={'md'} placeholder={'Search a place..'}></Input>
-                <Pressable onPress={handleSearchPlace} width={'1/6'} height={'5/6'} bg={'#be5960'} _pressed={{
+                <Pressable onPress={handleSearchPlace} width={'1/6'} height={'5/6'} bg={'#ef4444'} _pressed={{
                   bg: 'rgba(190, 89, 96, 0.70)'
                 }} borderRightRadius={'md'}>
                   <Center width={'full'} height={'full'}>
@@ -409,7 +409,7 @@ export default function CreatePostScreen({ navigation }) {
         <Box width={'full'} height={'20'} px={'4'} pt={'4'}>
           <Flex alignItems={'center'} direction='row' width={'full'} height={'full'} bg={'gray.100'} px="2" py={'1'} borderRadius={'lg'}>
             <Input onChangeText={handleTagInputChange} value={tag} width={'5/6'} height={'5/6'} bg={'white'} borderWidth={'0'} borderRadius={'none'} borderLeftRadius={'md'} fontSize={'md'} placeholder={'(Optional) Add tags..'}></Input>
-            <Pressable onPress={handleAddTag} width={'1/6'} height={'5/6'} bg={'#be5960'} _pressed={{
+            <Pressable onPress={handleAddTag} width={'1/6'} height={'5/6'} bg={'#ef4444'} _pressed={{
               bg: 'rgba(190, 89, 96, 0.70)'
             }} borderRightRadius={'md'}>
               <Center width={'full'} height={'full'}>

@@ -1,7 +1,8 @@
 import React from 'react';
 import { Box, Flex, Image, Text } from 'native-base';
 import { AntDesign, FontAwesome, Ionicons } from '@expo/vector-icons';
-import { Dimensions } from 'react-native';
+import { StyleSheet, View, ScrollView, TouchableOpacity, Dimensions, } from 'react-native';
+import { SwiperFlatList } from 'react-native-swiper-flatlist';
 
 const windowWidth = Dimensions.get('window').width;
 
@@ -15,8 +16,8 @@ const Post = ({ post }) => {
         borderRadius={'xl'}
         borderColor={'gray.200'}
       >
-        <Box maxHeight={470}>
-          <Box
+
+        {/* <Box
             borderTopRadius={'xl'}
             flexDirection={'row'}
             alignItems={'center'}
@@ -44,11 +45,32 @@ const Post = ({ post }) => {
             height={'full'}
             resizeMode={'cover'}
             source={{
-              uri: post.imageUrl,
+              uri: post.imageUrl[0],
             }}
             alt={'alternate picture'}
+          /> */}
+        <View style={{ backgroundColor: 'white' }}>
+          <SwiperFlatList
+            index={0}
+            style={{ overflow: 'hidden' }}
+            showPagination
+            paginationActiveColor={'blue'}
+            paginationStyleItem={{ width: 9, height: 9, borderRadius: 9 / 2, marginHorizontal: 5, marginTop: 53, }}
+            data={post.imageUrl}
+            renderItem={({ item }) => (
+              <View style={{ width: windowWidth * 0.9347, justifyContent: 'center', alignItems: 'center', }}>
+                <Image
+                  alt='img'
+                  style={{ width: '100%', resizeMode: 'cover', borderTopLeftRadius: 10, borderTopRightRadius: 10, height: 470 }}
+                  source={{
+                    uri: item,
+                  }}
+                />
+              </View>
+            )}
           />
-        </Box>
+        </View>
+
         <Box
           borderColor={'gray.300'}
           borderWidth={'1'}
