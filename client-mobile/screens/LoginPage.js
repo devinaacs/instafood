@@ -20,7 +20,7 @@ export default function Login() {
 
   return (
     <SafeAreaView style={styles.container}>
-            <View style={{ position: 'absolute', top: 0 }}>
+      <View style={{ position: 'absolute', top: 0 }}>
         <TouchableOpacity
           onPress={() => {
             navigation.goBack();
