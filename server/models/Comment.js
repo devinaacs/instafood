@@ -1,21 +1,23 @@
 const mongoose = require('mongoose');
 
 const schema = mongoose.Schema({
-  user_id: {
+  user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
   },
-  post_id: {
+  post: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Post',
   },
-  comment: String,
-  createdAt: {
+  comment: {
+    type: String,
+  },
+  created_at: {
     type: Date,
     required: true,
     default: Date.now,
   },
-  updatedAt: {
+  updated_at: {
     type: Date,
     required: true,
     default: Date.now,

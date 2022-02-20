@@ -7,13 +7,12 @@ class Controller {
       const { post_id, comment } = req.body;
 
       const newcomment = new Comment({
-        UserId: req.currentUser._id,
-        post_id: post_id,
+        user: req.currentUser._id,
+        post: post_id,
         comment: comment,
       });
       await newcomment.save();
 
-      // update to Post
       const post = await Post.findOne({ _id: post_id });
       post.comment_ids.push(newcomment._id);
       await post.save();
@@ -38,7 +37,7 @@ class Controller {
     try {
       const { postId } = req.params;
 
-      const comment = await Comment.find({ post_id: postId });
+      const comment = await Comment.find({ post: postId });
 
       if (comment.length === 0) throw { name: 'NOT_FOUND' };
 
