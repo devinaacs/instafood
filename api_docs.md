@@ -233,9 +233,9 @@ _Response 201 - Created_
   "user": "620eb0001b28613ab1d5b310",
   "place_id": "ChIJd9SUqtb1aS4RJmrIUtK58-s",
   "images": [
-		"https://storage.googleapis.com/hacktiv8-instafood.appspot.com/development/posts/620f0d71f63c8e7e064611c9/img-1.png",
-		"https://storage.googleapis.com/hacktiv8-instafood.appspot.com/development/posts/620f0d71f63c8e7e064611c9/img-2.png"
-	],
+    "https://storage.googleapis.com/hacktiv8-instafood.appspot.com/development/posts/620f0d71f63c8e7e064611c9/img-1.png",
+    "https://storage.googleapis.com/hacktiv8-instafood.appspot.com/development/posts/620f0d71f63c8e7e064611c9/img-2.png"
+  ],
   "created_at": "2022-02-18T03:07:29.959Z",
   "tags": [ "sate", "soto" ]
 }
