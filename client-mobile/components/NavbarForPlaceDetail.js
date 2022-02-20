@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, View, TouchableOpacity } from 'react-native';
 import { Entypo, Ionicons } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, DrawerActions } from '@react-navigation/native';
 
 export default function NavbarForPlaceDetail() {
   const navigation = useNavigation();
@@ -12,7 +12,7 @@ export default function NavbarForPlaceDetail() {
           onPress={() => {
             navigation.goBack();
           }}
-          style={{ paddingVertical: 10, paddingHorizontal: 13  }}>
+          style={{ paddingVertical: 10, paddingHorizontal: 13 }}>
           <Ionicons name="arrow-back" size={34} color="#929292" />
         </TouchableOpacity>
       </View>
@@ -25,7 +25,9 @@ export default function NavbarForPlaceDetail() {
             style={{ paddingVertical: 13, paddingHorizontal: 13 }}
           />
         </TouchableOpacity> */}
-        <TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => navigation.dispatch(DrawerActions.toggleDrawer())}
+        >
           <Entypo
             name="menu"
             size={32}

@@ -4,6 +4,7 @@ import BottomTabNavigation from './BottomTabNavigation';
 import CreatePostScreen from '../screens/CreatePostScreen';
 import SearchScreen from '../screens/SearchScreen';
 import Register from '../screens/Register';
+import DrawerNavigator from './DrawerNavigator';
 
 const Stack = createNativeStackNavigator();
 

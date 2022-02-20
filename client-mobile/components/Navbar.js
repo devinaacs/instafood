@@ -7,10 +7,11 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import { Entypo } from '@expo/vector-icons';
+import { useNavigation, DrawerActions } from '@react-navigation/native';
 
 export default function Navbar() {
+  const navigation = useNavigation();
   return (
-
     <View style={styles.nav}>
       <View>
         <Image
@@ -32,7 +33,9 @@ export default function Navbar() {
             style={{ paddingVertical: 13, paddingHorizontal: 13 }}
           />
         </TouchableOpacity> */}
-        <TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => navigation.dispatch(DrawerActions.toggleDrawer())}
+        >
           <Entypo
             name="menu"
             size={32}
@@ -42,13 +45,11 @@ export default function Navbar() {
         </TouchableOpacity>
       </View>
     </View>
-
   );
 }
 
 const styles = StyleSheet.create({
   nav: {
-
     backgroundColor: 'white',
     width: '100%',
     height: 63,
