@@ -83,9 +83,9 @@ class Controller {
         })
         .populate({
           path: 'like_ids',
-          select: { UserId: 1 },
+          select: { user: 1 },
           populate: {
-            path: 'UserId',
+            path: 'user',
             select: { username: 1 },
           },
         })
@@ -93,7 +93,7 @@ class Controller {
           path: 'comment_ids',
           select: { comment: 1 },
           populate: {
-            path: 'UserId',
+            path: 'user',
             select: { username: 1 },
           },
         })
@@ -108,19 +108,23 @@ class Controller {
 
         post.likes = post.like_ids.map(like => ({
           id: like._id,
-          user: {
-            id: like.UserId._id,
-            username: like.UserId.username,
-          },
+          user: !like.user
+            ? null
+            : {
+              id: like.user._id,
+              username: like.user.username,
+            },
         }));
 
         post.comments = post.comment_ids.map(comment => ({
           id: comment._id,
           comment: comment.comment,
-          user: {
-            id: comment.UserId._id,
-            username: comment.UserId.username,
-          },
+          user: !comment.user
+            ? null
+            : {
+              id: comment.user._id,
+              username: comment.user.username,
+            },
         }));
 
         delete post._id;

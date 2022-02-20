@@ -8,8 +8,8 @@ class Controller {
 
       // create Like
       const like = new Like({
-        UserId: req.currentUser._id,
-        post_id: post_id,
+        user: req.currentUser._id,
+        post: post_id,
       });
       await like.save();
 
@@ -31,11 +31,11 @@ class Controller {
         { __v: 0, created_at: 0, updated_at: 0 }
       )
         .populate({
-          path: 'UserId',
+          path: 'user',
           select: { username: 1 },
         })
         .populate({
-          path: 'post_id',
+          path: 'post',
           select: { __v: 0 },
         });
 
@@ -49,7 +49,7 @@ class Controller {
     try {
       const { post_id } = req.params;
 
-      const likes = await Like.find({ post_id: post_id });
+      const likes = await Like.find({ post: post_id });
 
       if (likes.length === 0) throw { name: 'NOT_FOUND' };
 

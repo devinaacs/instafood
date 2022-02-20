@@ -12,6 +12,9 @@ List of available endpoints:
 - [POST /posts](#post-posts)
 - [GET /posts](#get-posts)
 - [DELETE /posts/:id](#delete-postsid)
+- [GET /trending/posts](#get-trending-posts)
+- [GET /trending/places](#get-trending-places)
+- [GET /trending/tags](#get-trending-tags)
 
 ### POST /register
 
@@ -319,4 +322,89 @@ _Response 200 - OK_
 {
   "message": "post has been deleted successfully"
 }
+```
+
+### GET /trending/posts
+
+Getting 10 (at maximum) trending posts sorted by popularity.
+
+**Responses**
+
+_Response 200 - OK_
+```json
+[
+	{
+    "id": "621063ecc93e6b0ae05b6f83",
+	  "user": {
+			"username": "user.two",
+			"id": "62105d4046db9b1297368fce"
+		},
+		"images": [
+			"https://storage.googleapis.com/hacktiv8-instafood.appspot.com/development/posts/621063ecc93e6b0ae05b6f83/img-1.png"
+		],
+		"tags": [
+			"sweet",
+			"food"
+		]
+	}
+]
+```
+
+### GET /trending/places
+
+Getting 10 (at maximum) trending places sorted by popularity. Each element contains most popular post related to the place.
+
+**Responses**
+
+_Response 200 - OK_
+```json
+[
+	{
+    "place_id": "ChIJh_fNBAH3aS4Rg0Edh0Qfidw",
+		"most_popular": {
+			"post": {
+				"user": {
+					"username": "user.two",
+					"id": "62105d4046db9b1297368fce"
+				},
+				"images": [
+					"https://storage.googleapis.com/hacktiv8-instafood.appspot.com/development/posts/621063ecc93e6b0ae05b6f83/img-1.png"
+				],
+				"tags": [
+					"sweet",
+					"food"
+				],
+				"id": "621063ecc93e6b0ae05b6f83"
+			}
+		}
+	}
+]
+```
+
+### GET /trending/tags
+
+Getting 10 (at maximum) trending places sorted by popularity. Each element contains most popular post related to the tag.
+
+**Responses**
+
+_Response 200 - OK_
+```json
+[
+	{
+    "tag": "sweet",
+		"most_popular": {
+			"post": {
+				"user": {
+					"username": "user.one",
+					"id": "621054ef0837fb236cd55b7c"
+				},
+				"images": [],
+				"tags": [
+					"sweet"
+				],
+				"id": "6210d46c8d557815d4a4f845"
+			}
+		}
+	},
+]
 ```

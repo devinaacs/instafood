@@ -15,6 +15,8 @@ async function start() {
 
   app.listen(PORT, () => {
     console.log(`🚀 server app listening on port ${PORT}`);
+
+    require('./workers/trending')();
   });
 }
 
