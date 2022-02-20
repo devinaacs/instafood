@@ -12,9 +12,9 @@ List of available endpoints:
 - [POST /posts](#post-posts)
 - [GET /posts](#get-posts)
 - [DELETE /posts/:id](#delete-postsid)
-- [GET /trending/posts](#get-trending-posts)
-- [GET /trending/places](#get-trending-places)
-- [GET /trending/tags](#get-trending-tags)
+- [GET /trending/posts](#get-trendingposts)
+- [GET /trending/places](#get-trendingplaces)
+- [GET /trending/tags](#get-trendingtags)
 
 ### POST /register
 
