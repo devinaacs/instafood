@@ -13,6 +13,9 @@ export default function CreatePostScreen({ navigation }) {
   const [pickedPlace, setPickedPlace] = useState('');
   const [loadingPlaces, setLoadingPlaces] = useState(false);
   const [caption, setCaption] = useState('');
+  const [tags, setTags] = useState([]);
+  const [tag, setTag] = useState('');
+  const [postLoading, setPostLoading] = useState(false);
 
   // Functions:
   const pickImage = async () => {
@@ -34,7 +37,7 @@ export default function CreatePostScreen({ navigation }) {
   };
   const handleUploadPhoto = async () => {
     const SERVER_POSTS_URL = 'https://hacktiv8-instafood.herokuapp.com/posts';
-
+    setPostLoading(true);
     try {
       if (!image) return;
       if (!pickedPlace) return;
@@ -56,6 +59,12 @@ export default function CreatePostScreen({ navigation }) {
         formData.append('images', { uri: localUri, name: filename, type });
       });
 
+      if (tags.length > 0) {
+        tags.forEach((el) => {
+          formData.append('tags', el)
+        })
+      }
+
       formData.append('place_id', pickedPlace.place.place_id);
       formData.append('caption', caption);
 
@@ -76,6 +85,8 @@ export default function CreatePostScreen({ navigation }) {
         })
         .then(response => {
           console.log('response', response);
+          setPostLoading(false);
+          navigation.navigate('Highlights')
         })
         .catch(error => {
           console.log('error', error);
@@ -135,6 +146,20 @@ export default function CreatePostScreen({ navigation }) {
     setPlace('');
     setFoundPlaces([]);
   }
+  const handleTagInputChange = (tagInput) => {
+    setTag(tagInput);
+  }
+  const handleAddTag = () => {
+    if (tag) {
+      setTags([...tags, tag]);
+      setTag('');
+    }
+  }
+  const handleCancelTag = (tagCancel) => {
+    let newTags = tags.filter((el) => el !== tagCancel);
+
+    setTags(newTags);
+  }
 
   // Components:
   const AddButton = () => {
@@ -190,6 +215,14 @@ export default function CreatePostScreen({ navigation }) {
           </Pressable>
         </Center>
       </Flex>
+      {
+        postLoading ? (
+          <Flex alignItems={'center'} width={'full'} height={'20'} mb={'4'}>
+            <Image resizeMode={'contain'} height={'20'} source={require('../assets/loading.gif')} alt={'alternate'} />
+            <Text fontSize={'md'}>Posting..</Text>
+          </Flex>
+        ) : null
+      }
       <ScrollView>
         {/* Images */}
         <Box width={'full'} height={'80'} px={'4'} pt={'4'} mb={'4'}>
@@ -342,6 +375,7 @@ export default function CreatePostScreen({ navigation }) {
                 loadingPlaces ? (
                   <Flex alignItems={'center'} width={'full'} height={'20'} mb={'4'}>
                     <Image resizeMode={'contain'} height={'20'} source={require('../assets/loading.gif')} alt={'alternate'} />
+                    <Text fontSize={'md'}>Searching places..</Text>
                   </Flex>
                 ) : null
               )
@@ -350,7 +384,7 @@ export default function CreatePostScreen({ navigation }) {
         </Flex>
 
         {/* Caption */}
-        <Box width={'full'} height={'32'} px={'4'}>
+        <Box width={'full'} height={'32'} px={'4'} mb={'4'}>
           <Box alignItems="center" w="full" bg={'gray.100'} borderRadius={'lg'} p={'2'}>
             <TextArea h={'full'} placeholder="Write your post caption here.." w="full" borderWidth={'0'} fontSize={'md'} bg={'white'} value={caption} onChangeText={handleCaptionChange} />
             {
@@ -372,7 +406,35 @@ export default function CreatePostScreen({ navigation }) {
 
         {/* Tags */}
         <Box width={'full'} height={'20'} px={'4'} pt={'4'}>
-          <Box width={'full'} height={'full'} bg={'gray.200'}></Box>
+          <Flex alignItems={'center'} direction='row' width={'full'} height={'full'} bg={'gray.100'} px="2" py={'1'} borderRadius={'lg'}>
+            <Input onChangeText={handleTagInputChange} value={tag} width={'5/6'} height={'5/6'} bg={'white'} borderWidth={'0'} borderRadius={'none'} borderLeftRadius={'md'} fontSize={'md'} placeholder={'(Optional) Add tags..'}></Input>
+            <Pressable onPress={handleAddTag} width={'1/6'} height={'5/6'} bg={'#be5960'} _pressed={{
+              bg: 'rgba(190, 89, 96, 0.70)'
+            }} borderRightRadius={'md'}>
+              <Center width={'full'} height={'full'}>
+                <Text fontSize={'md'} fontWeight={'bold'} color={'white'}>Add</Text>
+              </Center>
+            </Pressable>
+          </Flex>
+        </Box>
+
+        {/* Tag List */}
+        <Box width={'full'} height={'20'} px={'4'} pt={'4'}>
+          <Flex direction='row'>
+            {
+              tags.length > 0 ? tags.map((el, i) => (
+                <Flex direction='row' justifyContent={'center'} alignItems={'center'} minHeight={'12'} key={i} bg={'gray.100'} mr={'3'} mb={'3'} p={'4'} borderRadius={'md'}>
+                  <Text mr={'1'} fontSize={'md'}>#{el}</Text>
+                  <Center
+                    onTouchEnd={() => handleCancelTag(el)}
+                    size={'6'}
+                  >
+                    <Feather name="delete" size={20} color="black" />
+                  </Center>
+                </Flex>
+              )) : null
+            }
+          </Flex>
         </Box>
       </ScrollView>
     </Box >
