@@ -7,8 +7,8 @@ export default function SearchButton() {
   const navigation = useNavigation();
 
   return (
-    <Box onTouchEnd={() => navigation.navigate('SearchScreen')} px={'3'} py={'3'} position={'relative'}>
-      <Flex direction={'row'} bg={'gray.100'} borderRadius={'xl'} height={'12'} alignItems={'center'}>
+    <Box onTouchEnd={() => navigation.navigate('SearchScreen')} px={'4'} py={'3'} position={'relative'} mb={'1'}>
+      <Flex direction={'row'} bg={'gray.100'} borderRadius={'xl'} height={'12'} alignItems={'center'} borderWidth={1} borderColor={'muted.300'}>
         <Center px={'3'}>
           <AntDesign name="search1" size={20} color="black" />
         </Center>
