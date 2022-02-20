@@ -37,11 +37,12 @@ export default function CreatePostScreen({ navigation }) {
   };
   const handleUploadPhoto = async () => {
     const SERVER_POSTS_URL = 'https://hacktiv8-instafood.herokuapp.com/posts';
-    setPostLoading(true);
     try {
       if (!image) return;
       if (!pickedPlace) return;
       if (!caption) return;
+
+      setPostLoading(true);
 
       // Upload the image using the fetch and FormData APIs
       let formData = new FormData();
