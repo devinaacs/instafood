@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Input, Icon, Stack, Text, Button } from 'native-base';
-import { MaterialIcons } from '@expo/vector-icons';
+import { MaterialIcons, Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 const windowHeight = Dimensions.get('window').height;
 
@@ -20,6 +20,15 @@ export default function Login() {
 
   return (
     <SafeAreaView style={styles.container}>
+            <View style={{ position: 'absolute', top: 0 }}>
+        <TouchableOpacity
+          onPress={() => {
+            navigation.goBack();
+          }}
+          style={{ paddingVertical: 10, paddingHorizontal: 13 }}>
+          <Ionicons name="arrow-back" size={34} color="#929292" />
+        </TouchableOpacity>
+      </View>
       <Image
         source={require('../assets/logo_black_small_textonly.png')}
         style={{
@@ -62,7 +71,7 @@ export default function Login() {
           placeholder="Password"
         />
         <Button
-          colorScheme="blue"
+          colorScheme="red"
           w={{ base: '80%', md: '20%' }}
           h={12}
           borderRadius="lg"
