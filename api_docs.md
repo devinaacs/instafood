@@ -230,13 +230,13 @@ _Response 201 - Created_
 ```json
 {
   "id": "620f0d71f63c8e7e064611c9",
-	"user": "620eb0001b28613ab1d5b310",
-	"place_id": "ChIJd9SUqtb1aS4RJmrIUtK58-s",
-	"images": [
+  "user": "620eb0001b28613ab1d5b310",
+  "place_id": "ChIJd9SUqtb1aS4RJmrIUtK58-s",
+  "images": [
 		"https://storage.googleapis.com/hacktiv8-instafood.appspot.com/development/posts/620f0d71f63c8e7e064611c9/img-1.png",
 		"https://storage.googleapis.com/hacktiv8-instafood.appspot.com/development/posts/620f0d71f63c8e7e064611c9/img-2.png"
 	],
-	"created_at": "2022-02-18T03:07:29.959Z",
+  "created_at": "2022-02-18T03:07:29.959Z",
   "tags": [ "sate", "soto" ]
 }
 ```
@@ -333,20 +333,20 @@ Getting 10 (at maximum) trending posts sorted by popularity.
 _Response 200 - OK_
 ```json
 [
-	{
+  {
     "id": "621063ecc93e6b0ae05b6f83",
-	  "user": {
-			"username": "user.two",
-			"id": "62105d4046db9b1297368fce"
-		},
-		"images": [
-			"https://storage.googleapis.com/hacktiv8-instafood.appspot.com/development/posts/621063ecc93e6b0ae05b6f83/img-1.png"
-		],
-		"tags": [
-			"sweet",
-			"food"
-		]
-	}
+    "user": {
+      "id": "62105d4046db9b1297368fce",
+      "username": "user.two"
+    },
+    "images": [
+      "https://storage.googleapis.com/hacktiv8-instafood.appspot.com/development/posts/621063ecc93e6b0ae05b6f83/img-1.png"
+    ],
+    "tags": [
+      "sweet",
+      "food"
+    ]
+  }
 ]
 ```
 
@@ -359,22 +359,22 @@ Getting 10 (at maximum) trending places sorted by popularity. Each element conta
 _Response 200 - OK_
 ```json
 [
-	{
+  {
     "place_id": "ChIJh_fNBAH3aS4Rg0Edh0Qfidw",
-		"most_popular": {
-			"post": {
-				"user": {
-					"username": "user.two",
-					"id": "62105d4046db9b1297368fce"
-				},
-				"images": [
-					"https://storage.googleapis.com/hacktiv8-instafood.appspot.com/development/posts/621063ecc93e6b0ae05b6f83/img-1.png"
-				],
-				"tags": [
-					"sweet",
-					"food"
-				],
-				"id": "621063ecc93e6b0ae05b6f83"
+    "most_popular": {
+      "post": {
+        "id": "621063ecc93e6b0ae05b6f83",
+        "user": {
+          "username": "user.two",
+          "id": "62105d4046db9b1297368fce"
+        },
+        "images": [
+          "https://storage.googleapis.com/hacktiv8-instafood.appspot.com/development/posts/621063ecc93e6b0ae05b6f83/img-1.png"
+        ],
+        "tags": [
+          "sweet",
+          "food"
+        ]
 			}
 		}
 	}
@@ -390,21 +390,21 @@ Getting 10 (at maximum) trending places sorted by popularity. Each element conta
 _Response 200 - OK_
 ```json
 [
-	{
+  {
     "tag": "sweet",
-		"most_popular": {
-			"post": {
-				"user": {
-					"username": "user.one",
-					"id": "621054ef0837fb236cd55b7c"
-				},
-				"images": [],
-				"tags": [
-					"sweet"
-				],
-				"id": "6210d46c8d557815d4a4f845"
-			}
-		}
-	},
+    "most_popular": {
+      "post": {
+        "id": "6210d46c8d557815d4a4f845",
+        "user": {
+          "username": "user.one",
+          "id": "621054ef0837fb236cd55b7c"
+        },
+        "images": [],
+        "tags": [
+          "sweet"
+        ]
+      }
+    }
+  }
 ]
 ```
