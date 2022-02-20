@@ -3,10 +3,11 @@ import { NativeBaseProvider } from 'native-base';
 import { NavigationContainer } from '@react-navigation/native';
 import MainStackNavigation from './navigation/MainStackNavigation';
 import { LinearGradient } from 'expo-linear-gradient';
+import DrawerNavigator from './navigation/DrawerNavigator';
 
 const config = {
   dependencies: {
-    "linear-gradient": LinearGradient
+    'linear-gradient': LinearGradient
   }
 };
 
@@ -15,7 +16,8 @@ export default function App() {
     <NativeBaseProvider config={config}>
       <SafeAreaProvider>
         <NavigationContainer>
-          <MainStackNavigation />
+          {/* <MainStackNavigation /> */}
+          <DrawerNavigator />
         </NavigationContainer>
       </SafeAreaProvider>
     </NativeBaseProvider>

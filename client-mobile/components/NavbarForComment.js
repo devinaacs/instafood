@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, View, TouchableOpacity, Text } from 'react-native';
 import { Entypo, Ionicons } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, DrawerActions } from '@react-navigation/native';
 
 export default function NavbarForComment() {
   const navigation = useNavigation();
@@ -26,7 +26,9 @@ export default function NavbarForComment() {
             style={{ paddingVertical: 13, paddingHorizontal: 13 }}
           />
         </TouchableOpacity> */}
-        <TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => navigation.dispatch(DrawerActions.toggleDrawer())}
+        >
           <Entypo
             name="menu"
             size={32}
