@@ -1,16 +1,18 @@
 import React, { useState } from 'react';
 import { Button } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
-import { Box, Center, Flex, Image, Input, Pressable, ScrollView, StatusBar, Text } from 'native-base';
+import { Box, Center, Flex, Image, Input, Pressable, ScrollView, StatusBar, Text, TextArea } from 'native-base';
 import { Feather } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
 
 
-export default function ImagePickerExample() {
+export default function CreatePostScreen({ navigation }) {
   const [image, setImage] = useState(null);
   const [place, setPlace] = useState('');
   const [foundPlaces, setFoundPlaces] = useState([]);
   const [pickedPlace, setPickedPlace] = useState('');
   const [loadingPlaces, setLoadingPlaces] = useState(false);
+  const [caption, setCaption] = useState('');
 
   // Functions:
   const pickImage = async () => {
@@ -36,6 +38,7 @@ export default function ImagePickerExample() {
     try {
       if (!image) return;
       if (!pickedPlace) return;
+      if (!caption) return;
 
       // Upload the image using the fetch and FormData APIs
       let formData = new FormData();
@@ -51,8 +54,10 @@ export default function ImagePickerExample() {
 
         // Assume "photo" is the name of the form field the server expects
         formData.append('images', { uri: localUri, name: filename, type });
-        formData.append('place_id', pickedPlace.place.place_id)
       });
+
+      formData.append('place_id', pickedPlace.place.place_id);
+      formData.append('caption', caption);
 
       await fetch(SERVER_POSTS_URL, {
         method: 'POST',
@@ -120,6 +125,16 @@ export default function ImagePickerExample() {
     setFoundPlaces([]);
     setPlace('');
   }
+  const handleCaptionChange = (caption) => {
+    setCaption(caption);
+  }
+  const handleClearCaption = () => {
+    setCaption('');
+  }
+  const handleClearSearch = () => {
+    setPlace('');
+    setFoundPlaces([]);
+  }
 
   // Components:
   const AddButton = () => {
@@ -128,7 +143,7 @@ export default function ImagePickerExample() {
         return (
           <Center
             onTouchEnd={pickImage}
-            bg={'blue.500'}
+            bg={'#be5960'}
             height={'1/6'}
             borderBottomRadius={'lg'}
           >
@@ -151,7 +166,7 @@ export default function ImagePickerExample() {
     return (
       <Center
         onTouchEnd={pickImage}
-        bg={'blue.500'}
+        bg={'#be5960'}
         height={'1/6'}
         borderBottomRadius={'lg'}
       >
@@ -165,9 +180,19 @@ export default function ImagePickerExample() {
   return (
     <Box flex={1} safeArea bg={'white'}>
       <StatusBar></StatusBar>
+      <Flex direction='row' justifyContent={'space-between'} width={'full'} height={'16'} borderBottomWidth={'1'} borderColor={'gray.100'}>
+        <Center onTouchEnd={() => navigation.goBack()} px={'4'}>
+          <Ionicons name="arrow-back" size={30} color="black" />
+        </Center>
+        <Center px={'4'}>
+          <Pressable onPress={handleUploadPhoto}>
+            <Text fontSize={'lg'} fontWeight={'bold'} color={'#be5960'}>POST</Text>
+          </Pressable>
+        </Center>
+      </Flex>
       <ScrollView>
         {/* Images */}
-        <Box width={'full'} height={'80'} px={'4'} pt={'4'}>
+        <Box width={'full'} height={'80'} px={'4'} pt={'4'} mb={'4'}>
           <Flex
             justifyContent={'space-between'}
             width={'full'}
@@ -228,13 +253,27 @@ export default function ImagePickerExample() {
         {
           pickedPlace ? null : (
             <Box width={'full'} height={'20'} px={'4'} pt={'4'}>
-              <Flex alignItems={'center'} direction='row' width={'full'} height={'full'} bg={'gray.100'} px="3" py={'2'} borderRadius={'lg'}>
-                <Input onChangeText={handlePlaceInputChange} value={place} width={'5/6'} height={'5/6'}></Input>
-                <Pressable onPress={handleSearchPlace} width={'1/6'} height={'5/6'} bg={'green.200'} _pressed={{
-                  bg: 'green.300'
-                }}>
+              <Flex alignItems={'center'} direction='row' width={'full'} height={'full'} bg={'gray.100'} px="2" py={'1'} borderRadius={'lg'}>
+                {
+                  place || foundPlaces.length > 0 ? (
+                    <Center
+                      onTouchEnd={handleClearSearch}
+                      position={'absolute'}
+                      zIndex={10}
+                      right={'24'}
+                      bottom={'1'}
+                      height={'full'}
+                    >
+                      <Text color={'red.500'}>Clear Search</Text>
+                    </Center>
+                  ) : null
+                }
+                <Input onChangeText={handlePlaceInputChange} value={place} width={'5/6'} height={'5/6'} bg={'white'} borderWidth={'0'} borderRadius={'none'} borderLeftRadius={'md'} fontSize={'md'} placeholder={'Search a place..'}></Input>
+                <Pressable onPress={handleSearchPlace} width={'1/6'} height={'5/6'} bg={'#be5960'} _pressed={{
+                  bg: 'rgba(190, 89, 96, 0.70)'
+                }} borderRightRadius={'md'}>
                   <Center width={'full'} height={'full'}>
-                    <Text>Search</Text>
+                    <Text fontSize={'md'} fontWeight={'bold'} color={'white'}>Search</Text>
                   </Center>
                 </Pressable>
               </Flex>
@@ -243,11 +282,11 @@ export default function ImagePickerExample() {
         }
 
         {/* Place List */}
-        <Flex width={'full'} px={'4'} pt={'4'}>
+        <Flex width={'full'} px={'4'} pt={'4'} mb={'4'}>
           {
             pickedPlace ? (
               (
-                <Flex direction='row' width={'full'} height={'20'} my={'2'} borderBottomWidth={'1'}>
+                <Flex direction='row' width={'full'} height={'20'} mt={'2'} mb={'4'} borderBottomWidth={'1'}>
                   <Center
                     onTouchEnd={() => handleClearPlaceSearch()}
                     position={'absolute'}
@@ -301,7 +340,7 @@ export default function ImagePickerExample() {
 
               }) : (
                 loadingPlaces ? (
-                  <Flex alignItems={'center'} width={'full'} height={'20'}>
+                  <Flex alignItems={'center'} width={'full'} height={'20'} mb={'4'}>
                     <Image resizeMode={'contain'} height={'20'} source={require('../assets/loading.gif')} alt={'alternate'} />
                   </Flex>
                 ) : null
@@ -311,15 +350,30 @@ export default function ImagePickerExample() {
         </Flex>
 
         {/* Caption */}
-        <Box width={'full'} height={'32'} px={'4'} pt={'4'}>
-          <Box width={'full'} height={'full'} bg={'gray.200'}></Box>
+        <Box width={'full'} height={'32'} px={'4'}>
+          <Box alignItems="center" w="full" bg={'gray.100'} borderRadius={'lg'} p={'2'}>
+            <TextArea h={'full'} placeholder="Write your post caption here.." w="full" borderWidth={'0'} fontSize={'md'} bg={'white'} value={caption} onChangeText={handleCaptionChange} />
+            {
+              caption ? (
+                <Center
+                  onTouchEnd={handleClearCaption}
+                  position={'absolute'}
+                  zIndex={10}
+                  right={'3'}
+                  bottom={'0'}
+                  size={'10'}
+                >
+                  <Text color={'red.500'}>Clear</Text>
+                </Center>
+              ) : null
+            }
+          </Box>
         </Box>
 
         {/* Tags */}
         <Box width={'full'} height={'20'} px={'4'} pt={'4'}>
           <Box width={'full'} height={'full'} bg={'gray.200'}></Box>
         </Box>
-        <Button title="POST" onPress={handleUploadPhoto} />
       </ScrollView>
     </Box >
   );
