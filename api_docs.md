@@ -37,6 +37,7 @@ _Body_
 _Response 201 - Created_
 ```json
 {
+  "id": "62135a620edb155e91dffd43",
   "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyMGYxMjFjZDUwNDBjNzM4MGZjN2RlYSIsIm5hbWUiOiJ1c2VyLm9uZSIsImVtYWlsIjoidXNlci5vbmVAbWFpbC5jb20iLCJpYXQiOjE2NDUxNTQ4NDV9.oIymYBnOn7TAA_0Kgf1raJVvibDt6JJiEgpet3twi5s"
 }
 ```
@@ -60,6 +61,7 @@ _Body_
 _Response 200 - Created_
 ```json
 {
+  "id": "62135a620edb155e91dffd43",
   "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyMGYxMjFjZDUwNDBjNzM4MGZjN2RlYSIsIm5hbWUiOiJ1c2VyLm9uZSIsImVtYWlsIjoidXNlci5vbmVAbWFpbC5jb20iLCJpYXQiOjE2NDUxNTQ4NDV9.oIymYBnOn7TAA_0Kgf1raJVvibDt6JJiEgpet3twi5s"
 }
 ```
@@ -300,6 +302,63 @@ _Response 200 - OK_
       "updated_at": "2022-02-19T02:26:34.385Z"
     }
   ]
+}
+```
+
+### GET /posts/:id
+
+Get post by id.
+
+**Request**
+
+_Param_
+```json
+{
+  "id": "string"
+}
+```
+
+**Responses**
+
+_Response 200 - OK_
+```json
+{
+  "id": "62135a68fd12a6c2ef7a929d",
+  "user": {
+    "id": "62135a620edb155e91dffd3e",
+    "username": "user.one"
+	},
+  "place_id": "6210cc70bf599130a9a9c40f",
+  "caption": "Test caption food from comment test",
+  "images": [
+    "https://storage.googleapis.com/hacktiv8-instafood.appspot.com/development/posts/621021b010577cdc8447bfee/img-1.jpg"
+  ],
+  "tags": [
+    "sweet",
+    "fried",
+    "chicken"
+  ],
+  "likes": [
+    {
+      "id": "62135a69fd12a6c2ef7a92a2",
+      "user": {
+        "id": "62135a620edb155e91dffd3e",
+        "username": "user.one"
+      }
+    }
+  ],
+  "comments": [
+    {
+      "id": "6213b2db9835ec4884b44a44",
+      "comment": "wawawawawaa",
+      "user": {
+        "id": "62135a620edb155e91dffd3e",
+        "username": "user.one"
+      }
+    }
+  ],
+  "created_at": "2022-02-21T09:24:56.999Z",
+  "updated_at": "2022-02-21T09:24:56.999Z",
 }
 ```
 
