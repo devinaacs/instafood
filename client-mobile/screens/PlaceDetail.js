@@ -69,12 +69,12 @@ export default function PlaceDetail() {
         <View style={{ paddingHorizontal: 20, paddingBottom: 20, backgroundColor: 'white' }}>
           <Text style={{ fontSize: 24, fontWeight: 'bold' }}>Related Posts</Text>
         </View>
-
+{/* 
         {
           posts.map((post) => (
             <TrendingPost2 post={post} key={post.id} />
           ))
-        }
+        } */}
       </ScrollView>
 
     </SafeAreaView>

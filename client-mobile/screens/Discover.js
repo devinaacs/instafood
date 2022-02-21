@@ -12,7 +12,7 @@ export default function Discover() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    fetch("https://hacktiv8-instafood.herokuapp.com/posts")
+    fetch('https://hacktiv8-instafood.herokuapp.com/posts')
       .then(response => {
         if (response.ok) {
           return response.json();
@@ -32,9 +32,6 @@ export default function Discover() {
     <Box bg={'white'} flex={1} safeAreaTop>
       <StatusBar />
       <SearchButton />
-      <Box onTouchEnd={() => dispatch(userLogout())}>
-        <Text>Logout</Text>
-      </Box>
       <ScrollView>
         {posts.length > 0 ?
           posts.map(post => (
