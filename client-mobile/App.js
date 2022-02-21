@@ -16,8 +16,8 @@ export default function App() {
     <NativeBaseProvider config={config}>
       <SafeAreaProvider>
         <NavigationContainer>
-          {/* <MainStackNavigation /> */}
-          <DrawerNavigator />
+          <MainStackNavigation />
+          {/* <DrawerNavigator /> */}
         </NavigationContainer>
       </SafeAreaProvider>
     </NativeBaseProvider>

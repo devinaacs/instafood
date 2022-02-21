@@ -6,6 +6,7 @@ import Profile from '../screens/Profile';
 import Login from '../screens/LoginPage';
 import PlaceDetail from '../screens/PlaceDetail';
 import CommentSection from '../screens/CommentSection';
+import PostDetail from '../screens/PostDetail';
 
 const Tab = createBottomTabNavigator();
 
@@ -58,8 +59,13 @@ export default function BottomTabNavigation() {
         options={{ headerShown: false }}
       />
       <Tab.Screen
-        name="Comment Section"
+        name="Comment"
         component={CommentSection}
+        options={{ headerShown: false }}
+      />
+      <Tab.Screen
+        name="PostDetail"
+        component={PostDetail}
         options={{ headerShown: false }}
       />
     </Tab.Navigator>
