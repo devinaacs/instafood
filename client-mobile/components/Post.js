@@ -1,12 +1,29 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Box, Flex, Image, Text } from 'native-base';
 import { AntDesign, FontAwesome, Ionicons } from '@expo/vector-icons';
 import { View, Dimensions, } from 'react-native';
 import { SwiperFlatList } from 'react-native-swiper-flatlist';
+import { useSelector } from 'react-redux';
 
 const windowWidth = Dimensions.get('window').width;
 
 const Post = ({ post }) => {
+  const [likeStatus, setLikeStatus] = useState(false);
+  const { access_token } = useSelector((state) => state.user);
+
+  // useEffect(() => {
+  //   post.likes.forEach((el) => {
+  //     if ()
+  //   })
+  // }, [])
+
+  const handleLike = () => {
+    // post.likes.forEach((el) => {
+    //   if ()
+    // })
+    console.log(access_token)
+  }
+
   return (
     <Box w={windowWidth}>
       <Box
@@ -89,7 +106,7 @@ const Post = ({ post }) => {
             />
             <Box px={5} flexDirection={'row'}>
               <Box size={'12'} borderRadius={'full'} borderColor={'gray.200'}>
-                <Box mr={'4'} mt={2}>
+                <Box mr={'4'} mt={2} onTouchEnd={handleLike}>
                   <AntDesign name='like2' size={32} color='white' />
                 </Box>
               </Box>
