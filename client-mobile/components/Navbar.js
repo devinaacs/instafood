@@ -34,7 +34,7 @@ export default function Navbar() {
           />
         </TouchableOpacity> */}
         <TouchableOpacity
-          onPress={() => navigation.dispatch(DrawerActions.toggleDrawer())}
+          // onPress={() => navigation.dispatch(DrawerActions.toggleDrawer())}
         >
           <Entypo
             name="menu"

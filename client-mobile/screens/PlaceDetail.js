@@ -59,7 +59,7 @@ export default function PlaceDetail() {
                   )}
                 />
               </View>
-              <View style={{ backgroundColor: 'white', padding: 5, flexDirection: 'row' }}>
+              <View style={{ backgroundColor: 'white', padding: 5, paddingTop: 12, flexDirection: 'row' }}>
                 <Ionicons name="location-sharp" size={34} color="#929292" style={{ paddingHorizontal: 10 }} />
                 <Text style={{ fontSize: 17, paddingTop: 5, }}>16, Jl. Denpasar Raya No.109, RT.16/RW.4...</Text>
               </View>

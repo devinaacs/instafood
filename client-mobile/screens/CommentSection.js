@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, View, ScrollView, Text, TouchableOpacity, Image, Dimensions, } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
-import { Input, Icon, Stack, Center, Button } from 'native-base';
+import { Input, Icon, Stack, Center, Button, Box } from 'native-base';
 import NavbarForComment from '../components/NavbarForComment';
 const windowWidth = Dimensions.get('window').width;
 
@@ -46,6 +46,26 @@ export default function CommentSection() {
           </View>
         </View>
       </ScrollView>
+      <Box justifyContent={'space-between'} my={3} flexDirection={'row'}>
+        <Image
+          style={{
+            width: 45,
+            height: 45,
+            resizeMode: 'cover',
+            borderRadius: 45 / 2,
+            borderWidth: 1,
+            borderColor: '#D1D1D1',
+            marginLeft: 12
+          }}
+          source={{
+            uri: 'https://cdn.pixabay.com/photo/2015/03/04/22/35/head-659651__340.png',
+          }}
+        />
+        <Input mx="1" placeholder="Add a comment..." w="75%" maxWidth="500px" borderRadius={10} bg={'muted.100'} />
+        <TouchableOpacity style={{justifyContent:'center', alignItems:'center', alignSelf:'center', }}>
+          <Text style={{color:'#007DEC', marginEnd:10, fontSize: 20}}>Post</Text>
+        </TouchableOpacity>
+      </Box>
     </SafeAreaView>
   );
 }

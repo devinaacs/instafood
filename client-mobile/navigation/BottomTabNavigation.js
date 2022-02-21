@@ -9,6 +9,8 @@ import CommentSection from '../screens/CommentSection';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
+import PostDetail from '../screens/PostDetail';
+
 
 const Tab = createBottomTabNavigator();
 
@@ -94,8 +96,13 @@ export default function BottomTabNavigation() {
         options={{ headerShown: false }}
       />
       <Tab.Screen
-        name="Comment Section"
+        name="Comment"
         component={CommentSection}
+        options={{ headerShown: false }}
+      />
+      <Tab.Screen
+        name="PostDetail"
+        component={PostDetail}
         options={{ headerShown: false }}
       />
     </Tab.Navigator>
