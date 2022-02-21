@@ -6,12 +6,13 @@ import {
   Image,
   Text,
   TouchableOpacity,
+  ActivityIndicator
 } from 'react-native';
 import { Box } from 'native-base';
 
 export default function TrendingPlacesCard({ places }) {
   const [placeDetails, setPlaceDetails] = useState('');
-  
+
   useEffect(() => {
     fetch(`https://hacktiv8-instafood.herokuapp.com/places/${places.place_id}`)
       .then(response => {
@@ -41,10 +42,14 @@ export default function TrendingPlacesCard({ places }) {
               }}
             />
           ) : (
-            <Image
-              style={styles.imageStyleLoading}
-              source={require('../assets/loading.gif')}
-            />
+            // <Image
+            //   style={styles.imageStyleLoading}
+            //   source={require('../assets/loading.gif')}
+            // />
+            // <View style={styles.imageStyleLoading}>
+            //   <ActivityIndicator size="large" color="#AEAEAE" />
+            // </View>
+            null
           )
         }
         <View style={styles.bottomTextContainer}>
@@ -87,8 +92,8 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   imageStyleLoading: {
-    height: 120,
-    width: 120,
+    height: 50,
+    width: 50,
     resizeMode: 'cover',
     borderRadius: 10,
     alignSelf: 'center',

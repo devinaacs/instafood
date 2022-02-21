@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react';
 import { Box, Flex, Image, Text } from 'native-base';
 import { AntDesign, FontAwesome, Ionicons } from '@expo/vector-icons';
 import { StyleSheet, View, ScrollView, TouchableOpacity, Dimensions, } from 'react-native';
@@ -7,6 +7,25 @@ import { SwiperFlatList } from 'react-native-swiper-flatlist';
 const windowWidth = Dimensions.get('window').width;
 
 const TrendingPost2 = ({ post }) => {
+  const [postDetails, setPostDetails] = useState([]);
+
+  useEffect(() => {
+    fetch('https://hacktiv8-instafood.herokuapp.com/posts/')
+      .then(response => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          return Promise.reject('something went wrong!');
+        }
+      })
+      .then(response => {
+        setPostDetails(response);
+      })
+      .catch(error => {
+        console.log('error', error);
+      });
+  }, []);
+
   return (
     <Box w={windowWidth}>
       <Box style={{ paddingHorizontal: 14 }} mb={'4'} borderColor={'gray.200'}>
@@ -57,7 +76,7 @@ const TrendingPost2 = ({ post }) => {
                 }}>Pizza Hut</Text>
               </Box>
               <Box px={'6'} mt={'1'} >
-                <Text fontSize={'sm'} color={'#E7E7E7'}>{post.createdAt}</Text>
+                <Text fontSize={'sm'} color={'#E7E7E7'}>{postDetails.createdAt}</Text>
               </Box>
             </View>
             <Flex direction='row' py={5} style={{ zIndex: 10, position: 'absolute', bottom: 0, left: 0, width: '100%', }}>
@@ -86,31 +105,45 @@ const TrendingPost2 = ({ post }) => {
                   </Box>
                 </Box>
                 <Box mt={4}>
-                  <Text fontSize={'md'} fontWeight={'bold'} color={'white'}>{likesFormat(post.likes)} likes</Text>
+                  <Text fontSize={'md'} fontWeight={'bold'} color={'white'}>0 likes</Text>
                 </Box>
               </Box>
             </Flex>
-            <SwiperFlatList
-              index={0}
-              style={{ overflow: 'hidden' }}
-              showPagination
-              paginationActiveColor={'white'}
-              paginationStyleItem={{ width: 9, height: 9, borderRadius: 9 / 2, marginHorizontal: 5, marginTop: -10, zIndex: 16, }}
-              data={post.imageUrl}
-              renderItem={({ item }) => (
+            {
+              post.images.length === 1 ? (
                 <View style={{ width: windowWidth * 0.9467, justifyContent: 'center', alignItems: 'center', }}>
-
                   <Image
                     alt='img'
                     style={{ width: '100%', resizeMode: 'cover', borderTopLeftRadius: 12, borderTopRightRadius: 12, height: 420 }}
                     source={{
-                      uri: item,
+                      uri: post.images[0],
                     }}
                   />
-
                 </View>
-              )}
-            />
+              ) : (
+                <SwiperFlatList
+                  index={0}
+                  style={{ overflow: 'hidden' }}
+                  showPagination
+                  paginationActiveColor={'white'}
+                  paginationStyleItem={{ width: 9, height: 9, borderRadius: 9 / 2, marginHorizontal: 5, marginTop: -10, zIndex: 16, }}
+                  data={post.images}
+                  renderItem={({ item }) => (
+                    <View style={{ width: windowWidth * 0.9467, justifyContent: 'center', alignItems: 'center', }}>
+
+                      <Image
+                        alt='img'
+                        style={{ width: '100%', resizeMode: 'cover', borderTopLeftRadius: 12, borderTopRightRadius: 12, height: 420 }}
+                        source={{
+                          uri: item,
+                        }}
+                      />
+
+                    </View>
+                  )}
+                />
+              )
+            }
           </View>
 
         </Box>
@@ -138,19 +171,19 @@ const TrendingPost2 = ({ post }) => {
                 resizeMode={'cover'}
                 borderRadius={'full'}
                 source={{
-                  uri: post.user.profilePicture,
+                  uri: post.user.profilePicture || 'https://cdn-icons.flaticon.com/png/512/668/premium/668709.png?token=exp=1645455342~hmac=b3c9e062eb098f015e5ccec8be7a4220',
                 }}
                 alt={'alternate picture'}
               />
             </Box>
             <Box ml={'3'} pt={1}>
-              <Text fontSize={'md'} fontWeight={'bold'}>{post.user.name}</Text>
+              <Text fontSize={'md'} fontWeight={'bold'}>{post.user.username}</Text>
               <Flex direction='row'>
-                <Text fontSize={'md'}>{post.caption}</Text>
+                <Text fontSize={'md'}>{postDetails.caption}</Text>
               </Flex>
             </Box>
           </Flex>
-          <Box px={'6'}  mb={'5'} >
+          <Box px={'6'} mb={'5'} >
             <Text fontSize={'sm'} color={'gray.500'}>View all 4 comments</Text>
           </Box>
         </Box>

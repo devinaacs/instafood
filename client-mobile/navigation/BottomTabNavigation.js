@@ -10,6 +10,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import PostDetail from '../screens/PostDetail';
+import OtherUserProfile from '../screens/OtherUserProfile';
 
 
 const Tab = createBottomTabNavigator();
@@ -71,6 +72,11 @@ export default function BottomTabNavigation() {
       <Tab.Screen
         name="Discover"
         component={Discover}
+        options={{ headerShown: false }}
+      />
+      <Tab.Screen
+        name="Other User"
+        component={OtherUserProfile}
         options={{ headerShown: false }}
       />
 

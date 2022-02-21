@@ -66,9 +66,9 @@ const Post = ({ post }) => {
           }}>
             <Box flexDirection={'row'}>
               <Ionicons
-                name="ios-location-sharp"
+                name='ios-location-sharp'
                 size={28}
-                color="white"
+                color='white'
                 style={{ paddingTop: 1, paddingRight: 4 }}
               />
               <Text style={{
@@ -155,13 +155,13 @@ const Post = ({ post }) => {
           borderWidth={'1'}
           borderBottomRadius={'xl'}
         >
-          <Flex direction="row" justify={'space-between'}>
-            <Flex direction="row" px={'3'} py={'2'}>
+          <Flex direction='row' justify={'space-between'}>
+            <Flex direction='row' px={'3'} py={'2'}>
               {/* <Box mr={'4'}>
-                <AntDesign name="like2" size={30} color="black" />
+                <AntDesign name='like2' size={30} color='black' />
               </Box>
               <Box>
-                <FontAwesome name="comment-o" size={30} color="black" />
+                <FontAwesome name='comment-o' size={30} color='black' />
               </Box> */}
             </Flex>
           </Flex>
@@ -187,7 +187,7 @@ const Post = ({ post }) => {
               <Text fontSize={'md'} fontWeight={'bold'}>
                 {post.user.username}
               </Text>
-              <Flex direction="row">
+              <Flex direction='row'>
                 <Text fontSize={'md'}>{post.caption}</Text>
               </Flex>
             </Box>
@@ -203,26 +203,26 @@ const Post = ({ post }) => {
 
 const dateFormat = (createdAt) => {
   let slicedDate = createdAt.slice(0, 10);
-  let months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+  let months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
   let reversedDate = slicedDate.split('-').reverse().join('-');
   let splitReversedDate = reversedDate.split('-');
   splitReversedDate[1] = months[+splitReversedDate[1] - 1];
-  let newDate = ["", "", ""];
+  let newDate = ['', '', ''];
 
   newDate[0] = splitReversedDate[1];
   newDate[1] = splitReversedDate[0];
   newDate[2] = splitReversedDate[2];
 
-  let outputDate = []
+  let outputDate = [];
 
   newDate.forEach((el, i) => {
-    if (i === 0) outputDate.push(`${el} `)
-    if (i === 1) outputDate.push(`${el}, `)
-    if (i === 2) outputDate.push(el)
-  })
+    if (i === 0) outputDate.push(`${el} `);
+    if (i === 1) outputDate.push(`${el}, `);
+    if (i === 2) outputDate.push(el);
+  });
 
   return outputDate;
-}
+};
 
 const likesFormat = likes => {
   let stringifiedLikes = likes + '';
