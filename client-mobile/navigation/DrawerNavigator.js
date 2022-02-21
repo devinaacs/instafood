@@ -8,8 +8,9 @@ const Drawer = createDrawerNavigator();
 const DrawerNavigator = () => {
   return (
     <Drawer.Navigator>
-      <Drawer.Screen name="Highlights" component={MainStackNavigation} options={{headerShown: false}}/>
-      <Drawer.Screen name="Profile" component={Profile} options={{headerShown: false}}/>
+      <Drawer.Screen name="Highlights" component={MainStackNavigation} options={{headerShown: false, swipeEnabled: false}}/>
+      
+      <Drawer.Screen name="Profile" component={Profile} options={{headerShown: false, swipeEnabled: false}}/>
     </Drawer.Navigator>
   );
 };

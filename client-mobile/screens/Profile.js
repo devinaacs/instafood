@@ -9,17 +9,18 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
-import Navbar from '../components/Navbar';
+import NavbarForProfile from '../components/NavbarForProfile';
 import UserPost from '../components/UserPost';
 import PostButton from '../components/PostButton';
 import { useNavigation } from '@react-navigation/native';
 
 export default function Profile() {
   const navigation = useNavigation();
+
   return (
     <SafeAreaView style={styles.container}>
       <View>
-        <Navbar />
+        <NavbarForProfile />
       </View>
       <View>
         <ScrollView>
