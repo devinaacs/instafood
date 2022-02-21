@@ -22,7 +22,10 @@ class Controller {
       };
       const token = createToken(payload);
 
-      res.status(200).json({ access_token: token });
+      res.status(200).json({
+        id: user.id,
+        access_token: token,
+      });
     } catch (err) {
       next(err);
     }
@@ -49,6 +52,7 @@ class Controller {
       const accessToken = createToken(payload);
 
       res.status(201).json({
+        id: user.id,
         access_token: accessToken,
       });
     } catch (err) {

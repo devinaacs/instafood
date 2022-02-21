@@ -37,6 +37,7 @@ _Body_
 _Response 201 - Created_
 ```json
 {
+  "id": "62135a620edb155e91dffd43",
   "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyMGYxMjFjZDUwNDBjNzM4MGZjN2RlYSIsIm5hbWUiOiJ1c2VyLm9uZSIsImVtYWlsIjoidXNlci5vbmVAbWFpbC5jb20iLCJpYXQiOjE2NDUxNTQ4NDV9.oIymYBnOn7TAA_0Kgf1raJVvibDt6JJiEgpet3twi5s"
 }
 ```
@@ -60,6 +61,7 @@ _Body_
 _Response 200 - Created_
 ```json
 {
+  "id": "62135a620edb155e91dffd43",
   "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyMGYxMjFjZDUwNDBjNzM4MGZjN2RlYSIsIm5hbWUiOiJ1c2VyLm9uZSIsImVtYWlsIjoidXNlci5vbmVAbWFpbC5jb20iLCJpYXQiOjE2NDUxNTQ4NDV9.oIymYBnOn7TAA_0Kgf1raJVvibDt6JJiEgpet3twi5s"
 }
 ```
