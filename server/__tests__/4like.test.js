@@ -26,11 +26,18 @@ let post_one = {
 };
 
 beforeAll(async () => {
-  await mongoose.connect('mongodb://localhost', { useNewUrlParser: true });
+  await mongoose.connect('mongodb://localhost:27017/instafood-test-4like', {
+    useNewUrlParser: true,
+  });
 
+  await User.deleteMany({});
   await Like.deleteMany({});
 
-  const user = await User.findOne({ email: 'user.one@mail.com' });
+  const user = await User.create({
+    username: 'user.one',
+    email: 'user.one@mail.com',
+    password: '12345aaa',
+  });
   post_one.user = user._id;
   newlike.user = user._id;
 
@@ -49,12 +56,12 @@ beforeAll(async () => {
   newlike._id = test_like._id;
 });
 
-// afterAll(async () => {
-//   await mongoose.disconnect();
-//   require('../helpers/redis').disconnect();
-// });
+afterAll(async () => {
+  await mongoose.disconnect();
+  require('../helpers/redis').disconnect();
+});
 
-describe.skip('test /likes endpoint', () => {
+describe('test /likes endpoint', () => {
   // done
   test('successfully CREATE like', done => {
     request(app)

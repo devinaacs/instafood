@@ -22,11 +22,13 @@ let userTwo = {
 };
 
 let query_username = {
-  username: 'user.one'
-}
+  username: 'user.one',
+};
 
 beforeAll(async () => {
-  await mongoose.connect('mongodb://localhost', { useNewUrlParser: true });
+  await mongoose.connect('mongodb://localhost:27017/instafood-test-1users', {
+    useNewUrlParser: true,
+  });
 
   await User.deleteMany({});
 
@@ -37,10 +39,10 @@ beforeAll(async () => {
   userTwo.id = createdUserTwo.id;
 });
 
-// afterAll(async () => {
-//   await mongoose.disconnect();
-//   require('../helpers/redis').disconnect();
-// });
+afterAll(async () => {
+  await mongoose.disconnect();
+  require('../helpers/redis').disconnect();
+});
 
 describe('test /users endpoint', () => {
   // done

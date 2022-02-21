@@ -42,11 +42,18 @@ let page_query = {
 };
 
 beforeAll(async () => {
-  await mongoose.connect('mongodb://localhost', { useNewUrlParser: true });
+  await mongoose.connect('mongodb://localhost:27017/instafood-test-2post', {
+    useNewUrlParser: true,
+  });
 
+  await User.deleteMany({});
   await Post.deleteMany({});
 
-  const user = await User.findOne({ email: 'user.one@mail.com' });
+  const user = await User.create({
+    username: 'user.one',
+    email: 'user.one@mail.com',
+    password: '12345aaa',
+  });
   post_one.user = user._id;
 
   access_token = createToken({
@@ -58,13 +65,12 @@ beforeAll(async () => {
   post_one._id = test_post._id;
 });
 
+afterAll(async () => {
+  await mongoose.disconnect();
+  require('../helpers/redis').disconnect();
+});
 
-// afterAll(async () => {
-//   await mongoose.disconnect();
-//   require('../helpers/redis').disconnect();
-// });
-
-describe.skip('test /posts endpoint', () => {
+describe('test /posts endpoint', () => {
   test('successfully CREATE post', done => {
     request(app)
       .post('/posts')

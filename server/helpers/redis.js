@@ -14,18 +14,14 @@ module.exports = {
       value = JSON.stringify(value);
     }
 
-    if (exp) {
-      return redis.set(key, value, 'EX', exp);
-    } else {
-      return redis.set(key, value);
-    }
+    return redis.set(key, value, 'EX', exp);
   },
 
   async del(key) {
     return redis.del(key);
   },
 
-  // disconnect() {
-  //   redis.disconnect();
-  // },
+  disconnect() {
+    redis.disconnect();
+  },
 };

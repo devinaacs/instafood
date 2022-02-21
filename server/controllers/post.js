@@ -4,6 +4,8 @@ const Post = require('../models/Post');
 const Like = require('../models/Like');
 const Comment = require('../models/Comment');
 const bucket = require('../helpers/fstorage').getBucket();
+const vision = require('@google-cloud/vision');
+const client = new vision.ImageAnnotatorClient();
 
 class Controller {
   static async createPost(req, res, next) {
@@ -50,94 +52,101 @@ class Controller {
   }
 
   static async listPosts(req, res, next) {
-    const filter = {};
-    let pageSize = 20;
-    let pageNumber = 1;
+    try {
+      const filter = {};
+      let pageSize = 20;
+      let pageNumber = 1;
 
-    if (req.query.place_id) {
-      filter.place_id = req.query.place_id;
-    }
+      if (req.query.place_id) {
+        filter.place_id = req.query.place_id;
+      }
 
-    if (req.query.user_id) {
-      filter.user = req.query.user_id;
-    }
+      if (req.query.user_id) {
+        filter.user = req.query.user_id;
+      }
 
-    if (req.query.tag) {
-      filter.tags = req.query.tag;
-    }
+      if (req.query.tag) {
+        filter.tags = req.query.tag;
+      }
 
-    if (req.query.page_size) {
-      pageSize = req.query.page_size;
-    }
+      if (req.query.page_size) {
+        pageSize = req.query.page_size;
+      }
 
-    if (req.query.page_number) {
-      pageNumber = req.query.page_number;
-    }
+      if (req.query.page_number) {
+        pageNumber = req.query.page_number;
+      }
 
-    const postsCount = await Post.countDocuments(filter);
-    let posts = await Post.find(filter, { __v: 0 })
-      .populate({
-        path: 'user',
-        select: { username: 1 },
-      })
-      .populate({
-        path: 'like_ids',
-        select: { user: 1 },
-        populate: {
+      const postsCount = await Post.countDocuments(filter);
+      let posts = await Post.find(filter, { __v: 0 })
+        .populate({
           path: 'user',
           select: { username: 1 },
-        },
-      })
-      .populate({
-        path: 'comment_ids',
-        select: { comment: 1 },
-        populate: {
-          path: 'user',
-          select: { username: 1 },
-        },
-      })
-      .skip((pageNumber - 1) * pageSize)
-      .limit(pageSize)
-      .sort({ created_at: -1 });
-
-    posts = posts.map(post => {
-      post = post.toObject();
-      post.id = post._id;
-      post.user.id = post.user._id;
-
-      post.likes = post.like_ids.map(like => ({
-        id: like._id,
-        user: !like.user
-          ? null
-          : {
-            id: like.user._id,
-            username: like.user.username,
+        })
+        .populate({
+          path: 'like_ids',
+          select: { user: 1 },
+          populate: {
+            path: 'user',
+            select: { username: 1 },
           },
-      }));
-
-      post.comments = post.comment_ids.map(comment => ({
-        id: comment._id,
-        comment: comment.comment,
-        user: !comment.user
-          ? null
-          : {
-            id: comment.user._id,
-            username: comment.user.username,
+        })
+        .populate({
+          path: 'comment_ids',
+          select: { comment: 1 },
+          populate: {
+            path: 'user',
+            select: { username: 1 },
           },
-      }));
+        })
+        .skip((pageNumber - 1) * pageSize)
+        .limit(pageSize)
+        .sort({ created_at: -1 });
 
-      delete post._id;
-      delete post.user._id;
-      delete post.like_ids;
-      delete post.comment_ids;
+      posts = posts.map(post => {
+        post = post.toObject();
+        post.id = post._id;
 
-      return post;
-    });
+        if (post.user) {
+          post.user.id = post.user._id;
+          delete post.user._id;
+        }
 
-    res.status(200).json({
-      pages_count: Math.ceil(postsCount / pageSize),
-      items: posts,
-    });
+        post.likes = post.like_ids.map(like => ({
+          id: like._id,
+          user: !like.user
+            ? null
+            : {
+              id: like.user._id,
+              username: like.user.username,
+            },
+        }));
+
+        post.comments = post.comment_ids.map(comment => ({
+          id: comment._id,
+          comment: comment.comment,
+          user: !comment.user
+            ? null
+            : {
+              id: comment.user._id,
+              username: comment.user.username,
+            },
+        }));
+
+        delete post._id;
+        delete post.like_ids;
+        delete post.comment_ids;
+
+        return post;
+      });
+
+      res.status(200).json({
+        pages_count: Math.ceil(postsCount / pageSize),
+        items: posts,
+      });
+    } catch (err) {
+      next(err);
+    }
   }
 
   static async findPostById(req, res, next) {
@@ -151,7 +160,7 @@ class Controller {
           path: 'like_ids',
           select: { UserId: 1 },
           populate: {
-            path: 'UserId',
+            path: 'user',
             select: { username: 1 },
           },
         })
@@ -159,7 +168,7 @@ class Controller {
           path: 'comment_ids',
           select: { comment: 1 },
           populate: {
-            path: 'UserId',
+            path: 'user',
             select: { username: 1 },
           },
         });
@@ -173,8 +182,8 @@ class Controller {
       post.likes = post.like_ids.map(like => ({
         id: like._id,
         user: {
-          id: like.UserId._id,
-          username: like.UserId.username,
+          id: like.user._id,
+          username: like.user.username,
         },
       }));
 
@@ -182,8 +191,8 @@ class Controller {
         id: comment._id,
         comment: comment.comment,
         user: {
-          id: comment.UserId._id,
-          username: comment.UserId.username,
+          id: comment.user._id,
+          username: comment.user.username,
         },
       }));
 
@@ -233,12 +242,42 @@ class Controller {
       next(err);
     }
   }
+
+  static async getImageLables(req, res, next) {
+    try {
+      const lables = [];
+
+      for (let i = 0; i < req.files.length; i++) {
+        const file = req.files[i];
+        const imageLables = await getLables(file);
+        lables.push(imageLables);
+        cleanTempFile(file);
+      }
+
+      res.json(lables);
+    } catch (err) {
+      next(err);
+    }
+  }
+}
+
+async function getLables(file) {
+  const [result] = await client.labelDetection(
+    path.join(__dirname, `../uploads/${file.filename}`)
+  );
+  const labels = result.labelAnnotations;
+
+  return labels.map(v => ({
+    name: v.description,
+    score: v.score,
+  }));
 }
 
 async function uploadFile(postId, file, index) {
   const options = {
-    destination: `${process.env.NODE_ENV
-      }/posts/${postId}/img-${index}${path.extname(file.filename)}`,
+    destination: `${
+      process.env.NODE_ENV
+    }/posts/${postId}/img-${index}${path.extname(file.filename)}`,
     validation: 'crc32c',
     resumable: true,
     public: true,
