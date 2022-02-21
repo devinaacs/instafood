@@ -32,12 +32,21 @@ export default function TrendingPlacesCard({ places }) {
   return (
     <Box>
       <TouchableOpacity style={styles.cardContainer}>
-        <Image
-          style={styles.imageStyle}
-          source={{
-            uri: `https://hacktiv8-instafood.herokuapp.com/places/photo?ref=${placeDetails.photos[0]}`,
-          }}
-        />
+        {
+          placeDetails ? (
+            <Image
+              style={styles.imageStyle}
+              source={{
+                uri: `https://hacktiv8-instafood.herokuapp.com/places/photo?ref=${placeDetails.photos[0]}`,
+              }}
+            />
+          ) : (
+            <Image
+              style={styles.imageStyle}
+              source={require('../assets/loading.gif')}
+            />
+          )
+        }
         <View style={styles.bottomTextContainer}>
           <Box
             style={{
