@@ -234,6 +234,7 @@ class Controller {
       await Post.deleteOne({ _id: id });
       await Like.deleteMany({ PostId: { $eq: post._id } });
       await Comment.deleteMany({ PostId: { $eq: post._id } });
+
       res.status(200).json({
         message: 'post has been deleted successfully',
       });

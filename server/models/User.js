@@ -22,6 +22,7 @@ const schema = mongoose.Schema({
         throw Error('Length of the password should be between 6-1000');
       }
     },
+    select: false,
   },
   image_url: String,
   created_at: {
@@ -39,8 +40,6 @@ const schema = mongoose.Schema({
 });
 
 schema.pre('save', async function save(next) {
-  if (!this.isModified('password')) return next();
-
   this.password = await createHash(this.password);
   return next();
 });
