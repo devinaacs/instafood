@@ -4,6 +4,8 @@ const Post = require('../models/Post');
 const Like = require('../models/Like');
 const Comment = require('../models/Comment');
 const bucket = require('../helpers/fstorage').getBucket();
+const vision = require('@google-cloud/vision');
+const client = new vision.ImageAnnotatorClient();
 
 class Controller {
   static async createPost(req, res, next) {
@@ -236,6 +238,37 @@ class Controller {
       next(err);
     }
   }
+
+  static async getImageLables(req, res, next) {
+    try {
+      const lables = [];
+
+      for (let i = 0; i < req.files.length; i++) {
+        const file = req.files[i];
+        const imageLables = await getLables(file);
+
+        lables.push(imageLables);
+
+        cleanTempFile(file);
+      }
+
+      res.json(lables);
+    } catch (err) {
+      next(err);
+    }
+  }
+}
+
+async function getLables(file) {
+  const [result] = await client.labelDetection(
+    path.join(__dirname, `../uploads/${file.filename}`)
+  );
+  const labels = result.labelAnnotations;
+
+  return labels.map(v => ({
+    name: v.description,
+    score: v.score,
+  }));
 }
 
 async function uploadFile(postId, file, index) {

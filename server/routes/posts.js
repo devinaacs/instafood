@@ -8,5 +8,6 @@ router.get('/', Controller.listPosts);
 router.get('/:id', Controller.findPostById);
 router.put('/:id', auth, Controller.editPostById);
 router.delete('/:id', auth, Controller.deletePost);
+router.post('/images-lables', auth, uploader, Controller.getImageLables);
 
 module.exports = router;
