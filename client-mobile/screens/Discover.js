@@ -3,11 +3,12 @@ import { Box, FlatList, ScrollView, StatusBar, Text } from 'native-base';
 import Post from '../components/Post';
 import PostButton from '../components/PostButton';
 import SearchButton from '../components/SearchButton';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 export default function Discover() {
   const [posts, setPosts] = useState([]);
   const [refetch, setRefetch] = useState(false);
+  const { access_token } = useSelector((state) => state.user);
 
   const dispatch = useDispatch();
 
@@ -26,7 +27,7 @@ export default function Discover() {
       .catch(error => {
         console.log('error', error);
       });
-  }, []);
+  }, [access_token]);
 
   const handleRefresh = () => {
     setRefetch(true);
