@@ -28,7 +28,7 @@ let post_one = {
 beforeAll(async () => {
   await mongoose.connect('mongodb://localhost', { useNewUrlParser: true });
 
-  // await Like.deleteMany({});
+  await Like.deleteMany({});
 
   const user = await User.findOne({ email: 'user.one@mail.com' });
   post_one.user = user._id
@@ -43,11 +43,13 @@ beforeAll(async () => {
   post_one._id = test_post._id;
 
   newlike.post_id = post_one._id;
+  newlike.post = post_one._id;
+
   const test_like = await Like.create(newlike);
   newlike._id = test_like._id;
 });
 
-describe('test /posts endpoint', () => {
+describe.skip('test /likes endpoint', () => {
   // done
   test('successfully CREATE like', done => {
     request(app)
@@ -57,10 +59,8 @@ describe('test /posts endpoint', () => {
       .set('access_token', access_token)
       .expect(201)
       .end((err, res) => {
-        if (err) {
-          console.log(err);
-          return done(err);
-        }
+        if (err) return done(err);
+
         expect(res.body).toEqual(expect.any(Object));
         expect(res.body).toEqual(expect.objectContaining({
           "_id": expect.any(String),
@@ -76,25 +76,20 @@ describe('test /posts endpoint', () => {
   });
 
   // done
-  test('successfully GET ALL likes', done => {
+  test('successfully GET all likes', done => {
     request(app)
-      .get('/likes')
-      .set('access_token', access_token)
+      .get(`/likes`)
       .set('Accept', 'application/json')
+      .set('access_token', access_token)
       .expect(200)
       .end((err, res) => {
-        if (err) {
-          console.log(err);
-          return done(err);
-        }
+        if (err) return done(err);
+
         expect(res.body).toBeInstanceOf(Array);
         expect(res.body[0]).toEqual(expect.objectContaining({
           "_id": expect.any(String),
-          "user": expect.objectContaining({
-            "_id": expect.any(String),
-            "username": expect.any(String)
-          }),
-
+          "user": expect.any(String),
+          "post": expect.any(String)
         }))
 
         done();
@@ -112,6 +107,11 @@ describe('test /posts endpoint', () => {
         if (err) return done(err);
 
         expect(res.body).toBeInstanceOf(Array);
+        expect(res.body[0]).toEqual(expect.objectContaining({
+          "_id": expect.any(String),
+          "user": expect.any(String),
+          "post": expect.any(String)
+        }))
 
         done();
       });
@@ -173,7 +173,7 @@ describe('test /posts endpoint', () => {
   });
 
   // done
-  test('failed GET likes BY POST ID (wrong post id)', done => {
+  test('failed GET likes BY POST ID (no access token)', done => {
     request(app)
       .get(`/likes/${invalid_id}`)
       .set('Accept', 'application/json')
@@ -190,7 +190,7 @@ describe('test /posts endpoint', () => {
   });
 
   // done
-  test('failed DELETE likes (wrong post id)', done => {
+  test('failed DELETE likes (no access token)', done => {
     request(app)
       .delete(`/likes/${invalid_id}`)
       .set('Accept', 'application/json')

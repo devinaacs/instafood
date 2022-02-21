@@ -21,18 +21,7 @@ class Controller {
   }
 
   static async listLikes(req, res, next) {
-    const likes = await Like.find(
-      {},
-      { __v: 0, created_at: 0, updated_at: 0 }
-    )
-      .populate({
-        path: 'user',
-        select: { username: 1 },
-      })
-      .populate({
-        path: 'post',
-        select: { place_id: 1, caption: 1, images: 1, tags: 1 },
-      });
+    const likes = await Like.find({}, { __v: 0, created_at: 0, updated_at: 0 })
 
     res.status(200).json(likes);
   }
@@ -43,16 +32,7 @@ class Controller {
 
       const likes = await Like.find(
         { post: postId },
-        { __v: 0, created_at: 0, updated_at: 0 }
-      )
-        .populate({
-          path: 'user',
-          select: { username: 1 },
-        })
-        .populate({
-          path: 'post',
-          select: { place_id: 1, caption: 1, images: 1, tags: 1 },
-        });
+        { __v: 0, created_at: 0, updated_at: 0 });
 
       if (likes.length === 0) throw { name: 'NOT_FOUND' };
 

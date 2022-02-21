@@ -18,10 +18,7 @@ let post_one = {
   place_id: '6210cc70bf599130a9a9c40f',
   caption: 'Test caption food',
   tags: ['test', 'success', 'failed'],
-  // images: [testImage]
-  images: [
-    'https://storage.googleapis.com/hacktiv8-instafood.appspot.com/development/posts/621021b010577cdc8447bfee/img-1.jpg',
-  ],
+  // images: [testImage] 
 };
 
 const edit_post = { caption: 'caption yg sudah di edit' };
@@ -52,15 +49,24 @@ beforeAll(async () => {
 });
 
 describe('test /posts endpoint', () => {
-  test('successfully CREATE post', done => {
+  test.skip('successfully CREATE post', done => {
     request(app)
       .post('/posts')
-      .send(post_one)
-      .set('Accept', 'application/json')
+      .field("place_id", post_one.place_id)
+      .field("caption", post_one.caption)
+      .field("tags", post_one.tags[0])
+      .field("tags", post_one.tags[1])
+      .field("tags", post_one.tags[2])
+      .attach('images', '../server/assets/BebekBkb.jpg')
+      .set('content-type', 'multipart/form-data')
+      // .set('Accept', 'application/json')
       .set('access_token', access_token)
       .expect(201)
       .end((err, res) => {
-        if (err) return done(err);
+        if (err) {
+          console.log(err)
+          return done(err)
+        };
 
         expect(res.body).toEqual(expect.any(Object));
         expect(res.body).toEqual(expect.objectContaining({

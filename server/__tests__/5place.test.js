@@ -13,7 +13,7 @@ beforeAll(async () => {
   await mongoose.connect('mongodb://localhost', { useNewUrlParser: true });
 });
 
-describe('test /posts endpoint', () => {
+describe.skip('test places endpoint', () => {
   // done
   test('successfully GET ALL places', done => {
     request(app)

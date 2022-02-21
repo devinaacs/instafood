@@ -57,32 +57,28 @@ class Controller {
   }
 
   static async listUsers(req, res, next) {
-    try {
-      const filter = {};
+    const filter = {};
 
-      if (req.query.username) {
-        filter.username = {
-          $regex: req.query.username,
-        };
-      }
-
-      let users = await User.find(filter, {
-        email: 0,
-        __v: 0,
-      });
-
-      users = users.map(v => {
-        v = v.toObject();
-        v.id = v._id;
-        delete v._id;
-
-        return v;
-      });
-
-      res.status(200).json(users);
-    } catch (err) {
-      next(err);
+    if (req.query.username) {
+      filter.username = {
+        $regex: req.query.username,
+      };
     }
+
+    let users = await User.find(filter, {
+      email: 0,
+      __v: 0,
+    });
+
+    users = users.map(v => {
+      v = v.toObject();
+      v.id = v._id;
+      delete v._id;
+
+      return v;
+    });
+
+    res.status(200).json(users);
   }
 
   static async findUserById(req, res, next) {

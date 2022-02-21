@@ -3,41 +3,35 @@ const Post = require('../models/Post');
 
 class Controller {
   static async createComment(req, res, next) {
-    try {
-      const { post_id, comment } = req.body;
+    const { post_id, comment } = req.body;
 
-      const newcomment = new Comment({
-        user: req.currentUser._id,
-        post: post_id,
-        comment: comment,
-      });
-      await newcomment.save();
+    const newcomment = new Comment({
+      user: req.currentUser._id,
+      post: post_id,
+      comment: comment,
+    });
+    await newcomment.save();
 
-      const post = await Post.findOne({ _id: post_id });
-      post.comment_ids.push(newcomment._id);
-      await post.save();
+    const post = await Post.findOne({ _id: post_id });
+    post.comment_ids.push(newcomment._id);
+    await post.save();
 
-      res.status(201).json(newcomment);
-    } catch (err) {
-      next(err);
-    }
+    res.status(201).json(newcomment);
   }
 
   static async listComments(req, res, next) {
-    try {
-      const comments = await Comment.find();
+    const comments = await Comment.find({}, { __v: 0, created_at: 0, updated_at: 0 });
 
-      res.status(200).json(comments);
-    } catch (err) {
-      next(err);
-    }
+    res.status(200).json(comments);
   }
 
   static async findCommentByPostId(req, res, next) {
     try {
       const { postId } = req.params;
 
-      const comment = await Comment.find({ post: postId });
+      const comment = await Comment.find(
+        { post: postId },
+        { __v: 0, created_at: 0, updated_at: 0 });
 
       if (comment.length === 0) throw { name: 'NOT_FOUND' };
 

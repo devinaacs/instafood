@@ -28,4 +28,8 @@ module.exports = {
   async keys(pattern) {
     return redis.keys(pattern);
   },
+
+  disconnect() {
+    redis.disconnect();
+  }
 };

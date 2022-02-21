@@ -37,7 +37,8 @@ module.exports = (err, req, res, next) => {
       message = 'Data not found';
       break;
     default:
-      console.log(err);
+      status = 500;
+      message = 'internal server error'
   }
 
   res.status(status).json({ message });
