@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   StyleSheet,
   View,
@@ -9,14 +9,33 @@ import {
 } from 'react-native';
 import { Box } from 'native-base';
 
-export default function TrendingPlacesCard() {
+export default function TrendingPlacesCard({ places }) {
+  const [placeDetails, setPlaceDetails] = useState('');
+  const [placeImages, setPlaceImages] = useState('');
+  useEffect(() => {
+    fetch(`https://hacktiv8-instafood.herokuapp.com/places/${places.place_id}`)
+      .then(response => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          return Promise.reject('something went wrong!');
+        }
+      })
+      .then(response => {
+        setPlaceDetails(response);
+      })
+      .catch(error => {
+        console.log('error', error);
+      });
+  }, []);
+
   return (
-    <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} contentContainerStyle={{paddingEnd: 13}}>
+    <Box>
       <TouchableOpacity style={styles.cardContainer}>
         <Image
           style={styles.imageStyle}
           source={{
-            uri: 'https://images.unsplash.com/photo-1529042410759-befb1204b468?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=686&q=80',
+            uri: `https://hacktiv8-instafood.herokuapp.com/places/photo?ref=${placeDetails.photos[0]}`,
           }}
         />
         <View style={styles.bottomTextContainer}>
@@ -38,12 +57,15 @@ export default function TrendingPlacesCard() {
               },
             }}
           />
-          <Text style={styles.textStyle}>Place Name Here!</Text>
+          <Text style={styles.textStyle}>{placeDetails.name}</Text>
         </View>
       </TouchableOpacity>
 
-      
-    </ScrollView>
+    </Box>
+
+
+
+
   );
 }
 

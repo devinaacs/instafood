@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   StyleSheet,
   View,
@@ -14,6 +14,26 @@ import PostButton from '../components/PostButton';
 import TrendingPost2 from '../components/TrendingPost2';
 
 export default function Highlights() {
+  const [trendPlaces, setTrendingPlaces] = useState([]);
+
+  useEffect(() => {
+    fetch('https://hacktiv8-instafood.herokuapp.com/trending/places')
+      .then(response => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          return Promise.reject('something went wrong!');
+        }
+      })
+      .then(response => {
+        setTrendingPlaces(response);
+      })
+      .catch(error => {
+        console.log('error', error);
+      });
+  }, []);
+
+
   return (
     <SafeAreaView style={styles.container}>
       <View>
@@ -33,7 +53,13 @@ export default function Highlights() {
         <View
           style={{ backgroundColor: 'white', height: 260, paddingVertical: 10 }}
         >
-          <TrendingPlacesCard />
+          <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} contentContainerStyle={{ paddingEnd: 13 }}>
+            {trendPlaces.length > 0 ?
+              trendPlaces.map((places, index) => (
+                <TrendingPlacesCard places={places} key={index} />
+              )) : null
+            }
+          </ScrollView>
         </View>
         <View style={styles.trendingTags}>
           <View>
@@ -109,10 +135,11 @@ const styles = StyleSheet.create({
 const posts = [
   {
     id: 1,
-    imageUrl:[
+    imageUrl: [
       'https://images.pexels.com/photos/3779791/pexels-photo-3779791.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260',
       'https://images.unsplash.com/photo-1529042410759-befb1204b468?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=686&q=80',
-      'https://images.unsplash.com/photo-1529042410759-befb1204b468?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=686&q=80'],
+      'https://images.unsplash.com/photo-1529042410759-befb1204b468?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=686&q=80',
+    ],
     user: {
       name: 'Bambang',
       profilePicture:
@@ -143,7 +170,7 @@ const posts = [
   },
   {
     id: 2,
-    imageUrl:[
+    imageUrl: [
       'https://images.unsplash.com/photo-1529042410759-befb1204b468?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=686&q=80',
       'https://images.unsplash.com/photo-1529042410759-befb1204b468?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=686&q=80',
       'https://images.unsplash.com/photo-1529042410759-befb1204b468?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=686&q=80',
