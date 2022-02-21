@@ -50,25 +50,39 @@ const Post = ({ post }) => {
             alt={'alternate picture'}
           /> */}
         <View style={{ backgroundColor: 'white' }}>
-          <SwiperFlatList
-            index={0}
-            style={{ overflow: 'hidden' }}
-            showPagination
-            paginationActiveColor={'blue'}
-            paginationStyleItem={{ width: 9, height: 9, borderRadius: 9 / 2, marginHorizontal: 5, marginTop: 53, }}
-            data={post.images}
-            renderItem={({ item }) => (
+          {
+            post.images.length === 1 ? (
               <View style={{ width: windowWidth * 0.9347, justifyContent: 'center', alignItems: 'center', }}>
                 <Image
                   alt='img'
                   style={{ width: '100%', resizeMode: 'cover', borderTopLeftRadius: 10, borderTopRightRadius: 10, height: 470 }}
                   source={{
-                    uri: item,
+                    uri: post.images[0],
                   }}
                 />
               </View>
-            )}
-          />
+            ) : (
+              <SwiperFlatList
+                index={0}
+                style={{ overflow: 'hidden' }}
+                showPagination
+                paginationActiveColor={'blue'}
+                paginationStyleItem={{ width: 9, height: 9, borderRadius: 9 / 2, marginHorizontal: 5, marginTop: 53, }}
+                data={post.images}
+                renderItem={({ item }) => (
+                  <View style={{ width: windowWidth * 0.9347, justifyContent: 'center', alignItems: 'center', }}>
+                    <Image
+                      alt='img'
+                      style={{ width: '100%', resizeMode: 'cover', borderTopLeftRadius: 10, borderTopRightRadius: 10, height: 470 }}
+                      source={{
+                        uri: item,
+                      }}
+                    />
+                  </View>
+                )}
+              />
+            )
+          }
         </View>
 
         <Box
