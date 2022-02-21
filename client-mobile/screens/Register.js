@@ -121,9 +121,9 @@ export default function Register() {
           }
           placeholder="Password"
         />
-        <Text>{email}</Text>
+        {/* <Text>{email}</Text>
         <Text>{username}</Text>
-        <Text>{password}</Text>
+        <Text>{password}</Text> */}
         <Button
           onPress={handleRegister}
           colorScheme="red"
