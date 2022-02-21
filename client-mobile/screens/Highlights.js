@@ -26,9 +26,9 @@ export default function Highlights() {
               Trending Places
             </Text>
           </View>
-          <TouchableOpacity style={{ marginRight: 5, marginTop: 5 }}>
+          {/* <TouchableOpacity style={{ marginRight: 5, marginTop: 5 }}>
             <Text style={{ color: '#FF8F00', fontSize: 18 }}>see all</Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
         <View
           style={{ backgroundColor: 'white', height: 260, paddingVertical: 10 }}
@@ -41,11 +41,11 @@ export default function Highlights() {
               Trending Tags
             </Text>
           </View>
-          <TouchableOpacity style={{ marginRight: 5, marginTop: 5 }}>
+          {/* <TouchableOpacity style={{ marginRight: 5, marginTop: 5 }}>
             <Text style={{ color: '#FF8F00', fontSize: 18 }}>see all</Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
-        <View style={{ backgroundColor: 'white', height: 65 }}>
+        <View style={{ backgroundColor: 'white', height: 65, marginBottom: 7 }}>
           <TrendingTags />
         </View>
         <View style={styles.trendingPosts}>
@@ -54,9 +54,9 @@ export default function Highlights() {
               Trending Posts
             </Text>
           </View>
-          <TouchableOpacity style={{ marginRight: 5, marginTop: 5 }}>
+          {/* <TouchableOpacity style={{ marginRight: 5, marginTop: 5 }}>
             <Text style={{ color: '#FF8F00', fontSize: 18 }}>see all</Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
 
         <View style={styles.trendingPostContainer}>

@@ -11,36 +11,6 @@ const TrendingPost2 = ({ post }) => {
     <Box w={windowWidth}>
       <Box style={{ paddingHorizontal: 14 }} mb={'4'} borderColor={'gray.200'}>
         <Box>
-          {/* <Box
-            borderTopRadius={'xl'}
-            flexDirection={'row'}
-            alignItems={'center'}
-            bg={{
-              linearGradient: {
-                colors: ['black', 'transparent'],
-                start: [0, 0],
-                end: [0, 1]
-              }
-            }}
-            position={'absolute'}
-            zIndex={10}
-            height={'20'}
-            width={'full'}
-            px={'3'}
-          >
-            <Ionicons name='ios-location-sharp' size={30} color='white' />
-            <Text ml={'3'} fontSize={'lg'} fontWeight={'bold'} color={'white'}>{post.place}</Text>
-          </Box>
-          <Image
-            borderTopRadius={15}
-            width={'full'}
-            height={'full'}
-            resizeMode={'cover'}
-            source={{
-              uri: post.imageUrl,
-            }}
-            alt={'alternate picture'}
-          /> */}
           <View style={{ backgroundColor: 'white' }}>
             <SwiperFlatList
               index={0}
