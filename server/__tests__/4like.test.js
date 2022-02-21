@@ -31,8 +31,8 @@ beforeAll(async () => {
   await Like.deleteMany({});
 
   const user = await User.findOne({ email: 'user.one@mail.com' });
-  post_one.user = user._id
-  newlike.user = user._id
+  post_one.user = user._id;
+  newlike.user = user._id;
 
   access_token = createToken({
     id: user._id,
@@ -49,7 +49,12 @@ beforeAll(async () => {
   newlike._id = test_like._id;
 });
 
-describe.skip('test /likes endpoint', () => {
+afterAll(async () => {
+  await mongoose.disconnect();
+  require('../helpers/redis').disconnect();
+});
+
+describe('test /likes endpoint', () => {
   // done
   test('successfully CREATE like', done => {
     request(app)
@@ -62,14 +67,16 @@ describe.skip('test /likes endpoint', () => {
         if (err) return done(err);
 
         expect(res.body).toEqual(expect.any(Object));
-        expect(res.body).toEqual(expect.objectContaining({
-          "_id": expect.any(String),
-          "user": expect.any(String),
-          "post": expect.any(String),
-          "created_at": expect.any(String),
-          "updated_at": expect.any(String),
-          "__v": 0
-        }))
+        expect(res.body).toEqual(
+          expect.objectContaining({
+            _id: expect.any(String),
+            user: expect.any(String),
+            post: expect.any(String),
+            created_at: expect.any(String),
+            updated_at: expect.any(String),
+            __v: 0,
+          })
+        );
 
         done();
       });
@@ -78,7 +85,7 @@ describe.skip('test /likes endpoint', () => {
   // done
   test('successfully GET all likes', done => {
     request(app)
-      .get(`/likes`)
+      .get('/likes')
       .set('Accept', 'application/json')
       .set('access_token', access_token)
       .expect(200)
@@ -86,11 +93,13 @@ describe.skip('test /likes endpoint', () => {
         if (err) return done(err);
 
         expect(res.body).toBeInstanceOf(Array);
-        expect(res.body[0]).toEqual(expect.objectContaining({
-          "_id": expect.any(String),
-          "user": expect.any(String),
-          "post": expect.any(String)
-        }))
+        expect(res.body[0]).toEqual(
+          expect.objectContaining({
+            _id: expect.any(String),
+            user: expect.any(String),
+            post: expect.any(String),
+          })
+        );
 
         done();
       });
@@ -107,11 +116,13 @@ describe.skip('test /likes endpoint', () => {
         if (err) return done(err);
 
         expect(res.body).toBeInstanceOf(Array);
-        expect(res.body[0]).toEqual(expect.objectContaining({
-          "_id": expect.any(String),
-          "user": expect.any(String),
-          "post": expect.any(String)
-        }))
+        expect(res.body[0]).toEqual(
+          expect.objectContaining({
+            _id: expect.any(String),
+            user: expect.any(String),
+            post: expect.any(String),
+          })
+        );
 
         done();
       });

@@ -25,11 +25,7 @@ module.exports = {
     return redis.del(key);
   },
 
-  async keys(pattern) {
-    return redis.keys(pattern);
-  },
-
   disconnect() {
     redis.disconnect();
-  }
+  },
 };
