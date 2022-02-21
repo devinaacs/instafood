@@ -9,6 +9,7 @@ import {
   Image
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useNavigation } from '@react-navigation/native';
 import Navbar from '../components/Navbar';
 import TrendingPlacesCard from '../components/TrendingPlacesCard';
 import TrendingTags from '../components/TrendingTags';
@@ -19,6 +20,7 @@ export default function Highlights() {
   const [trendPlaces, setTrendingPlaces] = useState([]);
   const [trendingTags, setTrendingTags] = useState([]);
   const [trendingPosts, setTrendingPosts] = useState([]);
+  const navigation = useNavigation();
 
   useEffect(() => {
     fetch('https://hacktiv8-instafood.herokuapp.com/trending/places')

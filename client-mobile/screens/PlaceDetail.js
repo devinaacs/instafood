@@ -4,9 +4,12 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { Input, Icon, Stack, Center, Button } from 'native-base';
 import NavbarForPlaceDetail from '../components/NavbarForPlaceDetail';
+import { useRoute, useNavigation } from "@react-navigation/native";
 const windowWidth = Dimensions.get('window').width;
 import { SwiperFlatList } from 'react-native-swiper-flatlist';
 import TrendingPost2 from '../components/Post';
+import PostDetail from './PostDetail';
+
 
 const images = [
   'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80',
@@ -16,6 +19,10 @@ const images = [
 ];
 
 export default function PlaceDetail() {
+  const route = useRoute();
+  const navigation = useNavigation();
+  const { placeDetails } = route.params;
+
   return (
     <SafeAreaView style={styles.container}>
       <View>
@@ -26,9 +33,9 @@ export default function PlaceDetail() {
           <ScrollView>
             <View style={styles.placeContainer}>
               <View style={{ backgroundColor: 'white', paddingHorizontal: 16, paddingBottom: 10, flexDirection: 'row', justifyContent: 'space-between' }}>
-                <Text style={styles.placeDetailName}>Kitchen & Coffee</Text>
+                <Text style={styles.placeDetailName}>{placeDetails.name}</Text>
                 <Image
-                  source={{ uri: 'https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/restaurant-71.png' }}
+                  source={{ uri: placeDetails.icon }}
                   style={{
                     width: 33,
                     height: 33,
@@ -46,22 +53,22 @@ export default function PlaceDetail() {
                   showPagination
                   paginationStyle={{ height: 13 }}
                   paginationStyleItem={{ width: 10, height: 10, borderRadius: 10 / 2, marginHorizontal: 6 }}
-                  data={images}
+                  data={placeDetails.photos}
                   renderItem={({ item }) => (
                     <View style={{ width: windowWidth, justifyContent: 'center', alignItems: 'center', }}>
                       <Image
                         style={{ width: windowWidth * 0.93, height: 320, resizeMode: 'cover', borderRadius: 13 }}
                         source={{
-                          uri: item,
+                          uri: `https://hacktiv8-instafood.herokuapp.com/places/photo?ref=${item}`,
                         }}
                       />
                     </View>
                   )}
                 />
               </View>
-              <View style={{ backgroundColor: 'white', padding: 5, paddingTop: 12, flexDirection: 'row' }}>
+              <View style={{ backgroundColor: 'white', padding: 5, paddingTop: 12, flexDirection: 'row', width: '90%' }}>
                 <Ionicons name="location-sharp" size={34} color="#929292" style={{ paddingHorizontal: 10 }} />
-                <Text style={{ fontSize: 17, paddingTop: 5, }}>16, Jl. Denpasar Raya No.109, RT.16/RW.4...</Text>
+                <Text style={{ fontSize: 17, paddingTop: 5, textAlign: 'justify'}}>{placeDetails.address}</Text>
               </View>
             </View>
           </ScrollView>

@@ -9,9 +9,11 @@ import {
   ActivityIndicator
 } from 'react-native';
 import { Box } from 'native-base';
+import { useNavigation } from "@react-navigation/native";
 
 export default function TrendingPlacesCard({ places }) {
   const [placeDetails, setPlaceDetails] = useState('');
+  const navigation = useNavigation();
 
   useEffect(() => {
     fetch(`https://hacktiv8-instafood.herokuapp.com/places/${places.place_id}`)
@@ -32,7 +34,10 @@ export default function TrendingPlacesCard({ places }) {
 
   return (
     <Box>
-      <TouchableOpacity style={styles.cardContainer}>
+      <TouchableOpacity style={styles.cardContainer}
+        onPress={() => {
+          navigation.push('PlaceDetail' , {placeDetails});
+        }}>
         {
           placeDetails ? (
             <Image
