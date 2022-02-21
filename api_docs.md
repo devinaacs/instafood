@@ -11,6 +11,7 @@ List of available endpoints:
 - [GET /places/:id](#get-placesid)
 - [POST /posts](#post-posts)
 - [GET /posts](#get-posts)
+- [POST /posts/images-lables](#post-postsimages-lables)
 - [DELETE /posts/:id](#delete-postsid)
 - [GET /trending/posts](#get-trendingposts)
 - [GET /trending/places](#get-trendingplaces)
@@ -301,6 +302,69 @@ _Response 200 - OK_
   ]
 }
 ```
+
+### POST /posts/images-lables
+
+Getting images lables.
+
+**Request**
+
+_Headers_
+```json
+{
+  "content-type": "multipart/form-data",
+  "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjQxMjcwNDMwfQ.EpaOTmbHDYRuW1ytTXvuMA22OcCOaeulPf88Asq4u9s"
+}
+```
+
+_Body_
+```json
+{
+  "images": "array of files"
+}
+```
+
+**Responses**
+
+_Response 200 - OK_
+```json
+[
+	[
+		{
+			"name": "Food",
+			"score": 0.9835060834884644
+		},
+		{
+			"name": "Tableware",
+			"score": 0.9560400247573853
+		},
+		{
+			"name": "Noodle",
+			"score": 0.7762569785118103
+		}
+	],
+	[
+		{
+			"name": "Food",
+			"score": 0.9724048972129822
+		},
+		{
+			"name": "Bun",
+			"score": 0.907210648059845
+		},
+		{
+			"name": "Hamburger",
+			"score": 0.8490080833435059
+		},
+		{
+			"name": "Baked goods",
+			"score": 0.8006626963615417
+		}
+	]
+]
+```
+
+
 
 ### DELETE /posts/:id
 
