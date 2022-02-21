@@ -50,98 +50,94 @@ class Controller {
   }
 
   static async listPosts(req, res, next) {
-    try {
-      const filter = {};
-      let pageSize = 20;
-      let pageNumber = 1;
+    const filter = {};
+    let pageSize = 20;
+    let pageNumber = 1;
 
-      if (req.query.place_id) {
-        filter.place_id = req.query.place_id;
-      }
+    if (req.query.place_id) {
+      filter.place_id = req.query.place_id;
+    }
 
-      if (req.query.user_id) {
-        filter.user = req.query.user_id;
-      }
+    if (req.query.user_id) {
+      filter.user = req.query.user_id;
+    }
 
-      if (req.query.tag) {
-        filter.tags = req.query.tag;
-      }
+    if (req.query.tag) {
+      filter.tags = req.query.tag;
+    }
 
-      if (req.query.page_size) {
-        pageSize = req.query.page_size;
-      }
+    if (req.query.page_size) {
+      pageSize = req.query.page_size;
+    }
 
-      if (req.query.page_number) {
-        pageNumber = req.query.page_number;
-      }
+    if (req.query.page_number) {
+      pageNumber = req.query.page_number;
+    }
 
-      const postsCount = await Post.countDocuments(filter);
-      let posts = await Post.find(filter, { __v: 0 })
-        .populate({
+    const postsCount = await Post.countDocuments(filter);
+    let posts = await Post.find(filter, { __v: 0 })
+      .populate({
+        path: 'user',
+        select: { username: 1 },
+      })
+      .populate({
+        path: 'like_ids',
+        select: { user: 1 },
+        populate: {
           path: 'user',
           select: { username: 1 },
-        })
-        .populate({
-          path: 'like_ids',
-          select: { user: 1 },
-          populate: {
-            path: 'user',
-            select: { username: 1 },
+        },
+      })
+      .populate({
+        path: 'comment_ids',
+        select: { comment: 1 },
+        populate: {
+          path: 'user',
+          select: { username: 1 },
+        },
+      })
+      .skip((pageNumber - 1) * pageSize)
+      .limit(pageSize)
+      .sort({ created_at: -1 });
+
+    posts = posts.map(post => {
+      post = post.toObject();
+      post.id = post._id;
+      post.user.id = post.user._id;
+
+      post.likes = post.like_ids.map(like => ({
+        id: like._id,
+        user: !like.user
+          ? null
+          : {
+            id: like.user._id,
+            username: like.user.username,
           },
-        })
-        .populate({
-          path: 'comment_ids',
-          select: { comment: 1 },
-          populate: {
-            path: 'user',
-            select: { username: 1 },
+      }));
+
+      post.comments = post.comment_ids.map(comment => ({
+        id: comment._id,
+        comment: comment.comment,
+        user: !comment.user
+          ? null
+          : {
+            id: comment.user._id,
+            username: comment.user.username,
           },
-        })
-        .skip((pageNumber - 1) * pageSize)
-        .limit(pageSize)
-        .sort({ created_at: -1 });
+      }));
 
-      posts = posts.map(post => {
-        post = post.toObject();
-        post.id = post._id;
-        post.user.id = post.user._id;
+      delete post._id;
+      delete post.user._id;
+      delete post.like_ids;
+      delete post.comment_ids;
 
-        post.likes = post.like_ids.map(like => ({
-          id: like._id,
-          user: !like.user
-            ? null
-            : {
-              id: like.user._id,
-              username: like.user.username,
-            },
-        }));
+      return post;
+    });
 
-        post.comments = post.comment_ids.map(comment => ({
-          id: comment._id,
-          comment: comment.comment,
-          user: !comment.user
-            ? null
-            : {
-              id: comment.user._id,
-              username: comment.user.username,
-            },
-        }));
-
-        delete post._id;
-        delete post.user._id;
-        delete post.like_ids;
-        delete post.comment_ids;
-
-        return post;
-      });
-
-      res.status(200).json({
-        pages_count: Math.ceil(postsCount / pageSize),
-        items: posts,
-      });
-    } catch (err) {
-      next(err);
-    }
+    res.status(200).json({
+      pages_count: Math.ceil(postsCount / pageSize),
+      items: posts,
+    });
   }
 
   static async findPostById(req, res, next) {
@@ -229,6 +225,7 @@ class Controller {
       await Post.deleteOne({ _id: id });
       await Like.deleteMany({ PostId: { $eq: post._id } });
       await Comment.deleteMany({ PostId: { $eq: post._id } });
+
       res.status(200).json({
         message: 'post has been deleted successfully',
       });
@@ -240,9 +237,8 @@ class Controller {
 
 async function uploadFile(postId, file, index) {
   const options = {
-    destination: `${
-      process.env.NODE_ENV
-    }/posts/${postId}/img-${index}${path.extname(file.filename)}`,
+    destination: `${process.env.NODE_ENV
+      }/posts/${postId}/img-${index}${path.extname(file.filename)}`,
     validation: 'crc32c',
     resumable: true,
     public: true,

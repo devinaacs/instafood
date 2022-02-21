@@ -4,6 +4,7 @@ const Post = require('../models/Post');
 const User = require('../models/User');
 const app = require('../app');
 const { createToken } = require('../helpers/jwt');
+const { post } = require('../routes');
 
 jest.mock('../helpers/fstorage', () => ({
   getBucket: () => ({}),
@@ -15,7 +16,6 @@ const invalid_id = '620f55de92e0babea2ccb10a';
 
 let post_one = {
   place_id: '6210cc70bf599130a9a9c40f',
-  user_id: '620f55de92e0babea2ccb10a',
   caption: 'Test caption food',
   tags: ['test', 'success', 'failed'],
   // images: [testImage]
@@ -24,7 +24,15 @@ let post_one = {
   ],
 };
 
-let edit_post = { caption: 'caption yg sudah di edit' };
+const edit_post = { caption: 'caption yg sudah di edit' };
+
+let page_query = {
+  place_id: "",
+  user_id: "",
+  tag: "",
+  page_size: "",
+  page_number: "",
+}
 
 beforeAll(async () => {
   await mongoose.connect('mongodb://localhost', { useNewUrlParser: true });
@@ -32,15 +40,15 @@ beforeAll(async () => {
   await Post.deleteMany({});
 
   const user = await User.findOne({ email: 'user.one@mail.com' });
+  post_one.user = user._id
 
   access_token = createToken({
     id: user._id,
-    name: user.username,
     email: user.email,
   });
 
   const test_post = await Post.create(post_one);
-  post_one.id = test_post._id;
+  post_one._id = test_post._id;
 });
 
 describe('test /posts endpoint', () => {
@@ -55,23 +63,238 @@ describe('test /posts endpoint', () => {
         if (err) return done(err);
 
         expect(res.body).toEqual(expect.any(Object));
+        expect(res.body).toEqual(expect.objectContaining({
+          "user": expect.any(String),
+          "place_id": expect.any(String),
+          "caption": expect.any(String),
+          "images": expect.any(Array),
+          "tags": expect.any(Array),
+          "created_at": expect.any(String),
+          "id": expect.any(String)
+        }))
+
+        done();
+      });
+  });
+
+  test('successfully GET ALL posts (without query)', done => {
+    request(app)
+      .get('/posts')
+      .send(post_one)
+      .query(page_query)
+      .set('Accept', 'application/json')
+      .expect(200)
+      .end((err, res) => {
+        if (err) return done(err)
+
+        expect(res.body).toEqual(expect.any(Object));
+        expect(res.body).toEqual(expect.objectContaining({
+          pages_count: expect.any(Number),
+          items: expect.any(Array)
+        }))
+        expect(res.body.items[0]).toEqual(expect.any(Object));
+        expect(res.body.items[0]).toEqual(expect.objectContaining({
+          "id": expect.any(String),
+          "place_id": expect.any(String),
+          "user": expect.any(Object),
+          "caption": expect.any(String),
+          "images": expect.any(Array),
+          "tags": expect.any(Array),
+          "created_at": expect.any(String),
+          "updated_at": expect.any(String),
+          "likes": expect.any(Array),
+          "comments": expect.any(Array),
+        }))
 
         done();
       });
   });
 
   // done
-  test('successfully GET ALL posts', done => {
+  test('successfully GET ALL posts (with query place_id)', done => {
+    page_query.place_id = post_one.place_id
     request(app)
       .get('/posts')
-      // .set('access_token', access_token)
       .send(post_one)
+      .query(page_query)
       .set('Accept', 'application/json')
       .expect(200)
       .end((err, res) => {
-        if (err) return done(err);
+        if (err) {
+          console.log(err)
+          return done(err)
+        };
 
-        expect(res.body).toBeInstanceOf(Array);
+        expect(res.body).toEqual(expect.any(Object));
+        expect(res.body).toEqual(expect.objectContaining({
+          pages_count: expect.any(Number),
+          items: expect.any(Array)
+        }))
+        expect(res.body.items[0]).toEqual(expect.any(Object));
+        expect(res.body.items[0]).toEqual(expect.objectContaining({
+          "id": expect.any(String),
+          "place_id": expect.any(String),
+          "user": expect.any(Object),
+          "caption": expect.any(String),
+          "images": expect.any(Array),
+          "tags": expect.any(Array),
+          "created_at": expect.any(String),
+          "updated_at": expect.any(String),
+          "likes": expect.any(Array),
+          "comments": expect.any(Array),
+        }))
+
+        done();
+      });
+  });
+
+  // done
+  test('successfully GET ALL posts (with query user_id)', done => {
+    page_query.user_id = post_one.user
+    request(app)
+      .get('/posts')
+      .send(post_one)
+      .query(page_query)
+      .set('Accept', 'application/json')
+      .expect(200)
+      .end((err, res) => {
+        if (err) {
+          console.log(err)
+          return done(err)
+        };
+
+        expect(res.body).toEqual(expect.any(Object));
+        expect(res.body).toEqual(expect.objectContaining({
+          pages_count: expect.any(Number),
+          items: expect.any(Array)
+        }))
+        expect(res.body.items[0]).toEqual(expect.any(Object));
+        expect(res.body.items[0]).toEqual(expect.objectContaining({
+          "id": expect.any(String),
+          "place_id": expect.any(String),
+          "user": expect.any(Object),
+          "caption": expect.any(String),
+          "images": expect.any(Array),
+          "tags": expect.any(Array),
+          "created_at": expect.any(String),
+          "updated_at": expect.any(String),
+          "likes": expect.any(Array),
+          "comments": expect.any(Array),
+        }))
+
+        done();
+      });
+  });
+
+  // done
+  test('successfully GET ALL posts (with query tag)', done => {
+    page_query.tag = post_one.tags[0]
+    request(app)
+      .get('/posts')
+      .send(post_one)
+      .query(page_query)
+      .set('Accept', 'application/json')
+      .expect(200)
+      .end((err, res) => {
+        if (err) {
+          console.log(err)
+          return done(err)
+        };
+
+        expect(res.body).toEqual(expect.any(Object));
+        expect(res.body).toEqual(expect.objectContaining({
+          pages_count: expect.any(Number),
+          items: expect.any(Array)
+        }))
+        expect(res.body.items[0]).toEqual(expect.any(Object));
+        expect(res.body.items[0]).toEqual(expect.objectContaining({
+          "id": expect.any(String),
+          "place_id": expect.any(String),
+          "user": expect.any(Object),
+          "caption": expect.any(String),
+          "images": expect.any(Array),
+          "tags": expect.any(Array),
+          "created_at": expect.any(String),
+          "updated_at": expect.any(String),
+          "likes": expect.any(Array),
+          "comments": expect.any(Array),
+        }))
+
+        done();
+      });
+  });
+
+  // done
+  test('successfully GET ALL posts (with query page_size)', done => {
+    page_query.page_size = 1
+    request(app)
+      .get('/posts')
+      .send(post_one)
+      .query(page_query)
+      .set('Accept', 'application/json')
+      .expect(200)
+      .end((err, res) => {
+        if (err) {
+          console.log(err)
+          return done(err)
+        };
+
+        expect(res.body).toEqual(expect.any(Object));
+        expect(res.body).toEqual(expect.objectContaining({
+          pages_count: expect.any(Number),
+          items: expect.any(Array)
+        }))
+        expect(res.body.items[0]).toEqual(expect.any(Object));
+        expect(res.body.items[0]).toEqual(expect.objectContaining({
+          "id": expect.any(String),
+          "place_id": expect.any(String),
+          "user": expect.any(Object),
+          "caption": expect.any(String),
+          "images": expect.any(Array),
+          "tags": expect.any(Array),
+          "created_at": expect.any(String),
+          "updated_at": expect.any(String),
+          "likes": expect.any(Array),
+          "comments": expect.any(Array),
+        }))
+
+        done();
+      });
+  });
+
+  // done
+  test('successfully GET ALL posts (with query page_number)', done => {
+    page_query.page_number = 1
+    request(app)
+      .get('/posts')
+      .send(post_one)
+      .query(page_query)
+      .set('Accept', 'application/json')
+      .expect(200)
+      .end((err, res) => {
+        if (err) {
+          console.log(err)
+          return done(err)
+        };
+
+        expect(res.body).toEqual(expect.any(Object));
+        expect(res.body).toEqual(expect.objectContaining({
+          pages_count: expect.any(Number),
+          items: expect.any(Array)
+        }))
+        expect(res.body.items[0]).toEqual(expect.any(Object));
+        expect(res.body.items[0]).toEqual(expect.objectContaining({
+          "id": expect.any(String),
+          "place_id": expect.any(String),
+          "user": expect.any(Object),
+          "caption": expect.any(String),
+          "images": expect.any(Array),
+          "tags": expect.any(Array),
+          "created_at": expect.any(String),
+          "updated_at": expect.any(String),
+          "likes": expect.any(Array),
+          "comments": expect.any(Array),
+        }))
 
         done();
       });
@@ -80,13 +303,28 @@ describe('test /posts endpoint', () => {
   // done
   test('successfully GET post BY ID', done => {
     request(app)
-      .get(`/posts/${post_one.id}`)
+      .get(`/posts/${post_one._id}`)
       .set('Accept', 'application/json')
       .expect(200)
       .end((err, res) => {
         if (err) return done(err);
 
         expect(res.body).toEqual(expect.any(Object));
+        expect(res.body).toEqual(expect.objectContaining({
+          "id": expect.any(String),
+          "user": expect.objectContaining({
+            "username": expect.any(String),
+            "id": expect.any(String)
+          }),
+          "place_id": expect.any(String),
+          "caption": expect.any(String),
+          "images": expect.any(Array),
+          "tags": expect.any(Array),
+          "likes": expect.any(Array),
+          "comments": expect.any(Array),
+          "created_at": expect.any(String),
+          "updated_at": expect.any(String),
+        }))
 
         done();
       });
@@ -95,7 +333,7 @@ describe('test /posts endpoint', () => {
   // done
   test('successfully EDIT post BY ID', done => {
     request(app)
-      .put(`/posts/${post_one.id}`)
+      .put(`/posts/${post_one._id}`)
       .set('Accept', 'application/json')
       .set('access_token', access_token)
       .send(edit_post)
@@ -112,7 +350,7 @@ describe('test /posts endpoint', () => {
   //done
   test('successfully DELETE post BY ID', done => {
     request(app)
-      .delete(`/posts/${post_one.id}`)
+      .delete(`/posts/${post_one._id}`)
       .set('Accept', 'application/json')
       .set('access_token', access_token)
       .expect(200)
@@ -120,10 +358,7 @@ describe('test /posts endpoint', () => {
         if (err) return done(err);
 
         expect(res.body).toEqual(expect.any(Object));
-        expect(res.body).toHaveProperty(
-          'message',
-          'Post has been deleted successfully.'
-        );
+        expect(res.body).toHaveProperty('message', 'post has been deleted successfully');
 
         done();
       });

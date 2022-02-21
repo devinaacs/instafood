@@ -21,6 +21,10 @@ let userTwo = {
   password: '12345aaa',
 };
 
+let query_username = {
+  username: 'user.one'
+}
+
 beforeAll(async () => {
   await mongoose.connect('mongodb://localhost', { useNewUrlParser: true });
 
@@ -34,6 +38,7 @@ beforeAll(async () => {
 });
 
 describe('test /users endpoint', () => {
+  // done
   test('successfully registering user', done => {
     const user = {
       username: 'new.user',
@@ -55,6 +60,7 @@ describe('test /users endpoint', () => {
       });
   });
 
+  // done
   test('successfully login', done => {
     const loginData = {
       email: userOne.email,
@@ -75,6 +81,7 @@ describe('test /users endpoint', () => {
       });
   });
 
+  // done
   test('successfully get list of users', done => {
     const payload = {
       id: userOne.id,
@@ -95,14 +102,43 @@ describe('test /users endpoint', () => {
         expect(res.body).toBeInstanceOf(Array);
         res.body.forEach(v => {
           expect(v).toHaveProperty('username', expect.any(String));
-          expect(v).not.toHaveProperty('email');
-          expect(v).not.toHaveProperty('password');
+          expect(v).toHaveProperty('id', expect.any(String));
         });
 
         done();
       });
   });
 
+  // done
+  test('successfully get list of users (with query username)', done => {
+    const payload = {
+      id: userOne.id,
+      name: userOne.username,
+      email: userOne.email,
+    };
+
+    const token = createToken(payload);
+
+    request(app)
+      .get('/users')
+      .query(query_username)
+      .set('Accept', 'application/json')
+      .set('access_token', token)
+      .expect(200)
+      .end((err, res) => {
+        if (err) return done(err);
+
+        expect(res.body).toBeInstanceOf(Array);
+        res.body.forEach(v => {
+          expect(v).toHaveProperty('username', expect.any(String));
+          expect(v).toHaveProperty('id', expect.any(String));
+        });
+
+        done();
+      });
+  });
+
+  // done
   test('successfully get user by id', done => {
     const payload = {
       id: userOne.id,
@@ -129,6 +165,7 @@ describe('test /users endpoint', () => {
       });
   });
 
+  // done
   test('failed to register new user (empty username)', done => {
     request(app)
       .post('/register')
@@ -151,6 +188,7 @@ describe('test /users endpoint', () => {
       });
   });
 
+  // done
   test('failed to register new user (empty email)', done => {
     request(app)
       .post('/register')
@@ -173,6 +211,7 @@ describe('test /users endpoint', () => {
       });
   });
 
+  // done
   test('failed to register new user (empty password)', done => {
     request(app)
       .post('/register')
@@ -195,6 +234,7 @@ describe('test /users endpoint', () => {
       });
   });
 
+  // done
   test('failed to register new user (invalid email format)', done => {
     request(app)
       .post('/register')
@@ -217,6 +257,7 @@ describe('test /users endpoint', () => {
       });
   });
 
+  // done
   test('failed to register new user (password length less than 6)', done => {
     request(app)
       .post('/register')
@@ -239,6 +280,7 @@ describe('test /users endpoint', () => {
       });
   });
 
+  // done
   test('failed to register new user (username is taken)', done => {
     request(app)
       .post('/register')
@@ -259,6 +301,7 @@ describe('test /users endpoint', () => {
       });
   });
 
+  // done
   test('failed to register new user (email is taken)', done => {
     request(app)
       .post('/register')
@@ -281,6 +324,7 @@ describe('test /users endpoint', () => {
       });
   });
 
+  // done
   test('failed to login user (invalid email/passwod)', done => {
     const loginData = {
       email: userOne.email,
@@ -304,6 +348,7 @@ describe('test /users endpoint', () => {
       });
   });
 
+  // done
   test('failed to login user (invalid email/passwod)', done => {
     const loginData = {
       email: 'test@mail.com',
@@ -327,6 +372,7 @@ describe('test /users endpoint', () => {
       });
   });
 
+  // done
   test('failed to get user by id (data not found)', done => {
     request(app)
       .get('/users/621019c5e5ca7105f04d5566')
