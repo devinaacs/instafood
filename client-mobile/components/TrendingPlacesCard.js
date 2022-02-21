@@ -42,7 +42,7 @@ export default function TrendingPlacesCard({ places }) {
             />
           ) : (
             <Image
-              style={styles.imageStyle}
+              style={styles.imageStyleLoading}
               source={require('../assets/loading.gif')}
             />
           )
@@ -79,12 +79,19 @@ export default function TrendingPlacesCard({ places }) {
 }
 
 const styles = StyleSheet.create({
-  cardContainer: { height: 240, width: 232, marginLeft: 10, borderRadius: 10 },
+  cardContainer: { height: 240, width: 232, marginLeft: 10, borderRadius: 10, justifyContent: 'center' },
   imageStyle: {
     height: 240,
     width: 232,
     resizeMode: 'cover',
     borderRadius: 10,
+  },
+  imageStyleLoading: {
+    height: 120,
+    width: 120,
+    resizeMode: 'cover',
+    borderRadius: 10,
+    alignSelf: 'center',
   },
   bottomTextContainer: {
     flexDirection: 'row',
