@@ -21,12 +21,12 @@ export default function Discover() {
         }
       })
       .then(response => {
-        setPosts(response.items)
+        setPosts(response.items);
       })
       .catch(error => {
         console.log('error', error);
       });
-  }, [])
+  }, []);
 
   const handleRefresh = () => {
     setRefetch(true);
@@ -46,7 +46,7 @@ export default function Discover() {
       .catch(error => {
         console.log('error', error);
       });
-  }
+  };
 
   return (
     <Box bg={'white'} flex={1} safeAreaTop>
@@ -55,7 +55,7 @@ export default function Discover() {
       <FlatList
         data={posts}
         renderItem={({ item }) => <Post post={item} key={item.id} />}
-        keyExtractor={(item) => item.id}
+        keyExtractor={item => item.id}
         refreshing={refetch}
         onRefresh={handleRefresh}
       />
