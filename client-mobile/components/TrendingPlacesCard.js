@@ -6,12 +6,13 @@ import {
   Image,
   Text,
   TouchableOpacity,
+  ActivityIndicator
 } from 'react-native';
 import { Box } from 'native-base';
 
 export default function TrendingPlacesCard({ places }) {
   const [placeDetails, setPlaceDetails] = useState('');
-  
+
   useEffect(() => {
     fetch(`https://hacktiv8-instafood.herokuapp.com/places/${places.place_id}`)
       .then(response => {

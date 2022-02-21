@@ -15,6 +15,7 @@ import TrendingPost2 from '../components/TrendingPost2';
 
 export default function Highlights() {
   const [trendPlaces, setTrendingPlaces] = useState([]);
+  const [trendingTags, setTrendingTags] = useState([]);
 
   useEffect(() => {
     fetch('https://hacktiv8-instafood.herokuapp.com/trending/places')
@@ -27,6 +28,23 @@ export default function Highlights() {
       })
       .then(response => {
         setTrendingPlaces(response);
+      })
+      .catch(error => {
+        console.log('error', error);
+      });
+  }, []);
+
+  useEffect(() => {
+    fetch('https://hacktiv8-instafood.herokuapp.com/trending/tags')
+      .then(response => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          return Promise.reject('something went wrong!');
+        }
+      })
+      .then(response => {
+        setTrendingTags(response);
       })
       .catch(error => {
         console.log('error', error);
@@ -63,6 +81,7 @@ export default function Highlights() {
         </View>
         <View style={styles.trendingTags}>
           <View>
+
             <Text style={{ fontSize: 24, fontWeight: 'bold' }}>
               Trending Tags
             </Text>
@@ -72,7 +91,13 @@ export default function Highlights() {
           </TouchableOpacity> */}
         </View>
         <View style={{ backgroundColor: 'white', height: 65, marginBottom: 7 }}>
-          <TrendingTags />
+          <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} contentContainerStyle={{ paddingEnd: 10 }}>
+            {trendingTags.length > 0 ?
+              trendingTags.map((tags, index) => (
+                <TrendingTags tags={tags} key={index} />
+              )) : null
+            }
+          </ScrollView>
         </View>
         <View style={styles.trendingPosts}>
           <View>
