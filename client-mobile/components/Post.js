@@ -1,27 +1,97 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Flex, Image, Text } from 'native-base';
-import { AntDesign, FontAwesome, Ionicons } from '@expo/vector-icons';
+import { AntDesign, Ionicons } from '@expo/vector-icons';
 import { View, Dimensions, } from 'react-native';
 import { SwiperFlatList } from 'react-native-swiper-flatlist';
-import { useSelector } from 'react-redux';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const windowWidth = Dimensions.get('window').width;
 
 const Post = ({ post }) => {
   const [likeStatus, setLikeStatus] = useState(false);
-  const { access_token } = useSelector((state) => state.user);
+  const [likes, setLikes] = useState('');
+  const [userIdLocal, setUserId] = useState(null);
+  const [filteredLikes, setFilteredLikes] = useState([]);
 
-  // useEffect(() => {
-  //   post.likes.forEach((el) => {
-  //     if ()
-  //   })
-  // }, [])
+  const checkUserId = async () => {
+    try {
+      const userIdStorage = await AsyncStorage.getItem('userId');
+
+      setUserId(userIdStorage);
+    } catch (e) {
+      return 'error reading access_token'
+    }
+  }
+
+  useEffect(() => {
+    checkUserId()
+      .then(() => {
+        let foundUser = false;
+
+        post.likes.forEach((el) => {
+          if (el.user.id === userIdLocal) {
+            foundUser = true
+          }
+        })
+
+        if (foundUser) {
+          setLikeStatus(true);
+        } else {
+          setLikeStatus(false);
+        }
+
+      })
+      .catch((err) => console.log(err))
+
+    setLikes(post.likes.length);
+    setFilteredLikes(post.likes);
+  }, [userIdLocal, post])
 
   const handleLike = () => {
-    // post.likes.forEach((el) => {
-    //   if ()
-    // })
-    console.log(access_token)
+    let likeFound = false;
+    let likeId = '';
+
+    filteredLikes.forEach((el) => {
+      if (el.user.id === userIdLocal) {
+        likeFound = true;
+        likeId = el.id;
+      }
+    })
+
+    if (!likeFound) {
+      setLikeStatus(true);
+      setLikes(likes + 1);
+      fetch('https://hacktiv8-instafood.herokuapp.com/likes', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          access_token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyMGYxMjFjZDUwNDBjNzM4MGZjN2RlYSIsImVtYWlsIjoidXNlci5vbmVAbWFpbC5jb20iLCJpYXQiOjE2NDUyNDg1MDN9.F6-_Rt1HeADDVfWR-c5mDdouBi5GZLFlhDC-t8GrV5U'
+        },
+        body: JSON.stringify({ post_id: post.id })
+      })
+        .then((response) => response.json())
+        .then((result) => {
+          setFilteredLikes([...filteredLikes, {
+            user: {
+              id: userIdLocal,
+            },
+            id: result._id
+          }])
+        })
+        .catch((err) => console.log(err));
+    } else {
+      setLikeStatus(false);
+      setLikes(likes - 1);
+      setFilteredLikes(post.likes.filter((el) => el.user.id !== userIdLocal))
+      fetch(`https://hacktiv8-instafood.herokuapp.com/likes/${likeId}`, {
+        method: 'DELETE',
+        headers: {
+          access_token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyMGYxMjFjZDUwNDBjNzM4MGZjN2RlYSIsImVtYWlsIjoidXNlci5vbmVAbWFpbC5jb20iLCJpYXQiOjE2NDUyNDg1MDN9.F6-_Rt1HeADDVfWR-c5mDdouBi5GZLFlhDC-t8GrV5U'
+        }
+      })
+        .then(() => { })
+        .catch((err) => console.log(err));
+    }
   }
 
   return (
@@ -106,12 +176,21 @@ const Post = ({ post }) => {
             />
             <Box px={5} flexDirection={'row'}>
               <Box size={'12'} borderRadius={'full'} borderColor={'gray.200'}>
-                <Box mr={'4'} mt={2} onTouchEnd={handleLike}>
-                  <AntDesign name='like2' size={32} color='white' />
-                </Box>
+                {
+                  likeStatus ? (
+                    <Box mr={'4'} mt={2} onTouchEnd={handleLike}>
+                      <AntDesign name='like1' size={32} color='white' />
+                    </Box>
+                  ) : (
+                    <Box mr={'4'} mt={2} onTouchEnd={handleLike}>
+                      <AntDesign name='like2' size={32} color='white' />
+                    </Box>
+
+                  )
+                }
               </Box>
               <Box mt={4}>
-                <Text fontSize={'md'} fontWeight={'bold'} color={'white'}>{likesFormat(post.likes.length)} likes</Text>
+                <Text fontSize={'md'} fontWeight={'bold'} color={'white'}>{likesFormat(likes)} likes</Text>
               </Box>
             </Box>
           </Flex>

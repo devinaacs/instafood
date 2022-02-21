@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { Button } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { Box, Center, Flex, Image, Input, Pressable, ScrollView, StatusBar, Text, TextArea } from 'native-base';
 import { Feather } from '@expo/vector-icons';
