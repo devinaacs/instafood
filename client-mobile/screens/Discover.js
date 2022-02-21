@@ -4,7 +4,6 @@ import Post from '../components/Post';
 import PostButton from '../components/PostButton';
 import SearchButton from '../components/SearchButton';
 import { useDispatch } from 'react-redux';
-import { userLogout } from '../store/actionCreators';
 
 export default function Discover() {
   const [posts, setPosts] = useState([]);
