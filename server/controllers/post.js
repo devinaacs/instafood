@@ -106,7 +106,11 @@ class Controller {
       posts = posts.map(post => {
         post = post.toObject();
         post.id = post._id;
-        post.user.id = post.user._id;
+
+        if (post.user) {
+          post.user.id = post.user._id;
+          delete post.user._id;
+        }
 
         post.likes = post.like_ids.map(like => ({
           id: like._id,
@@ -130,7 +134,6 @@ class Controller {
         }));
 
         delete post._id;
-        delete post.user._id;
         delete post.like_ids;
         delete post.comment_ids;
 
@@ -157,7 +160,7 @@ class Controller {
           path: 'like_ids',
           select: { UserId: 1 },
           populate: {
-            path: 'UserId',
+            path: 'user',
             select: { username: 1 },
           },
         })
@@ -165,7 +168,7 @@ class Controller {
           path: 'comment_ids',
           select: { comment: 1 },
           populate: {
-            path: 'UserId',
+            path: 'user',
             select: { username: 1 },
           },
         });
@@ -179,8 +182,8 @@ class Controller {
       post.likes = post.like_ids.map(like => ({
         id: like._id,
         user: {
-          id: like.UserId._id,
-          username: like.UserId.username,
+          id: like.user._id,
+          username: like.user.username,
         },
       }));
 
@@ -188,8 +191,8 @@ class Controller {
         id: comment._id,
         comment: comment.comment,
         user: {
-          id: comment.UserId._id,
-          username: comment.UserId.username,
+          id: comment.user._id,
+          username: comment.user.username,
         },
       }));
 
