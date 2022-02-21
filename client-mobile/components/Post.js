@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Box, Flex, Image, Text } from 'native-base';
 import { AntDesign, Ionicons } from '@expo/vector-icons';
 import { View, Dimensions, } from 'react-native';
+import { useSelector } from 'react-redux';
 import { SwiperFlatList } from 'react-native-swiper-flatlist';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -12,6 +13,8 @@ const Post = ({ post }) => {
   const [likes, setLikes] = useState('');
   const [userIdLocal, setUserId] = useState(null);
   const [filteredLikes, setFilteredLikes] = useState([]);
+  const { access_token } = useSelector((state) => state.user);
+  const [disableLike, setDisableLike] = useState(false);
 
   const checkUserId = async () => {
     try {
@@ -45,9 +48,11 @@ const Post = ({ post }) => {
 
     setLikes(post.likes.length);
     setFilteredLikes(post.likes);
-  }, [userIdLocal, post])
+  }, [userIdLocal, post, access_token])
 
   const handleLike = () => {
+    if (!access_token) return;
+    if (disableLike) return;
     let likeFound = false;
     let likeId = '';
 
@@ -59,18 +64,20 @@ const Post = ({ post }) => {
     })
 
     if (!likeFound) {
+      setDisableLike(true);
       setLikeStatus(true);
       setLikes(likes + 1);
       fetch('https://hacktiv8-instafood.herokuapp.com/likes', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          access_token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyMGYxMjFjZDUwNDBjNzM4MGZjN2RlYSIsImVtYWlsIjoidXNlci5vbmVAbWFpbC5jb20iLCJpYXQiOjE2NDUyNDg1MDN9.F6-_Rt1HeADDVfWR-c5mDdouBi5GZLFlhDC-t8GrV5U'
+          access_token: access_token
         },
         body: JSON.stringify({ post_id: post.id })
       })
         .then((response) => response.json())
         .then((result) => {
+          setDisableLike(false);
           setFilteredLikes([...filteredLikes, {
             user: {
               id: userIdLocal,
@@ -80,16 +87,19 @@ const Post = ({ post }) => {
         })
         .catch((err) => console.log(err));
     } else {
+      setDisableLike(true);
       setLikeStatus(false);
       setLikes(likes - 1);
       setFilteredLikes(post.likes.filter((el) => el.user.id !== userIdLocal))
       fetch(`https://hacktiv8-instafood.herokuapp.com/likes/${likeId}`, {
         method: 'DELETE',
         headers: {
-          access_token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyMGYxMjFjZDUwNDBjNzM4MGZjN2RlYSIsImVtYWlsIjoidXNlci5vbmVAbWFpbC5jb20iLCJpYXQiOjE2NDUyNDg1MDN9.F6-_Rt1HeADDVfWR-c5mDdouBi5GZLFlhDC-t8GrV5U'
+          access_token: access_token
         }
       })
-        .then(() => { })
+        .then(() => {
+          setDisableLike(false);
+        })
         .catch((err) => console.log(err));
     }
   }
