@@ -93,8 +93,8 @@ export default function Login() {
           }
           placeholder="Password"
         />
-        <Text>{email}</Text>
-        <Text>{password}</Text>
+        {/* <Text>{email}</Text>
+        <Text>{password}</Text> */}
         <Button
           onPress={handleLogin}
           colorScheme="red"
