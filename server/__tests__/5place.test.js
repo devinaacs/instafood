@@ -13,7 +13,12 @@ beforeAll(async () => {
   await mongoose.connect('mongodb://localhost', { useNewUrlParser: true });
 });
 
-describe.skip('test places endpoint', () => {
+afterAll(async () => {
+  await mongoose.disconnect();
+  require('../helpers/redis').disconnect();
+});
+
+describe('test places endpoint', () => {
   // done
   test('successfully GET ALL places', done => {
     request(app)

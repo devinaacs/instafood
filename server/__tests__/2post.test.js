@@ -4,10 +4,20 @@ const Post = require('../models/Post');
 const User = require('../models/User');
 const app = require('../app');
 const { createToken } = require('../helpers/jwt');
-const { post } = require('../routes');
 
 jest.mock('../helpers/fstorage', () => ({
-  getBucket: () => ({}),
+  getBucket: () => ({
+    upload(a, b, c) {
+      c(null, {
+        makePublic(c2) {
+          c2(null);
+        },
+        publicUrl() {
+          return 'image';
+        },
+      });
+    },
+  }),
 }));
 
 let access_token = '';
@@ -18,18 +28,18 @@ let post_one = {
   place_id: '6210cc70bf599130a9a9c40f',
   caption: 'Test caption food',
   tags: ['test', 'success', 'failed'],
-  // images: [testImage] 
+  // images: [testImage]
 };
 
 const edit_post = { caption: 'caption yg sudah di edit' };
 
 let page_query = {
-  place_id: "",
-  user_id: "",
-  tag: "",
-  page_size: "",
-  page_number: "",
-}
+  place_id: '',
+  user_id: '',
+  tag: '',
+  page_size: '',
+  page_number: '',
+};
 
 beforeAll(async () => {
   await mongoose.connect('mongodb://localhost', { useNewUrlParser: true });
@@ -37,7 +47,7 @@ beforeAll(async () => {
   await Post.deleteMany({});
 
   const user = await User.findOne({ email: 'user.one@mail.com' });
-  post_one.user = user._id
+  post_one.user = user._id;
 
   access_token = createToken({
     id: user._id,
@@ -48,36 +58,42 @@ beforeAll(async () => {
   post_one._id = test_post._id;
 });
 
-describe.skip('test /posts endpoint', () => {
-  test.skip('successfully CREATE post', done => {
+
+afterAll(async () => {
+  await mongoose.disconnect();
+  require('../helpers/redis').disconnect();
+});
+
+describe('test /posts endpoint', () => {
+  test('successfully CREATE post', done => {
     request(app)
       .post('/posts')
-      .field("place_id", post_one.place_id)
-      .field("caption", post_one.caption)
-      .field("tags", post_one.tags[0])
-      .field("tags", post_one.tags[1])
-      .field("tags", post_one.tags[2])
+      .field('place_id', post_one.place_id)
+      .field('caption', post_one.caption)
+      .field('tags', post_one.tags[0])
+      .field('tags', post_one.tags[1])
+      .field('tags', post_one.tags[2])
       .attach('images', '../server/assets/BebekBkb.jpg')
-      .set('content-type', 'multipart/form-data')
-      // .set('Accept', 'application/json')
       .set('access_token', access_token)
       .expect(201)
       .end((err, res) => {
         if (err) {
-          console.log(err)
-          return done(err)
-        };
+          console.log(err);
+          return done(err);
+        }
 
         expect(res.body).toEqual(expect.any(Object));
-        expect(res.body).toEqual(expect.objectContaining({
-          "user": expect.any(String),
-          "place_id": expect.any(String),
-          "caption": expect.any(String),
-          "images": expect.any(Array),
-          "tags": expect.any(Array),
-          "created_at": expect.any(String),
-          "id": expect.any(String)
-        }))
+        expect(res.body).toEqual(
+          expect.objectContaining({
+            user: expect.any(String),
+            place_id: expect.any(String),
+            caption: expect.any(String),
+            images: expect.any(Array),
+            tags: expect.any(Array),
+            created_at: expect.any(String),
+            id: expect.any(String),
+          })
+        );
 
         done();
       });
@@ -91,26 +107,30 @@ describe.skip('test /posts endpoint', () => {
       .set('Accept', 'application/json')
       .expect(200)
       .end((err, res) => {
-        if (err) return done(err)
+        if (err) return done(err);
 
         expect(res.body).toEqual(expect.any(Object));
-        expect(res.body).toEqual(expect.objectContaining({
-          pages_count: expect.any(Number),
-          items: expect.any(Array)
-        }))
+        expect(res.body).toEqual(
+          expect.objectContaining({
+            pages_count: expect.any(Number),
+            items: expect.any(Array),
+          })
+        );
         expect(res.body.items[0]).toEqual(expect.any(Object));
-        expect(res.body.items[0]).toEqual(expect.objectContaining({
-          "id": expect.any(String),
-          "place_id": expect.any(String),
-          "user": expect.any(Object),
-          "caption": expect.any(String),
-          "images": expect.any(Array),
-          "tags": expect.any(Array),
-          "created_at": expect.any(String),
-          "updated_at": expect.any(String),
-          "likes": expect.any(Array),
-          "comments": expect.any(Array),
-        }))
+        expect(res.body.items[0]).toEqual(
+          expect.objectContaining({
+            id: expect.any(String),
+            place_id: expect.any(String),
+            user: expect.any(Object),
+            caption: expect.any(String),
+            images: expect.any(Array),
+            tags: expect.any(Array),
+            created_at: expect.any(String),
+            updated_at: expect.any(String),
+            likes: expect.any(Array),
+            comments: expect.any(Array),
+          })
+        );
 
         done();
       });
@@ -118,7 +138,7 @@ describe.skip('test /posts endpoint', () => {
 
   // done
   test('successfully GET ALL posts (with query place_id)', done => {
-    page_query.place_id = post_one.place_id
+    page_query.place_id = post_one.place_id;
     request(app)
       .get('/posts')
       .send(post_one)
@@ -127,28 +147,32 @@ describe.skip('test /posts endpoint', () => {
       .expect(200)
       .end((err, res) => {
         if (err) {
-          console.log(err)
-          return done(err)
-        };
+          console.log(err);
+          return done(err);
+        }
 
         expect(res.body).toEqual(expect.any(Object));
-        expect(res.body).toEqual(expect.objectContaining({
-          pages_count: expect.any(Number),
-          items: expect.any(Array)
-        }))
+        expect(res.body).toEqual(
+          expect.objectContaining({
+            pages_count: expect.any(Number),
+            items: expect.any(Array),
+          })
+        );
         expect(res.body.items[0]).toEqual(expect.any(Object));
-        expect(res.body.items[0]).toEqual(expect.objectContaining({
-          "id": expect.any(String),
-          "place_id": expect.any(String),
-          "user": expect.any(Object),
-          "caption": expect.any(String),
-          "images": expect.any(Array),
-          "tags": expect.any(Array),
-          "created_at": expect.any(String),
-          "updated_at": expect.any(String),
-          "likes": expect.any(Array),
-          "comments": expect.any(Array),
-        }))
+        expect(res.body.items[0]).toEqual(
+          expect.objectContaining({
+            id: expect.any(String),
+            place_id: expect.any(String),
+            user: expect.any(Object),
+            caption: expect.any(String),
+            images: expect.any(Array),
+            tags: expect.any(Array),
+            created_at: expect.any(String),
+            updated_at: expect.any(String),
+            likes: expect.any(Array),
+            comments: expect.any(Array),
+          })
+        );
 
         done();
       });
@@ -156,7 +180,7 @@ describe.skip('test /posts endpoint', () => {
 
   // done
   test('successfully GET ALL posts (with query user_id)', done => {
-    page_query.user_id = post_one.user
+    page_query.user_id = post_one.user;
     request(app)
       .get('/posts')
       .send(post_one)
@@ -165,28 +189,32 @@ describe.skip('test /posts endpoint', () => {
       .expect(200)
       .end((err, res) => {
         if (err) {
-          console.log(err)
-          return done(err)
-        };
+          console.log(err);
+          return done(err);
+        }
 
         expect(res.body).toEqual(expect.any(Object));
-        expect(res.body).toEqual(expect.objectContaining({
-          pages_count: expect.any(Number),
-          items: expect.any(Array)
-        }))
+        expect(res.body).toEqual(
+          expect.objectContaining({
+            pages_count: expect.any(Number),
+            items: expect.any(Array),
+          })
+        );
         expect(res.body.items[0]).toEqual(expect.any(Object));
-        expect(res.body.items[0]).toEqual(expect.objectContaining({
-          "id": expect.any(String),
-          "place_id": expect.any(String),
-          "user": expect.any(Object),
-          "caption": expect.any(String),
-          "images": expect.any(Array),
-          "tags": expect.any(Array),
-          "created_at": expect.any(String),
-          "updated_at": expect.any(String),
-          "likes": expect.any(Array),
-          "comments": expect.any(Array),
-        }))
+        expect(res.body.items[0]).toEqual(
+          expect.objectContaining({
+            id: expect.any(String),
+            place_id: expect.any(String),
+            user: expect.any(Object),
+            caption: expect.any(String),
+            images: expect.any(Array),
+            tags: expect.any(Array),
+            created_at: expect.any(String),
+            updated_at: expect.any(String),
+            likes: expect.any(Array),
+            comments: expect.any(Array),
+          })
+        );
 
         done();
       });
@@ -194,7 +222,7 @@ describe.skip('test /posts endpoint', () => {
 
   // done
   test('successfully GET ALL posts (with query tag)', done => {
-    page_query.tag = post_one.tags[0]
+    page_query.tag = post_one.tags[0];
     request(app)
       .get('/posts')
       .send(post_one)
@@ -203,28 +231,32 @@ describe.skip('test /posts endpoint', () => {
       .expect(200)
       .end((err, res) => {
         if (err) {
-          console.log(err)
-          return done(err)
-        };
+          console.log(err);
+          return done(err);
+        }
 
         expect(res.body).toEqual(expect.any(Object));
-        expect(res.body).toEqual(expect.objectContaining({
-          pages_count: expect.any(Number),
-          items: expect.any(Array)
-        }))
+        expect(res.body).toEqual(
+          expect.objectContaining({
+            pages_count: expect.any(Number),
+            items: expect.any(Array),
+          })
+        );
         expect(res.body.items[0]).toEqual(expect.any(Object));
-        expect(res.body.items[0]).toEqual(expect.objectContaining({
-          "id": expect.any(String),
-          "place_id": expect.any(String),
-          "user": expect.any(Object),
-          "caption": expect.any(String),
-          "images": expect.any(Array),
-          "tags": expect.any(Array),
-          "created_at": expect.any(String),
-          "updated_at": expect.any(String),
-          "likes": expect.any(Array),
-          "comments": expect.any(Array),
-        }))
+        expect(res.body.items[0]).toEqual(
+          expect.objectContaining({
+            id: expect.any(String),
+            place_id: expect.any(String),
+            user: expect.any(Object),
+            caption: expect.any(String),
+            images: expect.any(Array),
+            tags: expect.any(Array),
+            created_at: expect.any(String),
+            updated_at: expect.any(String),
+            likes: expect.any(Array),
+            comments: expect.any(Array),
+          })
+        );
 
         done();
       });
@@ -232,7 +264,7 @@ describe.skip('test /posts endpoint', () => {
 
   // done
   test('successfully GET ALL posts (with query page_size)', done => {
-    page_query.page_size = 1
+    page_query.page_size = 1;
     request(app)
       .get('/posts')
       .send(post_one)
@@ -241,28 +273,32 @@ describe.skip('test /posts endpoint', () => {
       .expect(200)
       .end((err, res) => {
         if (err) {
-          console.log(err)
-          return done(err)
-        };
+          console.log(err);
+          return done(err);
+        }
 
         expect(res.body).toEqual(expect.any(Object));
-        expect(res.body).toEqual(expect.objectContaining({
-          pages_count: expect.any(Number),
-          items: expect.any(Array)
-        }))
+        expect(res.body).toEqual(
+          expect.objectContaining({
+            pages_count: expect.any(Number),
+            items: expect.any(Array),
+          })
+        );
         expect(res.body.items[0]).toEqual(expect.any(Object));
-        expect(res.body.items[0]).toEqual(expect.objectContaining({
-          "id": expect.any(String),
-          "place_id": expect.any(String),
-          "user": expect.any(Object),
-          "caption": expect.any(String),
-          "images": expect.any(Array),
-          "tags": expect.any(Array),
-          "created_at": expect.any(String),
-          "updated_at": expect.any(String),
-          "likes": expect.any(Array),
-          "comments": expect.any(Array),
-        }))
+        expect(res.body.items[0]).toEqual(
+          expect.objectContaining({
+            id: expect.any(String),
+            place_id: expect.any(String),
+            user: expect.any(Object),
+            caption: expect.any(String),
+            images: expect.any(Array),
+            tags: expect.any(Array),
+            created_at: expect.any(String),
+            updated_at: expect.any(String),
+            likes: expect.any(Array),
+            comments: expect.any(Array),
+          })
+        );
 
         done();
       });
@@ -270,7 +306,7 @@ describe.skip('test /posts endpoint', () => {
 
   // done
   test('successfully GET ALL posts (with query page_number)', done => {
-    page_query.page_number = 1
+    page_query.page_number = 1;
     request(app)
       .get('/posts')
       .send(post_one)
@@ -279,28 +315,32 @@ describe.skip('test /posts endpoint', () => {
       .expect(200)
       .end((err, res) => {
         if (err) {
-          console.log(err)
-          return done(err)
-        };
+          console.log(err);
+          return done(err);
+        }
 
         expect(res.body).toEqual(expect.any(Object));
-        expect(res.body).toEqual(expect.objectContaining({
-          pages_count: expect.any(Number),
-          items: expect.any(Array)
-        }))
+        expect(res.body).toEqual(
+          expect.objectContaining({
+            pages_count: expect.any(Number),
+            items: expect.any(Array),
+          })
+        );
         expect(res.body.items[0]).toEqual(expect.any(Object));
-        expect(res.body.items[0]).toEqual(expect.objectContaining({
-          "id": expect.any(String),
-          "place_id": expect.any(String),
-          "user": expect.any(Object),
-          "caption": expect.any(String),
-          "images": expect.any(Array),
-          "tags": expect.any(Array),
-          "created_at": expect.any(String),
-          "updated_at": expect.any(String),
-          "likes": expect.any(Array),
-          "comments": expect.any(Array),
-        }))
+        expect(res.body.items[0]).toEqual(
+          expect.objectContaining({
+            id: expect.any(String),
+            place_id: expect.any(String),
+            user: expect.any(Object),
+            caption: expect.any(String),
+            images: expect.any(Array),
+            tags: expect.any(Array),
+            created_at: expect.any(String),
+            updated_at: expect.any(String),
+            likes: expect.any(Array),
+            comments: expect.any(Array),
+          })
+        );
 
         done();
       });
@@ -316,21 +356,23 @@ describe.skip('test /posts endpoint', () => {
         if (err) return done(err);
 
         expect(res.body).toEqual(expect.any(Object));
-        expect(res.body).toEqual(expect.objectContaining({
-          "id": expect.any(String),
-          "user": expect.objectContaining({
-            "username": expect.any(String),
-            "id": expect.any(String)
-          }),
-          "place_id": expect.any(String),
-          "caption": expect.any(String),
-          "images": expect.any(Array),
-          "tags": expect.any(Array),
-          "likes": expect.any(Array),
-          "comments": expect.any(Array),
-          "created_at": expect.any(String),
-          "updated_at": expect.any(String),
-        }))
+        expect(res.body).toEqual(
+          expect.objectContaining({
+            id: expect.any(String),
+            user: expect.objectContaining({
+              username: expect.any(String),
+              id: expect.any(String),
+            }),
+            place_id: expect.any(String),
+            caption: expect.any(String),
+            images: expect.any(Array),
+            tags: expect.any(Array),
+            likes: expect.any(Array),
+            comments: expect.any(Array),
+            created_at: expect.any(String),
+            updated_at: expect.any(String),
+          })
+        );
 
         done();
       });
@@ -364,7 +406,10 @@ describe.skip('test /posts endpoint', () => {
         if (err) return done(err);
 
         expect(res.body).toEqual(expect.any(Object));
-        expect(res.body).toHaveProperty('message', 'post has been deleted successfully');
+        expect(res.body).toHaveProperty(
+          'message',
+          'post has been deleted successfully'
+        );
 
         done();
       });
