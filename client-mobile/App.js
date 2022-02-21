@@ -4,6 +4,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import MainStackNavigation from './navigation/MainStackNavigation';
 import { LinearGradient } from 'expo-linear-gradient';
 import DrawerNavigator from './navigation/DrawerNavigator';
+import { Provider } from 'react-redux';
+import store from './store/store';
 
 const config = {
   dependencies: {
@@ -15,10 +17,12 @@ export default function App() {
   return (
     <NativeBaseProvider config={config}>
       <SafeAreaProvider>
-        <NavigationContainer>
-          <MainStackNavigation />
-          {/* <DrawerNavigator /> */}
-        </NavigationContainer>
+        <Provider store={store}>
+          <NavigationContainer>
+            {/* <MainStackNavigation /> */}
+            <DrawerNavigator />
+          </NavigationContainer>
+        </Provider>
       </SafeAreaProvider>
     </NativeBaseProvider>
   );

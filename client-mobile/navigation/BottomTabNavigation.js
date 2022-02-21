@@ -6,11 +6,41 @@ import Profile from '../screens/Profile';
 import Login from '../screens/LoginPage';
 import PlaceDetail from '../screens/PlaceDetail';
 import CommentSection from '../screens/CommentSection';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import PostDetail from '../screens/PostDetail';
+
 
 const Tab = createBottomTabNavigator();
 
 export default function BottomTabNavigation() {
+  const { access_token } = useSelector((state) => state.user);
+  const [token, setToken] = useState('');
+
+  const checkAccessToken = async () => {
+    try {
+      return await AsyncStorage.getItem('access_token')
+    } catch (e) {
+      return 'error reading access_token'
+    }
+  }
+
+  useEffect(() => {
+    checkAccessToken()
+      .then((access_token) => {
+        setToken(access_token);
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+  }, [access_token])
+
+  checkAccessToken()
+    .then((access_token) => {
+      setToken(access_token);
+    })
+
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
@@ -43,16 +73,23 @@ export default function BottomTabNavigation() {
         component={Discover}
         options={{ headerShown: false }}
       />
-      <Tab.Screen
-        name="Profile"
-        component={Profile}
-        options={{ headerShown: false }}
-      />
-      <Tab.Screen
-        name="Login"
-        component={Login}
-        options={{ headerShown: false }}
-      />
+
+      {
+        token ? (
+          <Tab.Screen
+            name="Profile"
+            component={Profile}
+            options={{ headerShown: false }}
+          />
+        ) : (
+          <Tab.Screen
+            name="Login"
+            component={Login}
+            options={{ headerShown: false }}
+          />
+        )
+      }
+
       <Tab.Screen
         name="Place Detail"
         component={PlaceDetail}
