@@ -59,12 +59,12 @@ beforeAll(async () => {
 });
 
 
-afterAll(async () => {
-  await mongoose.disconnect();
-  require('../helpers/redis').disconnect();
-});
+// afterAll(async () => {
+//   await mongoose.disconnect();
+//   require('../helpers/redis').disconnect();
+// });
 
-describe('test /posts endpoint', () => {
+describe.skip('test /posts endpoint', () => {
   test('successfully CREATE post', done => {
     request(app)
       .post('/posts')

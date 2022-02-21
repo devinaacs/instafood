@@ -37,10 +37,10 @@ beforeAll(async () => {
   userTwo.id = createdUserTwo.id;
 });
 
-afterAll(async () => {
-  await mongoose.disconnect();
-  require('../helpers/redis').disconnect();
-});
+// afterAll(async () => {
+//   await mongoose.disconnect();
+//   require('../helpers/redis').disconnect();
+// });
 
 describe('test /users endpoint', () => {
   // done

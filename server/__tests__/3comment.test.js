@@ -28,7 +28,6 @@ let post_one = {
 };
 
 beforeAll(async () => {
-  console.log('TEST');
 
   await mongoose.connect('mongodb://localhost', { useNewUrlParser: true });
 
@@ -53,12 +52,12 @@ beforeAll(async () => {
   newcomment._id = test_comment._id;
 });
 
-afterAll(async () => {
-  await mongoose.disconnect();
-  require('../helpers/redis').disconnect();
-});
+// afterAll(async () => {
+//   await mongoose.disconnect();
+//   require('../helpers/redis').disconnect();
+// });
 
-describe('test /comments endpoint', () => {
+describe.skip('test /comments endpoint', () => {
   // done
   test('successfully CREATE comment', done => {
     request(app)
@@ -89,7 +88,6 @@ describe('test /comments endpoint', () => {
 
   // done
   test('successfully GET ALL comments', done => {
-    console.log(newcomment, '<<<');
     request(app)
       .get('/comments')
       .set('access_token', access_token)
@@ -97,7 +95,6 @@ describe('test /comments endpoint', () => {
       .expect(200)
       .end((err, res) => {
         if (err) return done(err);
-        console.log(res.body);
         expect(res.body).toBeInstanceOf(Array);
         expect(res.body[0]).toEqual(
           expect.objectContaining({
@@ -138,7 +135,6 @@ describe('test /comments endpoint', () => {
 
   //done
   test('successfully DELETE comments BY ID', done => {
-    console.log(newcomment._id);
     request(app)
       .delete(`/comments/${newcomment._id}`)
       .set('Accept', 'application/json')
@@ -146,7 +142,6 @@ describe('test /comments endpoint', () => {
       .expect(200)
       .end((err, res) => {
         if (err) {
-          console.log(err);
           return done(err);
         }
 
