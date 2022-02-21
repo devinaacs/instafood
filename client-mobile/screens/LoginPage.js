@@ -10,13 +10,32 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Input, Icon, Stack, Text, Button } from 'native-base';
 import { MaterialIcons, Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
+import { useDispatch, useSelector } from 'react-redux';
+import { userLogin } from '../store/actionCreators';
+
 const windowHeight = Dimensions.get('window').height;
 
 export default function Login() {
   const navigation = useNavigation();
   const [show, setShow] = React.useState(false);
+  const [email, setEmail] = React.useState('');
+  const [password, setPassword] = React.useState('');
+
+  const dispatch = useDispatch();
 
   const handleClick = () => setShow(!show);
+
+  const handleEmailInputChange = (emailInput) => {
+    setEmail(emailInput);
+  }
+
+  const handlePasswordInputChange = (passwordInput) => {
+    setPassword(passwordInput);
+  }
+
+  const handleLogin = () => {
+    dispatch(userLogin({ email, password }))
+  }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -40,6 +59,8 @@ export default function Login() {
       />
       <Stack space={6} w="100%" alignItems="center">
         <Input
+          onChangeText={handleEmailInputChange}
+          value={email}
           borderWidth={2}
           borderColor="muted.300"
           borderRadius="xl"
@@ -55,6 +76,8 @@ export default function Login() {
           placeholder="email address"
         />
         <Input
+          onChangeText={handlePasswordInputChange}
+          value={password}
           borderWidth={2}
           borderColor="muted.300"
           borderRadius="xl"
@@ -70,7 +93,10 @@ export default function Login() {
           }
           placeholder="Password"
         />
+        <Text>{email}</Text>
+        <Text>{password}</Text>
         <Button
+          onPress={handleLogin}
           colorScheme="red"
           w={{ base: '80%', md: '20%' }}
           h={12}

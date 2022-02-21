@@ -1,7 +1,7 @@
 import React from 'react';
 import { Box, Flex, Image, Text } from 'native-base';
-import { AntDesign, FontAwesome, Ionicons } from '@expo/vector-icons';
-import { StyleSheet, View, ScrollView, TouchableOpacity, Dimensions, } from 'react-native';
+import { AntDesign, FontAwesome } from '@expo/vector-icons';
+import { View, Dimensions, } from 'react-native';
 import { SwiperFlatList } from 'react-native-swiper-flatlist';
 
 const windowWidth = Dimensions.get('window').width;
@@ -56,7 +56,7 @@ const Post = ({ post }) => {
             showPagination
             paginationActiveColor={'blue'}
             paginationStyleItem={{ width: 9, height: 9, borderRadius: 9 / 2, marginHorizontal: 5, marginTop: 53, }}
-            data={post.imageUrl}
+            data={post.images}
             renderItem={({ item }) => (
               <View style={{ width: windowWidth * 0.9347, justifyContent: 'center', alignItems: 'center', }}>
                 <Image
@@ -88,7 +88,7 @@ const Post = ({ post }) => {
           </Flex>
           <Box px={'3'}>
             <Text fontSize={'md'} fontWeight={'bold'}>
-              {likesFormat(post.likes)} likes
+              {likesFormat(post.likes.length)} likes
             </Text>
           </Box>
           <Flex direction="row" px={'3'} mt={'4'} mb={'3'}>
@@ -99,14 +99,14 @@ const Post = ({ post }) => {
                 resizeMode={'cover'}
                 borderRadius={'full'}
                 source={{
-                  uri: post.user.profilePicture,
+                  uri: post.user.profilePicture || 'https://cdn.pixabay.com/photo/2015/03/04/22/35/head-659651__340.png',
                 }}
                 alt={'alternate picture'}
               />
             </Box>
             <Box ml={'3'}>
               <Text fontSize={'md'} fontWeight={'bold'}>
-                {post.user.name}
+                {post.user.username}
               </Text>
               <Flex direction="row">
                 <Text fontSize={'md'}>{post.caption}</Text>
@@ -115,7 +115,7 @@ const Post = ({ post }) => {
           </Flex>
           <Box px={'3'} mt={'1'} mb={'5'}>
             <Text fontSize={'xs'} color={'gray.400'}>
-              {post.createdAt}
+              {dateFormat(post.created_at)}
             </Text>
           </Box>
         </Box>
@@ -123,6 +123,29 @@ const Post = ({ post }) => {
     </Box>
   );
 };
+
+const dateFormat = (createdAt) => {
+  let slicedDate = createdAt.slice(0, 10);
+  let months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+  let reversedDate = slicedDate.split('-').reverse().join('-');
+  let splitReversedDate = reversedDate.split('-');
+  splitReversedDate[1] = months[+splitReversedDate[1] - 1];
+  let newDate = ["", "", ""];
+
+  newDate[0] = splitReversedDate[1];
+  newDate[1] = splitReversedDate[0];
+  newDate[2] = splitReversedDate[2];
+
+  let outputDate = []
+
+  newDate.forEach((el, i) => {
+    if (i === 0) outputDate.push(`${el} `)
+    if (i === 1) outputDate.push(`${el}, `)
+    if (i === 2) outputDate.push(el)
+  })
+
+  return outputDate;
+}
 
 const likesFormat = likes => {
   let stringifiedLikes = likes + '';
