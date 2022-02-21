@@ -21,6 +21,7 @@ const TrendingPost2 = ({ post }) => {
               data={post.imageUrl}
               renderItem={({ item }) => (
                 <View style={{ width: windowWidth * 0.9467, justifyContent: 'center', alignItems: 'center', }}>
+
                   <Image
                     alt='img'
                     style={{ width: '100%', resizeMode: 'cover', borderTopLeftRadius: 12, borderTopRightRadius: 12, height: 370 }}
@@ -28,6 +29,45 @@ const TrendingPost2 = ({ post }) => {
                       uri: item,
                     }}
                   />
+                  <Box
+                    style={{
+                      position: 'absolute',
+                      top: 0,
+                      alignSelf: 'center',
+                      height: 150,
+                      width: '100%',
+                      borderTopLeftRadius: 15,
+                      borderTopRightRadius: 15,
+                    }}
+                    bg={{
+                      linearGradient: {
+                        colors: ['black', 'transparent'],
+                        start: [0, 0],
+                        end: [0, 1],
+                      },
+                    }}
+                  />
+                  <View style={{
+                    flexDirection: 'row',
+                    position: 'absolute',
+                    top: 20,
+                    left: 10,
+                    alignSelf: 'center',
+                  }}>
+                    <Ionicons
+                      name="ios-location-sharp"
+                      size={28}
+                      color="white"
+                      style={{ paddingTop: 1, paddingRight: 4 }}
+                    />
+                    <Text style={{
+                      color: 'white',
+                      fontSize: 20,
+                      fontWeight: 'bold',
+                      marginHorizontal: 3,
+                      paddingTop: 4,
+                    }}>Pizza Hut</Text>
+                  </View>
                 </View>
               )}
             />
