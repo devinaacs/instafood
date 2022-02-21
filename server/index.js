@@ -1,5 +1,11 @@
 require('dotenv').config();
 require('./helpers/fstorage').init();
+const path = require('path');
+
+process.env.GOOGLE_APPLICATION_CREDENTIALS = path.join(
+  __dirname,
+  process.env.GOOGLE_APPLICATION_CREDENTIALS
+);
 
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 const PORT = process.env.PORT || 3000;

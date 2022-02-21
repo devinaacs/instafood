@@ -246,9 +246,7 @@ class Controller {
       for (let i = 0; i < req.files.length; i++) {
         const file = req.files[i];
         const imageLables = await getLables(file);
-
         lables.push(imageLables);
-
         cleanTempFile(file);
       }
 
