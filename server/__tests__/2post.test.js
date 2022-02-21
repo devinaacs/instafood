@@ -48,7 +48,7 @@ beforeAll(async () => {
   post_one._id = test_post._id;
 });
 
-describe('test /posts endpoint', () => {
+describe.skip('test /posts endpoint', () => {
   test.skip('successfully CREATE post', done => {
     request(app)
       .post('/posts')

@@ -2,7 +2,7 @@ module.exports = (err, req, res, next) => {
   if (res.headersSent) {
     return next(err);
   }
-  // console.log(err)
+  console.log(err)
 
   let status = 500;
   let message = 'internal server error';
