@@ -30,9 +30,5 @@
       "prettier --write",
       "eslint --fix"
     ]
-  },
-  "dependencies": {
-    "react-native-gesture-handler": "^2.2.0",
-    "react-native-reanimated": "^2.4.1"
   }
 }
