@@ -57,7 +57,7 @@ const TrendingPost2 = ({ post }) => {
                 }}>Pizza Hut</Text>
               </Box>
               <Box px={'6'} mt={'1'} >
-                <Text fontSize={'sm'} color={'white'}>{post.createdAt}</Text>
+                <Text fontSize={'sm'} color={'#E7E7E7'}>{post.createdAt}</Text>
               </Box>
             </View>
             <Flex direction='row' py={5} style={{ zIndex: 10, position: 'absolute', bottom: 0, left: 0, width: '100%', }}>
