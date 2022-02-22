@@ -1,6 +1,7 @@
 const request = require('supertest');
 const mongoose = require('mongoose');
 const axios = require('axios');
+const redis = require('../helpers/redis');
 const app = require('../app');
 
 jest.mock('../helpers/fstorage', () => ({
@@ -20,19 +21,20 @@ jest.mock('../helpers/fstorage', () => ({
 
 jest.mock('axios');
 
-let place_ref_test = 'ChIJj9vzoKX2aS4RF3EGNHjn2tU';
-let search_resto = { name: 'Bebek BKB' };
 let search_photo = {
   ref: 'Aap_uEC4lSsm067sV9tcOYfA_wXreIws5R4ZG3yw7d3ew8T75QbfIaufC5RtN9sOrKjjFrm7OE-1oz5NZyldq090iDZH3Cs490JZhc4iyMsPOLa9rHyxbRNjml0ZrAV9W5-xE65S8r6viYCs_O4VULh9qNCTeBVmoltZLV3icgimatg04-Ld',
 };
 
 beforeAll(async () => {
+  await redis.connect();
   await mongoose.connect('mongodb://localhost:27017/instafood-test-5place', {
     useNewUrlParser: true,
   });
 });
 
-beforeEach(() => {
+beforeEach(async () => {
+  await redis.del('default.name');
+  await redis.del('place.testPlaceId');
   jest.resetAllMocks();
 });
 
@@ -42,7 +44,7 @@ afterAll(async () => {
 });
 
 describe('test places endpoint', () => {
-  test('successfully GET ALL places', done => {
+  test('GET /places - successfully get places', done => {
     axios.get.mockResolvedValue({
       data: {
         results: [
@@ -61,7 +63,7 @@ describe('test places endpoint', () => {
 
     request(app)
       .get('/places')
-      .query(search_resto)
+      .query({ name: 'name' })
       .set('Accept', 'application/json')
       .expect(200)
       .end((err, res) => {
@@ -82,7 +84,43 @@ describe('test places endpoint', () => {
       });
   });
 
-  test('successfully GET places BY place_id', done => {
+  test('GET /places - successfully get places with no photos', done => {
+    axios.get.mockResolvedValue({
+      data: {
+        results: [
+          {
+            place_id: 'place id',
+            name: 'place name',
+            formatted_address: 'place address',
+            icon: 'place icon'
+          }
+        ]
+      }
+    });
+
+    request(app)
+      .get('/places')
+      .query({ name: 'name' })
+      .set('Accept', 'application/json')
+      .expect(200)
+      .end((err, res) => {
+        if (err) done(err);
+
+        expect(res.body).toBeInstanceOf(Array);
+        expect(res.body[0]).toEqual(
+          expect.objectContaining({
+            place_id: expect.any(String),
+            name: expect.any(String),
+            address: expect.any(String),
+            icon: expect.any(String)
+          })
+        );
+
+        done();
+      });
+  });
+
+  test('GET /places/:id - successfully GET places BY place_id', done => {
     axios.get.mockResolvedValue({
       data: {
         result: {
@@ -97,14 +135,11 @@ describe('test places endpoint', () => {
     });
 
     request(app)
-      .get(`/places/${place_ref_test}`)
+      .get(`/places/testPlaceId`)
       .set('Accept', 'application/json')
       .expect(200)
       .end((err, res) => {
-        if (err) {
-          console.log(err);
-          return done(err);
-        }
+        if (err) return done(err);
 
         expect(res.body).toEqual(expect.any(Object));
         expect(res.body).toEqual(
@@ -115,6 +150,7 @@ describe('test places endpoint', () => {
             photos: expect.any(Array),
           })
         );
+
         done();
       });
   });
