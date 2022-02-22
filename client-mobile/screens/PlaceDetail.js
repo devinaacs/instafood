@@ -1,5 +1,5 @@
-import React from 'react';
-import { StyleSheet, View, ScrollView, Text, TouchableOpacity, Image, Dimensions, } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, View, ScrollView, Text, TouchableOpacity, Image, Dimensions, FlatList } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { Input, Icon, Stack, Center, Button, Box } from 'native-base';
@@ -8,17 +8,56 @@ import { useRoute, useNavigation } from '@react-navigation/native';
 const windowWidth = Dimensions.get('window').width;
 import { SwiperFlatList } from 'react-native-swiper-flatlist';
 import TrendingPost2 from '../components/Post';
-import PostDetail from './PostDetail';
+import Post from '../components/Post';
 
 export default function PlaceDetail() {
+  const [postDetails, setPostDetails] = useState(null);
+  const [placeDetails, setPlaceDetails] = useState(null);
   const route = useRoute();
   const navigation = useNavigation();
-  const { placeDetails } = route.params;
+  const { placeId } = route.params;
+
+  useEffect(() => {
+    fetch(`https://hacktiv8-instafood.herokuapp.com/posts/?place_id=${placeId}`)
+      .then(response => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          return Promise.reject('something went wrong!');
+        }
+      })
+      .then(response => {
+        setPostDetails(response);
+      })
+      .catch(error => {
+        console.log('error', error);
+      });
+    fetch(`https://hacktiv8-instafood.herokuapp.com/places/${placeId}`)
+      .then(response => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          return Promise.reject('something went wrong!');
+        }
+      })
+      .then(response => {
+        setPlaceDetails(response);
+      })
+      .catch(error => {
+        console.log('error', error);
+      });
+  }, []);
+  // console.log(postDetails);
+
+  if(!placeDetails) {
+    return null;
+  }
 
   return (
     <SafeAreaView style={styles.container}>
       <View>
         <NavbarForPlaceDetail />
+        {/* <Text>{placeId}</Text> */}
       </View>
       <ScrollView>
         <View>
@@ -62,7 +101,7 @@ export default function PlaceDetail() {
                           borderBottomLeftRadius: 15,
                           borderBottomRightRadius: 15,
                           zIndex: 2,
-                          width: windowWidth * 0.93
+                          width: windowWidth * 0.94
                         }}
                         bg={{
                           linearGradient: {
@@ -73,7 +112,7 @@ export default function PlaceDetail() {
                         }}
                       />
                       <Image
-                        style={{ width: windowWidth * 0.93, height: 320, resizeMode: 'cover', borderRadius: 13 }}
+                        style={{ width: windowWidth * 0.94, height: 320, resizeMode: 'cover', borderRadius: 13 }}
                         source={{
                           uri: `https://hacktiv8-instafood.herokuapp.com/places/photo?ref=${item}`,
                         }}
@@ -89,8 +128,25 @@ export default function PlaceDetail() {
             </View>
           </ScrollView>
         </View>
-        <View style={{ paddingHorizontal: 20, paddingBottom: 20, backgroundColor: 'white' }}>
-          <Text style={{ fontSize: 24, fontWeight: 'bold' }}>Related Posts</Text>
+        <View style={{ paddingBottom: 20, backgroundColor: 'white' }}>
+          <Text style={{ fontSize: 24, fontWeight: 'bold', paddingLeft: 20, paddingVertical: 10 }}>Related Posts</Text>
+          {
+            postDetails ? postDetails.items.map((el, index) => (
+              <Post post={el} key={index} />
+            )) : <Image
+              style={{
+                height: 60,
+                width: 60,
+                marginTop: 120,
+                resizeMode: 'cover',
+                borderRadius: 10,
+                alignSelf: 'center',
+                justifyContent: 'center', alignItems: 'center', alignContent: 'center'
+              }}
+              source={require('../assets/loading.gif')}
+            />
+          }
+
         </View>
       </ScrollView>
 

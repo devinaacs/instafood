@@ -66,7 +66,7 @@ export default function OtherUserProfile() {
                   uri: 'https://cdn.pixabay.com/photo/2015/03/04/22/35/head-659651__340.png',
                 }}
               />
-              <Text style={styles.profileName}>{post.user.username}</Text>
+              <Text style={styles.profileName}>{userProfile.username}</Text>
               <Text style={{ color: 'gray' }}>{userProfile.email}</Text>
             </View>
             <View style={styles.post}>

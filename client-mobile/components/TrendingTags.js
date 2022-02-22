@@ -12,7 +12,7 @@ export default function TrendingTags({ tags }) {
   const navigation = useNavigation();
 
   return (
-    <TouchableOpacity onPress={() => navigation.navigate('SearchScreen', { tags })} style={styles.tagsContainer}>
+    <TouchableOpacity onPress={() => navigation.navigate('SearchScreen', { tag: tags.tag })} style={styles.tagsContainer}>
       <View style={styles.tagsBox}>
         <Text style={styles.text}>#{tags.tag}</Text>
       </View>

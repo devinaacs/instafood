@@ -6,6 +6,7 @@ import { useSelector } from 'react-redux';
 import Post from '../components/Post';
 import { useRoute } from '@react-navigation/native';
 
+
 const windowWidth = Dimensions.get('window').width;
 
 export default function SearchScreen({ navigation }) {
@@ -21,14 +22,18 @@ export default function SearchScreen({ navigation }) {
   const [foundSearch, setFoundSearch] = useState(true);
   const { access_token } = useSelector((state) => state.user);
   const { timeoutState, setTimeoutState } = useState(null);
-  const [useEffectTrigger, setUseEffectTrigger] = useState('')
+  const [useEffectTrigger, setUseEffectTrigger] = useState('');
+
+  const [usersLoading, setUsersLoading] = useState(false);
+  const [tagsLoading, setTagsLoading] = useState(false);
+  const [placesLoading, setPlacesLoading] = useState(false);
 
   const route = useRoute();
 
   useEffect(() => {
     if (route.params) {
       handleFilter('posts by tags')
-      setInputSearch(route.params.tags.tag)
+      setInputSearch(route.params.tag)
     }
 
     handleSearch(inputSearch)
@@ -37,7 +42,7 @@ export default function SearchScreen({ navigation }) {
 
   const handleSearchPlace = () => {
     const SERVER_PLACES_URL = `https://hacktiv8-instafood.herokuapp.com/places?name=${inputSearch}`;
-
+    setPlacesLoading(true);
     fetch(SERVER_PLACES_URL)
       .then(response => {
         if (response.ok) {
@@ -48,6 +53,7 @@ export default function SearchScreen({ navigation }) {
       })
       .then(response => {
         setFoundPlaces(response);
+        setPlacesLoading(false);
       })
       .catch(error => {
         console.log('error', error);
@@ -61,6 +67,7 @@ export default function SearchScreen({ navigation }) {
     setFoundPlaces([]);
     setPosts([]);
     if (search === 'Search users') {
+      setUsersLoading(true);
       fetch('https://hacktiv8-instafood.herokuapp.com/users')
         .then(response => {
           if (response.ok) {
@@ -74,6 +81,7 @@ export default function SearchScreen({ navigation }) {
             setFoundSearch(false)
           }
           setUsers(result.filter((el) => el.username.includes(searchBy)))
+          setUsersLoading(false)
         })
         .catch((err) => console.log(err))
     }
@@ -83,6 +91,7 @@ export default function SearchScreen({ navigation }) {
     }
 
     if (search === 'Search posts by tags') {
+      setTagsLoading(true);
       fetch('https://hacktiv8-instafood.herokuapp.com/posts')
         .then(response => {
           if (response.ok) {
@@ -116,6 +125,7 @@ export default function SearchScreen({ navigation }) {
 
             return flag;
           }))
+          setTagsLoading(false)
         })
         .catch(error => {
           console.log('error', error);
@@ -169,11 +179,14 @@ export default function SearchScreen({ navigation }) {
           <Ionicons name='arrow-back' size={30} color='black' />
         </Center>
         <Flex direction={'row'} bg={'gray.100'} borderRadius={'xl'}>
-          <Input value={inputSearch} onChangeText={handleInputSearchChange} ref={textInputRef} placeholder={search} w={windowWidth / 1.18} borderWidth={'0'} fontSize={'xl'} px={'5'} />
+          <Input value={inputSearch} onChangeText={handleInputSearchChange} ref={textInputRef} placeholder={search} w={windowWidth / 1.34} borderWidth={'0'} fontSize={'xl'} px={'5'} />
+          <Box onTouchEnd={() => handleSearch(inputSearch)} justifyContent={'center'} px={3}>
+            <Ionicons name='search' size={30} color='gray' />
+          </Box>
         </Flex>
       </Flex>
 
-      <Flex direction='row' width={windowWidth} bg={'white'} justifyContent={'space-evenly'} height={'16'} alignItems={'center'}>
+      <Flex direction='row' width={windowWidth} bg={'white'} justifyContent={'space-evenly'} height={'16'} alignItems={'center'} borderBottomWidth={1} borderBottomColor={'muted.200'} pb={2}>
         <Pressable borderRadius={'xl'} bg={usersColor} width={'20'} height={'10'} onPress={() => handleFilter('users')}>
           <Center width={'20'} height={'10'}>
             <Text fontSize={'lg'} color={'white'} fontWeight={'bold'}>Users</Text>
@@ -191,9 +204,19 @@ export default function SearchScreen({ navigation }) {
         </Pressable>
       </Flex>
 
-      <Box onTouchEnd={() => handleSearch(inputSearch)}>
-        <Text>Search</Text>
-      </Box>
+      {
+        usersLoading ? <Text> user loading</Text> : null
+      }
+
+
+      {
+        tagsLoading ? <Text> tags loading</Text> : null
+      }
+
+
+      {
+        placesLoading ? <Text> places loading</Text> : null
+      }
 
       {
         foundSearch ? null : (
@@ -209,7 +232,20 @@ export default function SearchScreen({ navigation }) {
             data={users}
             renderItem={({ item }) => (
               <Box key={item.id}>
-                <Text>{item.username}</Text>
+                <Pressable onPress={() => navigation.navigate('OtherUserProfile', { post: { user: { id: item.id } } })} _pressed={{
+                  bg: 'gray.100'
+                }} height={'20'} borderBottomWidth={'1'} borderBottomColor={'gray.300'}>
+                  <Flex direction='row' width={'full'} height={'20'} my={'2'}>
+                    <Box >
+                      <Image borderRadius={'full'} width={'16'} height={'16'} source={{
+                        uri: 'https://cdn.pixabay.com/photo/2015/03/04/22/35/head-659651__340.png'
+                      }} alt={'alternate'} />
+                    </Box>
+                    <Box ml={'4'} mt={'4'}>
+                      <Text fontWeight={'bold'} fontSize={20}>{item.username}</Text>
+                    </Box>
+                  </Flex >
+                </Pressable>
               </Box>
             )}
             keyExtractor={item => item.id}
@@ -226,36 +262,39 @@ export default function SearchScreen({ navigation }) {
           />
         ) : null
       }
+      <Box px={5}>
 
-      {foundPlaces.length > 0 ?
-        foundPlaces.map((el, i) => {
-          let photoRef = '';
 
-          if (el.photo_reference) {
-            photoRef = `https://hacktiv8-instafood.herokuapp.com/places/photo?ref=${el.photo_reference}`;
-          } else {
-            photoRef = el.icon
-          }
+        {foundPlaces.length > 0 ?
+          foundPlaces.map((el, i) => {
+            let photoRef = '';
 
-          return (
-            <Pressable key={i} onPress={() => console.log(el.name)} _pressed={{
-              bg: 'gray.100'
-            }} height={'20'} borderBottomWidth={'1'}>
-              <Flex direction='row' width={'full'} height={'20'} my={'2'}>
-                <Box>
-                  <Image borderRadius={'lg'} width={'16'} height={'16'} source={{
-                    uri: photoRef
-                  }} alt={'alternate'} />
-                </Box>
-                <Box ml={'4'} mt={'4'}>
-                  <Text fontWeight={'bold'}>{el.name}</Text>
-                  <Text>{el.address.slice(0, 50)}</Text>
-                </Box>
-              </Flex >
-            </Pressable>
-          )
-        }) : null
-      }
+            if (el.photo_reference) {
+              photoRef = `https://hacktiv8-instafood.herokuapp.com/places/photo?ref=${el.photo_reference}`;
+            } else {
+              photoRef = el.icon;
+            }
+
+            return (
+              <Pressable key={i} onPress={() => navigation.navigate('PlaceDetail', { placeId: el.place_id })} _pressed={{
+                bg: 'gray.100'
+              }} height={'20'} borderBottomWidth={'1'} borderBottomColor={'gray.400'}>
+                <Flex direction='row' width={'full'} height={'20'} my={'2'}>
+                  <Box>
+                    <Image borderRadius={'lg'} width={'16'} height={'16'} source={{
+                      uri: photoRef
+                    }} alt={'alternate'} />
+                  </Box>
+                  <Box ml={'4'} mt={'4'}>
+                    <Text fontWeight={'bold'}>{el.name}</Text>
+                    <Text>{el.address.slice(0, 50)}</Text>
+                  </Box>
+                </Flex >
+              </Pressable>
+            );
+          }) : null
+        }
+      </Box>
 
     </Box>
   )
