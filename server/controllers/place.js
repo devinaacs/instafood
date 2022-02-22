@@ -11,13 +11,6 @@ module.exports = {
     try {
       let locationKey = 'default';
 
-      if (req.query.location) {
-        locationKey = req.query.location
-          .split(',')
-          .map(v => Math.round(v * 100) / 100)
-          .join(',');
-      }
-
       const cacheKey = `${locationKey}.${req.query.name}`;
       const cachedResult = await redis.get(cacheKey);
 
@@ -28,12 +21,8 @@ module.exports = {
       const params = {
         key: process.env.GPLACES_API_KEY,
         query: req.query.name,
-        location: '-6.170280329097068,106.8240104937367',
+        location: '-6.170280329097068,106.8240104937367'
       };
-
-      if (req.query.location) {
-        params.location = req.query.location;
-      }
 
       const { data } = await axios.get(TEXT_SEARCH_URL, { params });
       const result = data.results

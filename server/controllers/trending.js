@@ -89,6 +89,7 @@ module.exports = {
 
       res.json(trending);
     } catch (err) {
+      console.log(err);
       next(err);
     }
   },
@@ -100,16 +101,16 @@ module.exports = {
         { version: vReady },
         { _id: 0, __v: 0 }
       )
-        .limit(10)
-        .sort({ popularity: -1 })
-        .populate({
-          path: 'most_popular.post',
-          select: ['user', 'images', 'tags'],
-          populate: {
-            path: 'user',
-            select: { username: 1 },
-          },
-        });
+      .limit(10)
+      .sort({ popularity: -1 })
+      .populate({
+        path: 'most_popular.post',
+        select: ['user', 'images', 'tags'],
+        populate: {
+          path: 'user',
+          select: { username: 1 },
+        },
+      });
 
       if (trending) {
         trending = trending.map(v => {
@@ -126,6 +127,7 @@ module.exports = {
 
       res.json(trending);
     } catch (err) {
+      console.log('err', err);
       next(err);
     }
   },

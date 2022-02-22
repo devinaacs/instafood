@@ -19,6 +19,10 @@ async function start() {
   await mongoose.connect(MONGO_URI, { useNewUrlParser: true });
   console.log('connected to mongodb');
 
+  console.log('connecting to redis');
+  await require('./helpers/redis').connect();
+  console.log('connected to redis');
+
   app.listen(PORT, () => {
     console.log(`🚀 server app listening on port ${PORT}`);
 

@@ -70,7 +70,7 @@ afterAll(async () => {
 });
 
 describe('test /posts endpoint', () => {
-  test('successfully CREATE post', done => {
+  test('POST /posts - successfully create post', done => {
     request(app)
       .post('/posts')
       .field('place_id', post_one.place_id)
@@ -99,6 +99,22 @@ describe('test /posts endpoint', () => {
         );
 
         done();
+      });
+  });
+
+  test('POST /posts - invalid token', done => {
+    const invalidToken = createToken({
+      id: '620f121cd5040c7380fc7dea',
+      email: 'invalid@mail.com',
+    });
+
+    request(app)
+      .post('/posts')
+      .set('access_token', invalidToken)
+      .expect(401)
+      .end((err, res) => {
+        if (err) done(err)
+        else done();
       });
   });
 
@@ -139,7 +155,6 @@ describe('test /posts endpoint', () => {
       });
   });
 
-  // done
   test('successfully GET ALL posts (with query place_id)', done => {
     page_query.place_id = post_one.place_id;
     request(app)
@@ -181,13 +196,10 @@ describe('test /posts endpoint', () => {
       });
   });
 
-  // done
   test('successfully GET ALL posts (with query user_id)', done => {
-    page_query.user_id = post_one.user;
     request(app)
       .get('/posts')
-      .send(post_one)
-      .query(page_query)
+      .query({ user_id: post_one.user.toString() })
       .set('Accept', 'application/json')
       .expect(200)
       .end((err, res) => {

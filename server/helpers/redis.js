@@ -1,8 +1,12 @@
 const Redis = require('ioredis');
 
-const redis = new Redis(process.env.REDIS_URI || 'redis://localhost');
+const redis = new Redis(process.env.REDIS_URI || 'redis://localhost', { lazyConnect: true });
 
 module.exports = {
+  async connect() {
+    return redis.connect();
+  },
+
   async get(key) {
     const result = await redis.get(key);
 
@@ -10,11 +14,11 @@ module.exports = {
   },
 
   async set(key, value, exp = 30) {
-    if (typeof value != 'string') {
-      value = JSON.stringify(value);
-    }
+    return redis.set(key, JSON.stringify(value), 'EX', exp);
+  },
 
-    return redis.set(key, value, 'EX', exp);
+  async del(key) {
+    return redis.del(key);
   },
 
   disconnect() {

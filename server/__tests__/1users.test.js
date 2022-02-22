@@ -45,7 +45,6 @@ afterAll(async () => {
 });
 
 describe('test /users endpoint', () => {
-  // done
   test('successfully registering user', done => {
     const user = {
       username: 'new.user',
@@ -145,7 +144,6 @@ describe('test /users endpoint', () => {
       });
   });
 
-  // done
   test('successfully get user by id', done => {
     const payload = {
       id: userOne.id,
@@ -172,7 +170,6 @@ describe('test /users endpoint', () => {
       });
   });
 
-  // done
   test('failed to register new user (empty username)', done => {
     request(app)
       .post('/register')
@@ -195,7 +192,6 @@ describe('test /users endpoint', () => {
       });
   });
 
-  // done
   test('failed to register new user (empty email)', done => {
     request(app)
       .post('/register')
@@ -218,7 +214,6 @@ describe('test /users endpoint', () => {
       });
   });
 
-  // done
   test('failed to register new user (empty password)', done => {
     request(app)
       .post('/register')
@@ -241,7 +236,6 @@ describe('test /users endpoint', () => {
       });
   });
 
-  // done
   test('failed to register new user (invalid email format)', done => {
     request(app)
       .post('/register')
@@ -264,7 +258,6 @@ describe('test /users endpoint', () => {
       });
   });
 
-  // done
   test('failed to register new user (password length less than 6)', done => {
     request(app)
       .post('/register')
@@ -287,7 +280,6 @@ describe('test /users endpoint', () => {
       });
   });
 
-  // done
   test('failed to register new user (username is taken)', done => {
     request(app)
       .post('/register')
@@ -308,7 +300,6 @@ describe('test /users endpoint', () => {
       });
   });
 
-  // done
   test('failed to register new user (email is taken)', done => {
     request(app)
       .post('/register')
@@ -331,7 +322,6 @@ describe('test /users endpoint', () => {
       });
   });
 
-  // done
   test('failed to login user (invalid email/passwod)', done => {
     const loginData = {
       email: userOne.email,
@@ -355,7 +345,6 @@ describe('test /users endpoint', () => {
       });
   });
 
-  // done
   test('failed to login user (invalid email/passwod)', done => {
     const loginData = {
       email: 'test@mail.com',
@@ -379,7 +368,6 @@ describe('test /users endpoint', () => {
       });
   });
 
-  // done
   test('failed to get user by id (data not found)', done => {
     request(app)
       .get('/users/621019c5e5ca7105f04d5566')
