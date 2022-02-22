@@ -5,6 +5,7 @@ const Like = require('../models/Like');
 const Comment = require('../models/Comment');
 const bucket = require('../helpers/fstorage').getBucket();
 const vision = require('@google-cloud/vision');
+const actPlace = require('../actions/place');
 const client = new vision.ImageAnnotatorClient();
 
 class Controller {
@@ -139,6 +140,25 @@ class Controller {
 
         return post;
       });
+
+      const promises = [];
+      posts.forEach(post => {
+        const p = actPlace.getPlaceDetail(post.place_id)
+          .then(place => {
+            post.place_name = place.name;
+
+            return Promise.resolve();
+          })
+          .catch(err => {
+            console.log(err);
+            post.place_name = '';
+
+            return Promise.resolve();
+          });
+
+        promises.push(p);
+      });
+      await Promise.all(promises);
 
       res.status(200).json({
         pages_count: Math.ceil(postsCount / pageSize),

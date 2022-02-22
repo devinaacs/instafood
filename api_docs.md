@@ -275,6 +275,7 @@ _Response 200 - OK_
         "id": "621054ef0837fb236cd55b7c"
       },
       "place_id": "ChIJmzRSGeD1aS4RELtI48vhrb8",
+      "place_name": "Warung Pak Bambang",
       "images": [
         "https://storage.googleapis.com/hacktiv8-instafood.appspot.com/development/posts/620f6055bf705044a6b1148c/img-1.png",
         "https://storage.googleapis.com/hacktiv8-instafood.appspot.com/development/posts/620f6055bf705044a6b1148c/img-2.png"
@@ -459,6 +460,7 @@ _Response 200 - OK_
   {
     "id": "621063ecc93e6b0ae05b6f83",
     "place_id": "6210cc70bf599130a9a9c40f",
+    "place_name": "Warung Pak Bambang",
     "caption": "Very delicious!",
     "user": {
       "id": "62105d4046db9b1297368fce",
