@@ -1,11 +1,10 @@
 const { default: axios } = require('axios');
 const redis = require('../helpers/redis');
+const actPlace = require('../actions/place');
 
 const TEXT_SEARCH_URL =
   'https://maps.googleapis.com/maps/api/place/textsearch/json';
 const PHOTO_URL = 'https://maps.googleapis.com/maps/api/place/photo';
-const PLACE_DETAIL_URL =
-  'https://maps.googleapis.com/maps/api/place/details/json';
 
 module.exports = {
   async searchPlaces(req, res, next) {
@@ -76,34 +75,9 @@ module.exports = {
 
   async getPlaceDetail(req, res, next) {
     try {
-      const cacheKey = `place.${req.params.id}`;
-      const cachedResult = await redis.get(cacheKey);
-
-      if (cachedResult) {
-        return res.json(cachedResult);
-      }
-
-      const { data } = await axios.get(PLACE_DETAIL_URL, {
-        params: {
-          place_id: req.params.id,
-          fields: 'photos,name,formatted_address,icon',
-          key: process.env.GPLACES_API_KEY,
-        },
-      });
-
-      const result = {
-        name: data.result.name,
-        address: data.result.formatted_address,
-        icon: data.result.icon,
-        photos: data.result.photos
-          ? data.result.photos.map(v => v.photo_reference)
-          : [],
-      };
-      redis.set(cacheKey, result);
-
-      res.json(result);
+      res.json(await actPlace.getPlaceDetail(req.params.id));
     } catch (err) {
       next(err);
     }
-  },
+  }
 };

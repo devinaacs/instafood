@@ -8,6 +8,7 @@ const initialState = {
 
 function user(state = initialState, action) {
   if (action.type === USER_LOGIN) {
+    console.log('hai')
     const storeData = async (value) => {
       try {
         await AsyncStorage.setItem('access_token', value.access_token)
@@ -38,8 +39,8 @@ function user(state = initialState, action) {
 
     return {
       ...state,
-      access_token: null,
-      userId: null,
+      access_token: 'token',
+      userId: 'userId',
     }
   } else if (action.type === USER_TOKEN_USERID) {
     let access_token_reducer = '';

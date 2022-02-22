@@ -47,28 +47,10 @@ export default function Discover() {
       });
   };
 
-  // const checkAccessToken = async () => {
-  //   try {
-  //     return await AsyncStorage.getItem('access_token');
-  //   } catch (e) {
-  //     return 'error reading access_token';
-  //   }
-  // };
-
-  // const checkTest = () => {
-  //   checkAccessToken()
-  //     .then((token) => {
-  //       console.log(token)
-  //     })
-  // }
-
   return (
     <Box bg={'white'} flex={1} safeAreaTop>
       <StatusBar />
       <SearchButton />
-      {/* <Box onTouchEnd={checkTest}>
-        <Text>Test</Text>
-      </Box> */}
       <FlatList
         data={posts}
         renderItem={({ item }) => <Post post={item} key={item.id} />}

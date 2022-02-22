@@ -2,6 +2,7 @@ const TrendingPosts = require('../models/TrendingPosts');
 const TrendingTag = require('../models/TrendingTag');
 const TrendingPlace = require('../models/TrendingPlace');
 const actTrendingVersion = require('../actions/trendingVersion');
+const actPlace = require('../actions/place');
 
 module.exports = {
   async getPosts(req, res, next) {
@@ -12,27 +13,79 @@ module.exports = {
         { _id: 0, __v: 0 }
       ).populate({
         path: 'posts',
-        select: ['user', 'images', 'tags'],
-        populate: {
-          path: 'user',
-          select: { username: 1 },
-        },
+        select: { __v: 0, updated_at: 0 },
+        populate: [
+          {
+            path: 'user',
+            select: { username: 1 }
+          },
+          {
+            path: 'like_ids',
+            select: { user: 1 }
+          },
+          {
+            path: 'comment_ids',
+            select: { comment: 1 },
+            populate: {
+              path: 'user',
+              select: { username: 1 },
+            }
+          }
+        ]
       });
 
-      if (trending) {
-        trending = trending.posts.map(v => {
-          v = v.toObject();
-          v.id = v._id;
-          delete v._id;
+      trending = trending.posts.map(v => {
+        v = v.toObject();
+        v.id = v._id;
+        delete v._id;
 
-          if (v.user && v.user._id) {
-            v.user.id = v.user._id;
-            delete v.user._id;
+        if (v.user && v.user._id) {
+          v.user.id = v.user._id;
+          delete v.user._id;
+        }
+
+        v.likes = v.like_ids.map(like => {
+          like.id = like._id;
+          delete like._id;
+          
+          return like;
+        });
+        delete v.like_ids;
+
+        v.comments = v.comment_ids.map(comment => {
+          comment.id = comment._id;
+          delete comment._id;
+
+          if (comment.user) {
+            comment.user.id = comment.user._id;
+            delete comment.user._id;
           }
 
-          return v;
+          return comment;
         });
-      }
+        delete v.comment_ids;
+
+        return v;
+      });
+
+      const promises = [];
+      trending.forEach(post => {
+        const p = actPlace.getPlaceDetail(post.place_id)
+          .then(place => {
+            post.place_name = place.name;
+
+            return Promise.resolve();
+          })
+          .catch(err => {
+            console.log(err);
+            post.place_name = '';
+
+            return Promise.resolve();
+          });
+
+        promises.push(p);
+      });
+      await Promise.all(promises);
 
       res.json(trending);
     } catch (err) {
