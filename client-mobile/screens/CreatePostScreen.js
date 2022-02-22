@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import * as ImagePicker from 'expo-image-picker';
+import { Dimensions } from 'react-native';
 import { Box, Center, Flex, Image, Input, Pressable, ScrollView, StatusBar, Text, TextArea } from 'native-base';
 import { Feather } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
@@ -15,7 +16,7 @@ export default function CreatePostScreen({ navigation }) {
   const [tags, setTags] = useState([]);
   const [tag, setTag] = useState('');
   const [postLoading, setPostLoading] = useState(false);
-
+  const windowWidth = Dimensions.get('window').width;
   // Functions:
   const pickImage = async () => {
     // No permissions request is necessary for launching the image library
@@ -86,7 +87,7 @@ export default function CreatePostScreen({ navigation }) {
         .then(response => {
           console.log('response', response);
           setPostLoading(false);
-          navigation.navigate('Highlights')
+          navigation.goBack();
         })
         .catch(error => {
           console.log('error', error);
@@ -419,21 +420,23 @@ export default function CreatePostScreen({ navigation }) {
         </Box>
 
         {/* Tag List */}
-        <Box width={'full'} height={'20'} px={'4'} pt={'4'}>
-          <Flex direction='row'>
-            {
-              tags.length > 0 ? tags.map((el, i) => (
-                <Flex direction='row' justifyContent={'center'} alignItems={'center'} minHeight={'12'} key={i} bg={'gray.100'} mr={'3'} mb={'3'} p={'4'} borderRadius={'md'}>
-                  <Text mr={'1'} fontSize={'md'}>#{el}</Text>
-                  <Center
-                    onTouchEnd={() => handleCancelTag(el)}
-                    size={'6'}
-                  >
-                    <Feather name="delete" size={20} color="black" />
-                  </Center>
-                </Flex>
-              )) : null
-            }
+        <Box width={windowWidth} height={'20'} px={'4'} pt={'4'} >
+          <Flex direction='row' wrap='wrap'>
+            <ScrollView horizontal>
+              {
+                tags.length > 0 ? tags.map((el, i) => (
+                  <Flex direction='row' justifyContent={'center'} alignItems={'center'} minHeight={'12'} key={i} bg={'gray.100'} mr={'3'} mb={'3'} p={'4'} borderRadius={'md'}>
+                    <Text mr={'1'} fontSize={'md'}>#{el}</Text>
+                    <Center
+                      onTouchEnd={() => handleCancelTag(el)}
+                      size={'6'}
+                    >
+                      <Feather name="delete" size={20} color="black" />
+                    </Center>
+                  </Flex>
+                )) : null
+              }
+            </ScrollView>
           </Flex>
         </Box>
       </ScrollView>

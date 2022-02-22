@@ -6,6 +6,9 @@ import SearchScreen from '../screens/SearchScreen';
 import Register from '../screens/Register';
 import Profile from '../screens/Profile';
 import PlaceDetail from '../screens/PlaceDetail';
+import CommentSection from '../screens/CommentSection';
+import PostDetail from '../screens/PostDetail';
+import Highlights from '../screens/Highlights';
 
 const Stack = createNativeStackNavigator();
 
@@ -17,7 +20,11 @@ export default function MainStackNavigation() {
         component={BottomTabNavigation}
         options={{ headerShown: false }}
       />
-      <Stack.Screen name="CreatePostScreen" component={CreatePostScreen} options={{ headerShown: false }} />
+      <Stack.Screen
+        name="CreatePostScreen"
+        component={CreatePostScreen}
+        options={{ headerShown: false }}
+      />
       <Stack.Screen
         name="SearchScreen"
         component={SearchScreen}
@@ -36,6 +43,16 @@ export default function MainStackNavigation() {
       <Stack.Screen
         name="PlaceDetail"
         component={PlaceDetail}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="CommentSection"
+        component={CommentSection}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="PostDetail"
+        component={PostDetail}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>

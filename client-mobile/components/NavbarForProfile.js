@@ -30,8 +30,12 @@ export default function NavbarForProfile() {
       </View>
       <View style={{ flexDirection: 'row' }}>
         <TouchableOpacity style={{ flexDirection: 'row' }}
-          onPress={() =>  dispatch(userLogout())}
-          // onPress={() => navigation.dispatch(DrawerActions.toggleDrawer())}
+
+          onPress={() => {
+            dispatch(userLogout())
+            navigation.navigate('Highlights')
+          }}
+        // onPress={() => navigation.dispatch(DrawerActions.toggleDrawer())}
         >
           <Text style={{ paddingTop: 19, paddingRight: 13, fontSize: 16, color: 'red' }}>Logout</Text>
         </TouchableOpacity>

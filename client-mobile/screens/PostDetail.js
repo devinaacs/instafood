@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, ScrollView, TouchableOpacity, Dimensions, } from 'react-native';
 import { Box, Flex, Image, Text, Button, Center, Modal } from 'native-base';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -6,37 +6,32 @@ import { AntDesign, FontAwesome, Ionicons } from '@expo/vector-icons';
 import NavbarForPostDetail from '../components/NavbarForPostDetail';
 const windowWidth = Dimensions.get('window').width;
 import { SwiperFlatList } from 'react-native-swiper-flatlist';
-
-const images = [
-  'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80',
-  'https://images.unsplash.com/photo-1585518419759-7fe2e0fbf8a6?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1024&q=80',
-  'https://images.pexels.com/photos/1307698/pexels-photo-1307698.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260',
-  'https://images.pexels.com/photos/675951/pexels-photo-675951.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260',
-];
-
-const comments = [
-  {
-    'id': '62105604b36a64d38945f57f',
-    'comment': 'hello',
-    'user': {
-      'id': '621054ef0837fb236cd55b7c',
-      'username': 'user.one',
-      'profilePicture': 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Circle-icons-profile.svg/2048px-Circle-icons-profile.svg.png'
-    }
-  },
-  {
-    'id': '62105604b36a64d38945f57t',
-    'comment': 'hello',
-    'user': {
-      'id': '621054ef0837fb236cd55b7x',
-      'username': 'user.two',
-      'profilePicture': 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Circle-icons-profile.svg/2048px-Circle-icons-profile.svg.png'
-    }
-  },
-];
+import { useRoute, useNavigation } from '@react-navigation/native';
 
 export default function PostDetail() {
+  const route = useRoute();
+  const { item } = route.params;
   const [showModal, setShowModal] = useState(false);
+  const navigation = useNavigation();
+  const [placeDetails, setPlaceDetails] = useState('');
+
+  useEffect(() => {
+    fetch(`https://hacktiv8-instafood.herokuapp.com/places/${item.place_id}`)
+      .then(response => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          return Promise.reject('something went wrong!');
+        }
+      })
+      .then(response => {
+        setPlaceDetails(response);
+      })
+      .catch(error => {
+        console.log('error', error);
+      });
+  }, []);
+
   return (
     <SafeAreaView style={styles.container}>
       <View>
@@ -48,37 +43,162 @@ export default function PostDetail() {
           <Box style={{ paddingHorizontal: 14 }} mb={'4'} borderColor={'gray.200'}>
             <Box>
               <View style={{ backgroundColor: 'white' }}>
-                <SwiperFlatList
-                  index={0}
-                  style={{ overflow: 'hidden' }}
-                  showPagination
-                  paginationActiveColor={'blue'}
-                  paginationStyleItem={{ width: 9, height: 9, borderRadius: 9 / 2, marginHorizontal: 5, marginTop: 53, }}
-                  data={images}
-                  renderItem={({ item }) => (
-                    <View style={{ width: windowWidth * 0.9467, justifyContent: 'center', alignItems: 'center', }}>
-                      <Image
-                        alt='img'
-                        style={{ width: '100%', resizeMode: 'cover', borderTopLeftRadius: 12, borderTopRightRadius: 12, height: 470 }}
-                        source={{
-                          uri: item,
-                        }}
+                <Box
+                  style={{
+                    flexDirection: 'row',
+                    position: 'absolute',
+                    zIndex: 16,
+                    top: 0,
+                    alignSelf: 'center',
+                    justifyContent: 'space-between',
+                    width: '100%',
+                    height: 100,
+                    borderTopLeftRadius: 15,
+                    borderTopRightRadius: 15,
+                  }}
+                  bg={{
+                    linearGradient: {
+                      colors: ['gray.900', 'transparent'],
+                      start: [0, 0],
+                      end: [0, 1],
+                    },
+                  }}
+                >
+                  <Box flexDirection={'row'} py={5} px={3} width={'70%'}>
+                    <TouchableOpacity
+                      onPress={() => {
+                        navigation.push('PlaceDetail', { placeDetails });
+                      }}
+                      style={{ flexDirection: 'row' }}>
+                      <Ionicons
+                        name="ios-location-sharp"
+                        size={28}
+                        color="white"
+                        style={{ paddingTop: 1, paddingRight: 4 }}
                       />
-                    </View>
-                  )}
+                      <Text
+                        style={{
+                          color: 'white',
+                          fontSize: 20,
+                          fontWeight: 'bold',
+                          marginHorizontal: 3,
+                          paddingTop: 0,
+                          lineHeight: 30,
+                        }}
+                      >
+                        {placeDetails.name}
+                      </Text>
+                    </TouchableOpacity>
+                  </Box>
+                  <Box px={'5'} mt={'6'}>
+                    <Text fontSize={'sm'} color={'#E7E7E7'}>
+                      {dateFormat(item.created_at)}
+                    </Text>
+                  </Box>
+                </Box>
+                <Box
+                  style={{
+                    position: 'absolute',
+                    bottom: 0,
+                    alignSelf: 'center',
+                    height: 100,
+                    width: '100%',
+                    borderTopLeftRadius: 15,
+                    borderTopRightRadius: 15,
+                    zIndex: 10,
+                  }}
+                  bg={{
+                    linearGradient: {
+                      colors: ['gray.900', 'transparent'],
+                      start: [0, 1],
+                      end: [0, 0],
+                    },
+                  }}
                 />
+                <Flex
+                  direction="row"
+                  py={5}
+                  style={{
+                    zIndex: 10,
+                    position: 'absolute',
+                    bottom: 0,
+                    left: 0,
+                    width: '100%',
+                  }}
+                >
+                  <Box
+                    style={{
+                      position: 'absolute',
+                      bottom: 0,
+                      alignSelf: 'center',
+                      height: 100,
+                      width: '100%',
+                      borderTopLeftRadius: 15,
+                      borderTopRightRadius: 15,
+                    }}
+                    bg={{
+                      linearGradient: {
+                        colors: ['gray.900', 'transparent'],
+                        start: [0, 1],
+                        end: [0, 0],
+                      },
+                    }}
+                  />
+                  <Box px={5} flexDirection={'row'}>
+                    <Box mb={1}>
+                      <Text fontSize={'md'} color={'white'}>
+                        {likesFormat(item.likes.length)} Likes
+                      </Text>
+                    </Box>
+                  </Box>
+                </Flex>
+                {item.images.length === 1 ? (
+                  <View style={{ width: windowWidth * 0.9467, justifyContent: 'center', alignItems: 'center', }}>
+                    <Image
+                      alt='img'
+                      style={{ width: '100%', resizeMode: 'cover', borderTopLeftRadius: 12, borderTopRightRadius: 12, height: 470 }}
+                      source={{
+                        uri: item.images[0],
+                      }}
+                    />
+                  </View>
+                ) : (
+                  <SwiperFlatList
+                    index={0}
+                    style={{ overflow: 'hidden' }}
+                    showPagination
+                    paginationActiveColor={'white'}
+                    paginationStyleItem={{ width: 9, height: 9, borderRadius: 9 / 2, marginHorizontal: 5, marginTop: -10, zIndex: 20 }}
+                    data={item.images}
+                    renderItem={({ item }) => (
+                      <View style={{ width: windowWidth * 0.9467, justifyContent: 'center', alignItems: 'center', }}>
+                        <Image
+                          alt='img'
+                          style={{ width: '100%', resizeMode: 'cover', borderTopLeftRadius: 12, borderTopRightRadius: 12, height: 470 }}
+                          source={{
+                            uri: item,
+                          }}
+                        />
+                      </View>
+                    )}
+                  />
+                )}
+
               </View>
 
             </Box>
             <Box borderColor={'gray.300'} borderWidth={'1'} borderBottomRadius={'xl'}>
 
               <Flex direction='row' justify={'space-between'}>
-                <Flex direction='row' px={'3'} py={'2'}>
-                  <Box mr={'4'}>
-                    <AntDesign name='like2' size={30} color='#929292' />
-                  </Box>
+                <Flex direction='row' px={'4'} py={'2'}>
                   <Box>
-                    <FontAwesome name='comment-o' size={30} color='#929292' />
+                    <TouchableOpacity
+                      onPress={() => {
+                        navigation.push('CommentSection', { postDetails: item });
+                      }}
+                    >
+                      <FontAwesome name='commenting-o' size={32} color='#929292' />
+                    </TouchableOpacity>
                   </Box>
                 </Flex>
                 <Flex direction='row' px={'2'} py={'3'}>
@@ -90,7 +210,7 @@ export default function PostDetail() {
                       <Modal.CloseButton />
                       <Modal.Body>
                         <Center pt={10}>
-                          <Text style={{fontSize: 20}}>Are you sure, you want to delete this post?</Text>
+                          <Text style={{ fontSize: 20 }}>Are you sure, you want to delete this post?</Text>
 
                         </Center>
                       </Modal.Body>
@@ -112,10 +232,7 @@ export default function PostDetail() {
                   </Modal>
                 </Flex>
               </Flex>
-              <Box px={'3'}>
-                <Text fontSize={'md'} fontWeight={'bold'}>{likesFormat(10000)} likes</Text>
-              </Box>
-              <Flex direction='row' px={'3'} mt={'3'} mb={'1'}>
+              <Flex direction='row' px={'3'} mt={'0'} mb={'1'}>
 
                 <Box size={'12'} borderRadius={'full'} borderColor={'gray.200'}>
                   <Image
@@ -129,18 +246,26 @@ export default function PostDetail() {
                     alt={'alternate picture'}
                   />
                 </Box>
-                <Box ml={'3'}>
-                  <Text fontSize={'md'} fontWeight={'bold'}>John Doe</Text>
+                <Box ml={'3'} width={'90%'}>
+                  <Text fontSize={'lg'} fontWeight={'bold'}>{item.user.username}</Text>
                   <Flex direction='row'>
-                    <Text fontSize={'md'}>Enakkks</Text>
+                    <View style={{ flexDirection: 'row'}}>
+                      <Text fontSize={'lg'}>{item.caption}{item.tags.map((tag, index) => {
+                        return (
+                          <Text key={index} fontSize={'lg'} style={{ color: '#ef4444', fontWeight: 'bold' }}> #{tag}</Text>
+                        );
+                      })}</Text>
+
+                    </View>
+
                   </Flex>
                 </Box>
               </Flex>
               <Box px={'3'} mt={'1'} mb={'4'}>
-                <Text fontSize={'xs'} color={'gray.400'}>February 16, 2022</Text>
+                <Text fontSize={'xs'} color={'gray.400'}>{dateFormat(item.created_at)}</Text>
               </Box>
               {/*  */}
-              {comments.map((comment) => {
+              {item.comments.map((comment) => {
                 return (
                   <Flex key={comment.id} direction='row' px={'3'} mt={'3'} mb={'6'}>
                     <Box size={'12'} borderRadius={'full'} borderColor={'gray.200'}>
@@ -175,6 +300,42 @@ export default function PostDetail() {
     </SafeAreaView>
   );
 }
+
+const dateFormat = createdAt => {
+  let slicedDate = createdAt.slice(0, 10);
+  let months = [
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December',
+  ];
+  let reversedDate = slicedDate.split('-').reverse().join('-');
+  let splitReversedDate = reversedDate.split('-');
+  splitReversedDate[1] = months[+splitReversedDate[1] - 1];
+  let newDate = ['', '', ''];
+
+  newDate[0] = splitReversedDate[1];
+  newDate[1] = splitReversedDate[0];
+  newDate[2] = splitReversedDate[2];
+
+  let outputDate = [];
+
+  newDate.forEach((el, i) => {
+    if (i === 0) outputDate.push(`${el} `);
+    if (i === 1) outputDate.push(`${el}, `);
+    if (i === 2) outputDate.push(el);
+  });
+
+  return outputDate;
+};
 
 const likesFormat = likes => {
   let stringifiedLikes = likes + '';

@@ -38,8 +38,8 @@ function user(state = initialState, action) {
 
     return {
       ...state,
-      access_token: null,
-      userId: null,
+      access_token: 'token',
+      userId: 'userId',
     }
   } else if (action.type === USER_TOKEN_USERID) {
     let access_token_reducer = '';

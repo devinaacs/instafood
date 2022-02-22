@@ -2,21 +2,13 @@ import React from 'react';
 import { StyleSheet, View, ScrollView, Text, TouchableOpacity, Image, Dimensions, } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
-import { Input, Icon, Stack, Center, Button } from 'native-base';
+import { Input, Icon, Stack, Center, Button, Box } from 'native-base';
 import NavbarForPlaceDetail from '../components/NavbarForPlaceDetail';
-import { useRoute, useNavigation } from "@react-navigation/native";
+import { useRoute, useNavigation } from '@react-navigation/native';
 const windowWidth = Dimensions.get('window').width;
 import { SwiperFlatList } from 'react-native-swiper-flatlist';
 import TrendingPost2 from '../components/Post';
 import PostDetail from './PostDetail';
-
-
-const images = [
-  'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80',
-  'https://images.unsplash.com/photo-1585518419759-7fe2e0fbf8a6?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1024&q=80',
-  'https://images.pexels.com/photos/1307698/pexels-photo-1307698.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260',
-  'https://images.pexels.com/photos/675951/pexels-photo-675951.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260',
-];
 
 export default function PlaceDetail() {
   const route = useRoute();
@@ -33,18 +25,22 @@ export default function PlaceDetail() {
           <ScrollView>
             <View style={styles.placeContainer}>
               <View style={{ backgroundColor: 'white', paddingHorizontal: 16, paddingBottom: 10, flexDirection: 'row', justifyContent: 'space-between' }}>
-                <Text style={styles.placeDetailName}>{placeDetails.name}</Text>
+                <View style={{ width: '78%' }}>
+                  <Text style={styles.placeDetailName}>{placeDetails.name}</Text>
+                </View>
                 <Image
                   source={{ uri: placeDetails.icon }}
                   style={{
                     width: 33,
                     height: 33,
                     resizeMode: 'contain',
-                    marginVertical: 6
+                    marginVertical: 6,
+                    alignSelf: 'center'
                   }}
                 />
               </View>
-              <View style={{ flex: 1, backgroundColor: 'white' }}>
+              <View style={{ backgroundColor: 'white' }}>
+
                 <SwiperFlatList
                   autoplay
                   autoplayDelay={6}
@@ -52,10 +48,29 @@ export default function PlaceDetail() {
                   index={0}
                   showPagination
                   paginationStyle={{ height: 13 }}
-                  paginationStyleItem={{ width: 10, height: 10, borderRadius: 10 / 2, marginHorizontal: 6 }}
+                  paginationStyleItem={{ width: 10, height: 10, borderRadius: 10 / 2, marginHorizontal: 6, zIndex: 10 }}
                   data={placeDetails.photos}
                   renderItem={({ item }) => (
                     <View style={{ width: windowWidth, justifyContent: 'center', alignItems: 'center', }}>
+                      <Box
+                        style={{
+                          position: 'absolute',
+                          bottom: 0,
+                          alignSelf: 'center',
+                          height: 100,
+                          borderBottomLeftRadius: 15,
+                          borderBottomRightRadius: 15,
+                          zIndex: 2,
+                          width: windowWidth * 0.93
+                        }}
+                        bg={{
+                          linearGradient: {
+                            colors: ['black', 'transparent'],
+                            start: [0, 1],
+                            end: [0, 0],
+                          },
+                        }}
+                      />
                       <Image
                         style={{ width: windowWidth * 0.93, height: 320, resizeMode: 'cover', borderRadius: 13 }}
                         source={{
@@ -67,8 +82,8 @@ export default function PlaceDetail() {
                 />
               </View>
               <View style={{ backgroundColor: 'white', padding: 5, paddingTop: 12, flexDirection: 'row', width: '90%' }}>
-                <Ionicons name="location-sharp" size={34} color="#929292" style={{ paddingHorizontal: 10 }} />
-                <Text style={{ fontSize: 17, paddingTop: 5, textAlign: 'justify'}}>{placeDetails.address}</Text>
+                <Ionicons name='location-sharp' size={34} color='#929292' style={{ paddingHorizontal: 10 }} />
+                <Text style={{ fontSize: 17, paddingTop: 5, textAlign: 'justify' }}>{placeDetails.address}</Text>
               </View>
             </View>
           </ScrollView>
@@ -76,12 +91,6 @@ export default function PlaceDetail() {
         <View style={{ paddingHorizontal: 20, paddingBottom: 20, backgroundColor: 'white' }}>
           <Text style={{ fontSize: 24, fontWeight: 'bold' }}>Related Posts</Text>
         </View>
-{/* 
-        {
-          posts.map((post) => (
-            <TrendingPost2 post={post} key={post.id} />
-          ))
-        } */}
       </ScrollView>
 
     </SafeAreaView>
@@ -105,7 +114,7 @@ const styles = StyleSheet.create({
     borderColor: '#E1E1E1',
   },
   placeDetailName: {
-    fontSize: 35,
+    fontSize: 29,
     fontWeight: 'normal',
     paddingLeft: 1
   },
