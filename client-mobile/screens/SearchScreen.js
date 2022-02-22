@@ -4,7 +4,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { Dimensions } from 'react-native';
 import Post from '../components/Post';
 import { useRoute } from '@react-navigation/native';
-
+import { useSelector } from 'react-redux';
 
 const windowWidth = Dimensions.get('window').width;
 
@@ -204,23 +204,59 @@ export default function SearchScreen({ navigation }) {
       </Flex>
 
       {
-        usersLoading ? <Text> user loading</Text> : null
+        usersLoading ? <Image alt='loading'
+          style={{
+            height: 60,
+            width: 60,
+            marginTop: 120,
+            resizeMode: 'cover',
+            borderRadius: 10,
+            alignSelf: 'center',
+            justifyContent: 'center', alignItems: 'center', alignContent: 'center'
+          }}
+          source={require('../assets/loading.gif')}
+        /> : null
       }
 
 
       {
-        tagsLoading ? <Text> tags loading</Text> : null
+        tagsLoading ? <Image alt='loading'
+          style={{
+            height: 60,
+            width: 60,
+            marginTop: 120,
+            resizeMode: 'cover',
+            borderRadius: 10,
+            alignSelf: 'center',
+            justifyContent: 'center', alignItems: 'center', alignContent: 'center'
+          }}
+          source={require('../assets/loading.gif')}
+        /> : null
       }
 
 
       {
-        placesLoading ? <Text> places loading</Text> : null
+        placesLoading ? <Image alt='loading'
+          style={{
+            height: 60,
+            width: 60,
+            marginTop: 120,
+            resizeMode: 'cover',
+            borderRadius: 10,
+            alignSelf: 'center',
+            justifyContent: 'center', alignItems: 'center', alignContent: 'center'
+          }}
+          source={require('../assets/loading.gif')}
+        /> : null
       }
 
       {
         foundSearch ? null : (
           <Center height={'full'} width={'full'}>
-            <Text>Sorry.. We cannot find what you're looking for</Text>
+            <Box justifyContent={'center'} alignItems={'center'} mb={250}>
+              <Text fontSize={25} py={3} fontWeight={'bold'} color={'#ef4444'}>Sorry.. </Text>
+              <Text fontSize={20}>We cannot find what you're looking for :(</Text>
+            </Box>
           </Center>
         )
       }
