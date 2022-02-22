@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { Box, Flex, Image, Text } from 'native-base';
 import { AntDesign, Ionicons } from '@expo/vector-icons';
 import { View, Dimensions, } from 'react-native';
-import { useSelector } from 'react-redux';
 import { SwiperFlatList } from 'react-native-swiper-flatlist';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -12,8 +11,8 @@ const Post = ({ post }) => {
   const [likeStatus, setLikeStatus] = useState(false);
   const [likes, setLikes] = useState('');
   const [userIdLocal, setUserId] = useState(null);
+  const [token, setToken] = useState(null);
   const [filteredLikes, setFilteredLikes] = useState([]);
-  const { access_token } = useSelector((state) => state.user);
   const [disableLike, setDisableLike] = useState(false);
 
   const checkUserId = async () => {
@@ -21,6 +20,16 @@ const Post = ({ post }) => {
       const userIdStorage = await AsyncStorage.getItem('userId');
 
       setUserId(userIdStorage);
+    } catch (e) {
+      return 'error reading access_token'
+    }
+  }
+
+  const checkAccessToken = async () => {
+    try {
+      const access_token_storage = await AsyncStorage.getItem('access_token');
+
+      setToken(access_token_storage);
     } catch (e) {
       return 'error reading access_token'
     }
@@ -48,10 +57,11 @@ const Post = ({ post }) => {
 
     setLikes(post.likes.length);
     setFilteredLikes(post.likes);
-  }, [userIdLocal, post, access_token])
+    checkAccessToken()
+  }, [userIdLocal, post])
 
   const handleLike = () => {
-    if (!access_token) return;
+    if (!token) return;
     if (disableLike) return;
     let likeFound = false;
     let likeId = '';
@@ -71,7 +81,7 @@ const Post = ({ post }) => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          access_token: access_token
+          access_token: token
         },
         body: JSON.stringify({ post_id: post.id })
       })
@@ -94,7 +104,7 @@ const Post = ({ post }) => {
       fetch(`https://hacktiv8-instafood.herokuapp.com/likes/${likeId}`, {
         method: 'DELETE',
         headers: {
-          access_token: access_token
+          access_token: token
         }
       })
         .then(() => {
