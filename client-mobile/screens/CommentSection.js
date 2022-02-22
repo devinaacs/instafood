@@ -1,18 +1,90 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, ScrollView, Text, TouchableOpacity, Image, Dimensions, FlatList } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { Input, Icon, Stack, Center, Button, Box } from 'native-base';
 import { useRoute, useNavigation } from "@react-navigation/native";
 import NavbarForComment from '../components/NavbarForComment';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 const windowWidth = Dimensions.get('window').width;
 
-
 export default function CommentSection() {
+  const [comment, setComment] = useState('');
+  const [token, setToken] = useState('');
+
   const route = useRoute();
   const navigation = useNavigation();
   const { postDetails } = route.params;
-  
+  const [comments, setComments] = useState([]);
+  const [refreshCommentFlag, setRefreshCommentFlag] = useState(0);
+
+  const getAccessToken = async () => {
+    try {
+      return await AsyncStorage.getItem('access_token');
+    } catch (err) {
+      return 'error getting access token'
+    }
+  }
+
+  useEffect(() => {
+    getAccessToken()
+      .then((tokenStorage) => {
+        setToken(tokenStorage)
+        return tokenStorage
+      })
+      .then((tokenFetch) => {
+        fetch(`https://hacktiv8-instafood.herokuapp.com/comments/${postDetails.id}`, {
+          method: 'GET',
+          headers: {
+            access_token: tokenFetch
+          }
+        })
+          .then(response => {
+            if (response.ok) {
+              return response.json();
+            } else {
+              return Promise.reject('something went wrong!');
+            }
+          })
+          .then((result) => setComments(result))
+          .catch((err) => console.log(err))
+      })
+      .catch((err) => console.log(err));
+  }, [refreshCommentFlag])
+
+  const handleCommentChange = (commentInput) => {
+    setComment(commentInput);
+  }
+
+  const handlePostComment = () => {
+    if (!comment) {
+      console.log('comment-nya kosong buanggg')
+      return
+    };
+    fetch(`https://hacktiv8-instafood.herokuapp.com/comments`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        access_token: token,
+      },
+      body: JSON.stringify({ comment, post_id: postDetails.id })
+    })
+      .then(response => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          return Promise.reject('something went wrong!');
+        }
+      })
+      .then((result) => {
+        console.log(result)
+        setRefreshCommentFlag(refreshCommentFlag + 1)
+        setComment('');
+      })
+      .catch((err) => console.log(err))
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <View>
@@ -20,9 +92,8 @@ export default function CommentSection() {
       </View>
       {/* <ScrollView> */}
       <FlatList
-        data={postDetails.comments}
+        data={comments}
         renderItem={({ item }) => (
-
           <View style={{ backgroundColor: 'white', paddingHorizontal: 12, paddingVertical: 10, flexDirection: 'row', width: '100%', borderBottomWidth: 1, borderColor: '#E4E4E4' }}>
             <View style={{ backgroundColor: 'white', width: '18%', alignItems: 'center' }}>
               <Image
@@ -55,6 +126,7 @@ export default function CommentSection() {
             </View>
           </View>
         )}
+        keyExtractor={(item) => item._id}
       />
       {/* </ScrollView> */}
       <Box justifyContent={'space-between'} my={3} flexDirection={'row'}>
@@ -72,8 +144,8 @@ export default function CommentSection() {
             uri: 'https://cdn.pixabay.com/photo/2015/03/04/22/35/head-659651__340.png',
           }}
         />
-        <Input mx="1" placeholder="Add a comment..." w="75%" maxWidth="500px" borderRadius={10} bg={'muted.100'} />
-        <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center', alignSelf: 'center', }}>
+        <Input value={comment} onChangeText={handleCommentChange} mx="1" placeholder="Add a comment..." w="75%" maxWidth="500px" borderRadius={10} bg={'muted.100'} />
+        <TouchableOpacity onPress={handlePostComment} style={{ justifyContent: 'center', alignItems: 'center', alignSelf: 'center', }}>
           <Text style={{ color: '#007DEC', marginEnd: 10, fontSize: 20 }}>Post</Text>
         </TouchableOpacity>
       </Box>
