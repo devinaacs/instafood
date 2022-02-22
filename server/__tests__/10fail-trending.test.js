@@ -57,7 +57,8 @@ beforeAll(async () => {
 
 afterAll(async () => {
     require('../helpers/redis').disconnect();
-    Post.deleteMany({})
+    Post.deleteMany({});
+    await mongoose.disconnect();
 });
 
 describe('test /posts endpoint', () => {

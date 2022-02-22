@@ -8,15 +8,11 @@ jest.mock('../helpers/fstorage', () => ({
     getBucket: () => ({}),
 }));
 
-// jest.mock('../controllers/user');
-
-jest.mock('../models/user', () => {
+jest.mock('../models/User', () => {
     return {
         create: () => Promise.reject()
     }
 });
-
-// const mUserController = jest.mocked(UserController);
 
 let userOne = {
     username: 'user.one',
@@ -32,15 +28,16 @@ let userTwo = {
 
 
 beforeAll(async () => {
-    await mongoose.connect('mongodb://localhost:27017/instafood-test-1users', {
+    await mongoose.disconnect();
+    await mongoose.connect('mongodb://localhost:27017/instafood-test-9fail-user', {
         useNewUrlParser: true,
     });
-
 });
 
 
 
 afterAll(async () => {
+    
     require('../helpers/redis').disconnect();
 });
 
