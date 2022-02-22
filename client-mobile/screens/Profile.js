@@ -26,15 +26,20 @@ export default function Profile() {
     try {
       const userIdStorage = await AsyncStorage.getItem('userId');
 
-      setUserId(userIdStorage);
+      return userIdStorage
     } catch (e) {
       return 'error reading access_token';
     }
   };
 
-  checkUserId();
 
   useEffect(() => {
+    checkUserId()
+      .then((userId) => {
+        setUserId(userId)
+      })
+      .catch((err) => console.log(err))
+
     fetch(`https://hacktiv8-instafood.herokuapp.com/users/${userIdLocal}`)
       .then(response => response.json())
       .then(result => setUserProfile(result))
@@ -47,6 +52,27 @@ export default function Profile() {
       .then(result => setUserPosts(result))
       .catch(err => console.log(err));
   }, [userIdLocal]);
+
+  useEffect(() => {
+    const refresh = navigation.addListener('focus', () => {
+      fetch(`https://hacktiv8-instafood.herokuapp.com/users/${userIdLocal}`)
+        .then(response => response.json())
+        .then(result => {
+          console.log(result)
+          setUserProfile(result)
+        })
+        .catch(err => console.log(err));
+
+      fetch(
+        `https://hacktiv8-instafood.herokuapp.com/posts/?user_id=${userIdLocal}`
+      )
+        .then(response => response.json())
+        .then(result => setUserPosts(result))
+        .catch(err => console.log(err));
+    })
+
+    return refresh;
+  }, [navigation, userIdLocal])
 
   if (!userProfile) {
     return null;
@@ -107,7 +133,7 @@ export default function Profile() {
                 }
 
               </View>
-      
+
             </View>
           </View>
           <View style={styles.postsTextContainer}>

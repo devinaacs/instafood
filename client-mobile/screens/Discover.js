@@ -60,7 +60,7 @@ export default function Discover() {
       <SearchButton />
       {
         loading ? (
-          <View style={{height: windowHeight, width: windowWidth, justifyContent: 'center'}}>
+          <View style={{ height: windowHeight, width: windowWidth, justifyContent: 'center' }}>
             <Image
               style={{
                 height: 80,

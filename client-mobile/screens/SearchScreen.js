@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Box, Center, Flex, Input, Text, Pressable, FlatList, Image } from 'native-base';
 import { Ionicons } from '@expo/vector-icons';
 import { Dimensions } from 'react-native';
-import { useSelector } from 'react-redux';
 import Post from '../components/Post';
 import { useRoute } from '@react-navigation/native';
 
