@@ -45,7 +45,7 @@ afterAll(async () => {
 });
 
 describe('test /user endpoint', () => {
-    test.only('failed to GET ALL users', done => {
+    test('failed to GET ALL users', done => {
         // const mError = new Error({ message: 'internal server error' });
         // mUserController.listUsers.mockImplementation(() => {
         //     throw new Error({ name: 'network' });

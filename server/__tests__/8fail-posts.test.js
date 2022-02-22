@@ -5,8 +5,11 @@ const Post = require('../models/Post');
 const User = require('../models/User');
 const { createToken } = require('../helpers/jwt');
 
-
-
+jest.mock('../models/Post', () => {
+  return {
+    find: () => Promise.reject()
+  }
+});
 
 jest.mock('../helpers/fstorage', () => ({
   getBucket: () => ({
@@ -33,7 +36,7 @@ let post_one = {
 
 
 beforeAll(async () => {
-  await mongoose.connect('mongodb://localhost:27017/instafood-test-2post', {
+  await mongoose.connect('mongodb://localhost:27017/instafood-test-8fail-post', {
     useNewUrlParser: true,
   });
 
@@ -58,7 +61,7 @@ afterAll(async () => {
 });
 
 describe('test /posts endpoint', () => {
-  test.only('failed to get posts', done => {
+  test('failed to get posts', done => {
     request(app)
       .get('/posts')
       .set('Accept', 'application/json')
@@ -70,7 +73,7 @@ describe('test /posts endpoint', () => {
       });
   });
 
-  test.only('failed to CREATE posts', done => {
+  test('failed to CREATE posts', done => {
     request(app)
       .post('/posts')
       .field('place_id', post_one.place_id)
