@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, ScrollView, TouchableOpacity, Dimensions, } from 'react-native';
 import { Box, Flex, Image, Text, Button, Center, Modal } from 'native-base';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -13,6 +13,24 @@ export default function PostDetail() {
   const { item } = route.params;
   const [showModal, setShowModal] = useState(false);
   const navigation = useNavigation();
+  const [placeDetails, setPlaceDetails] = useState('');
+
+  useEffect(() => {
+    fetch(`https://hacktiv8-instafood.herokuapp.com/places/${item.place_id}`)
+      .then(response => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          return Promise.reject('something went wrong!');
+        }
+      })
+      .then(response => {
+        setPlaceDetails(response);
+      })
+      .catch(error => {
+        console.log('error', error);
+      });
+  }, []);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -25,30 +43,32 @@ export default function PostDetail() {
           <Box style={{ paddingHorizontal: 14 }} mb={'4'} borderColor={'gray.200'}>
             <Box>
               <View style={{ backgroundColor: 'white' }}>
-                <View
+                <Box
                   style={{
                     flexDirection: 'row',
                     position: 'absolute',
                     zIndex: 16,
-                    top: 20,
-                    left: 10,
+                    top: 0,
                     alignSelf: 'center',
                     justifyContent: 'space-between',
                     width: '100%',
+                    height: 100,
+                    borderTopLeftRadius: 15,
+                    borderTopRightRadius: 15,
                   }}
                   bg={{
                     linearGradient: {
-                      colors: ['black', 'transparent'],
-                      start: [0, 1],
-                      end: [0, 0],
+                      colors: ['gray.900', 'transparent'],
+                      start: [0, 0],
+                      end: [0, 1],
                     },
                   }}
                 >
-                  <Box flexDirection={'row'}>
+                  <Box flexDirection={'row'} py={5} px={3}>
                     <TouchableOpacity
-                      // onPress={() => {
-                      //   navigation.push('PlaceDetail', { placeDetails });
-                      // }}
+                      onPress={() => {
+                        navigation.push('PlaceDetail', { placeDetails });
+                      }}
                       style={{ flexDirection: 'row' }}>
                       <Ionicons
                         name="ios-location-sharp"
@@ -65,16 +85,77 @@ export default function PostDetail() {
                           paddingTop: 6,
                         }}
                       >
-                        Pizza Hut
+                        {placeDetails.name}
                       </Text>
                     </TouchableOpacity>
                   </Box>
-                  <Box px={'6'} mt={'1'}>
+                  <Box px={'5'} mt={'6'}>
                     <Text fontSize={'sm'} color={'#E7E7E7'}>
                       {dateFormat(item.created_at)}
                     </Text>
                   </Box>
-                </View>
+                </Box>
+                <Box
+                  style={{
+                    position: 'absolute',
+                    bottom: 0,
+                    alignSelf: 'center',
+                    height: 100,
+                    width: '100%',
+                    borderTopLeftRadius: 15,
+                    borderTopRightRadius: 15,
+                    zIndex: 10,
+                  }}
+                  bg={{
+                    linearGradient: {
+                      colors: ['gray.900', 'transparent'],
+                      start: [0, 1],
+                      end: [0, 0],
+                    },
+                  }}
+                />
+                <Flex
+                  direction="row"
+                  py={5}
+                  style={{
+                    zIndex: 10,
+                    position: 'absolute',
+                    bottom: 0,
+                    left: 0,
+                    width: '100%',
+                  }}
+                >
+                  <Box
+                    style={{
+                      position: 'absolute',
+                      bottom: 0,
+                      alignSelf: 'center',
+                      height: 100,
+                      width: '100%',
+                      borderTopLeftRadius: 15,
+                      borderTopRightRadius: 15,
+                    }}
+                    bg={{
+                      linearGradient: {
+                        colors: ['gray.900', 'transparent'],
+                        start: [0, 1],
+                        end: [0, 0],
+                      },
+                    }}
+                  />
+                  <Box px={5} flexDirection={'row'}>
+                    <Box size={'12'} borderRadius={'full'} borderColor={'gray.200'}>
+                      <Box mr={'4'} mt={2}>
+                        <AntDesign name="like2" size={34} color="white" />
+                      </Box>
+                    </Box>
+                    <Box mt={4}>
+                      <Text fontSize={'md'} color={'white'}>
+                        {likesFormat(item.likes.length)} Likes
+                      </Text>
+                    </Box>
+                  </Box>
+                </Flex>
                 {item.images.length === 1 ? (
                   <View style={{ width: windowWidth * 0.9467, justifyContent: 'center', alignItems: 'center', }}>
                     <Image
@@ -91,7 +172,7 @@ export default function PostDetail() {
                     style={{ overflow: 'hidden' }}
                     showPagination
                     paginationActiveColor={'white'}
-                    paginationStyleItem={{ width: 9, height: 9, borderRadius: 9 / 2, marginHorizontal: 5, marginTop: -10, }}
+                    paginationStyleItem={{ width: 9, height: 9, borderRadius: 9 / 2, marginHorizontal: 5, marginTop: -10, zIndex: 20 }}
                     data={item.images}
                     renderItem={({ item }) => (
                       <View style={{ width: windowWidth * 0.9467, justifyContent: 'center', alignItems: 'center', }}>
@@ -113,12 +194,15 @@ export default function PostDetail() {
             <Box borderColor={'gray.300'} borderWidth={'1'} borderBottomRadius={'xl'}>
 
               <Flex direction='row' justify={'space-between'}>
-                <Flex direction='row' px={'3'} py={'2'}>
-                  <Box mr={'4'}>
-                    <AntDesign name='like2' size={30} color='#929292' />
-                  </Box>
+                <Flex direction='row' px={'4'} py={'2'}>
                   <Box>
-                    <FontAwesome name='comment-o' size={30} color='#929292' />
+                    <TouchableOpacity
+                      onPress={() => {
+                        navigation.push('CommentSection', { postDetails: item });
+                      }}
+                    >
+                      <FontAwesome name='commenting-o' size={32} color='#929292' />
+                    </TouchableOpacity>
                   </Box>
                 </Flex>
                 <Flex direction='row' px={'2'} py={'3'}>
@@ -152,8 +236,24 @@ export default function PostDetail() {
                   </Modal>
                 </Flex>
               </Flex>
-              <Box px={'3'}>
-                <Text fontSize={'md'} fontWeight={'bold'}>{likesFormat(item.likes.length)} likes</Text>
+              <Box px={1}>
+                <View style={{ backgroundColor: 'white', flexDirection: 'row', paddingBottom: 5, }}>
+                  {item.tags.map((tag, index) => {
+                    return (
+                      <TouchableOpacity style={{ paddingLeft: 10, justifyContent: 'center' }} key={index}>
+                        <View style={{
+                          backgroundColor: '#BBBBBB',
+                          paddingVertical: 7,
+                          paddingHorizontal: 14,
+                          borderRadius: 14,
+                          width: '100%',
+                        }}>
+                          <Text style={{ color: 'white', fontSize: 17, fontWeight: 'bold' }}>{tag}</Text>
+                        </View>
+                      </TouchableOpacity>
+                    );
+                  })}
+                </View>
               </Box>
               <Flex direction='row' px={'3'} mt={'3'} mb={'1'}>
 

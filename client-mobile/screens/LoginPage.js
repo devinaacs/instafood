@@ -39,7 +39,7 @@ export default function Login() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={{ position: 'absolute', top: 0 }}>
+      {/* <View style={{ position: 'absolute', top: 0 }}>
         <TouchableOpacity
           onPress={() => {
             navigation.goBack();
@@ -47,7 +47,7 @@ export default function Login() {
           style={{ paddingVertical: 10, paddingHorizontal: 13 }}>
           <Ionicons name="arrow-back" size={34} color="#929292" />
         </TouchableOpacity>
-      </View>
+      </View> */}
       <Image
         source={require('../assets/logo_black_small_textonly.png')}
         style={{
