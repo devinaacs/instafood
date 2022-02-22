@@ -17,10 +17,6 @@ module.exports = {
     return redis.set(key, value, 'EX', exp);
   },
 
-  async del(key) {
-    return redis.del(key);
-  },
-
   disconnect() {
     redis.disconnect();
   },
