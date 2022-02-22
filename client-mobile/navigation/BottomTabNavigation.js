@@ -128,11 +128,6 @@ export default function BottomTabNavigation() {
           options={{ headerShown: false }}
         />
       )}
-      <Tab.Screen
-        name="PostDetail"
-        component={PostDetail}
-        options={{ headerShown: false }}
-      />
     </Tab.Navigator>
   );
 }

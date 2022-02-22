@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   StyleSheet,
   View,
@@ -13,9 +13,44 @@ import NavbarForProfile from '../components/NavbarForProfile';
 import UserPost from '../components/UserPost';
 import PostButton from '../components/PostButton';
 import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function Profile() {
   const navigation = useNavigation();
+
+  const [userIdLocal, setUserId] = useState(null);
+  const [userProfile, setUserProfile] = useState(null);
+  const [userPosts, setUserPosts] = useState([]);
+
+  const checkUserId = async () => {
+    try {
+      const userIdStorage = await AsyncStorage.getItem('userId');
+
+      setUserId(userIdStorage);
+    } catch (e) {
+      return 'error reading access_token';
+    }
+  };
+
+  checkUserId();
+
+  useEffect(() => {
+    fetch(`https://hacktiv8-instafood.herokuapp.com/users/${userIdLocal}`)
+      .then(response => response.json())
+      .then(result => setUserProfile(result))
+      .catch(err => console.log(err));
+
+    fetch(
+      `https://hacktiv8-instafood.herokuapp.com/posts/?user_id=${userIdLocal}`
+    )
+      .then(response => response.json())
+      .then(result => setUserPosts(result))
+      .catch(err => console.log(err));
+  }, [userIdLocal]);
+
+  if (!userProfile) {
+    return null;
+  }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -43,20 +78,36 @@ export default function Profile() {
                   uri: 'https://cdn.pixabay.com/photo/2015/03/04/22/35/head-659651__340.png',
                 }}
               />
-              <Text style={styles.profileName}>John Doe</Text>
-              <Text style={{ color: 'gray' }}>dummy@email.com</Text>
+              {
+                userProfile ? (
+                  <View>
+                    <Text style={styles.profileName}>{userProfile.username}</Text>
+                    <Text style={{ color: 'gray' }}>{userProfile.email}</Text>
+                  </View>
+                ) :
+                  <View>
+                    <Text style={styles.profileName}></Text>
+                    <Text style={{ color: 'gray' }}></Text>
+                  </View>
+              }
+
             </View>
             <View style={styles.post}>
               <View style={{ width: '35%' }}>
                 <Text style={{ alignSelf: 'center', fontSize: 16 }}>Posts</Text>
-                <Text style={styles.postsCount}>50</Text>
+                {
+                  userPosts.items ? (
+                    <View>
+                      <Text style={styles.postsCount}>{userPosts.items.length}</Text>
+                    </View>
+                  ) :
+                    <View>
+                      <Text style={styles.postsCount}>0</Text>
+                    </View>
+                }
+
               </View>
-              <View style={{ width: '35%' }}>
-                <Text style={{ alignSelf: 'center', fontSize: 16 }}>
-                  Liked Posts
-                </Text>
-                <Text style={styles.likesCount}>1500</Text>
-              </View>
+      
             </View>
           </View>
           <View style={styles.postsTextContainer}>
@@ -65,7 +116,7 @@ export default function Profile() {
             </View>
           </View>
           <ScrollView horizontal={true} style={{ marginBottom: 80 }}>
-            <UserPost />
+            <UserPost post={userPosts} />
           </ScrollView>
         </ScrollView>
       </View>
@@ -109,6 +160,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginTop: 10,
     marginBottom: 8,
+    textAlign: 'center'
   },
   post: {
     flexDirection: 'row',

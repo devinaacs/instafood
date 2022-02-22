@@ -368,7 +368,7 @@ const TrendingPost2 = ({ post }) => {
                 source={{
                   uri:
                     post.user.profilePicture ||
-                    'https://cdn-icons.flaticon.com/png/512/668/premium/668709.png?token=exp=1645455342~hmac=b3c9e062eb098f015e5ccec8be7a4220',
+                    'https://cdn.pixabay.com/photo/2015/03/04/22/35/head-659651__340.png',
                 }}
                 alt={'alternate picture'}
               />

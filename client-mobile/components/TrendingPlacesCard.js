@@ -9,7 +9,7 @@ import {
   ActivityIndicator
 } from 'react-native';
 import { Box } from 'native-base';
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation } from '@react-navigation/native';
 
 export default function TrendingPlacesCard({ places }) {
   const [placeDetails, setPlaceDetails] = useState('');
@@ -47,13 +47,6 @@ export default function TrendingPlacesCard({ places }) {
               }}
             />
           ) : (
-            // <Image
-            //   style={styles.imageStyleLoading}
-            //   source={require('../assets/loading.gif')}
-            // />
-            // <View style={styles.imageStyleLoading}>
-            //   <ActivityIndicator size="large" color="#AEAEAE" />
-            // </View>
             null
           )
         }
