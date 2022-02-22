@@ -6,6 +6,7 @@ import SearchScreen from '../screens/SearchScreen';
 import Register from '../screens/Register';
 import Profile from '../screens/Profile';
 import PlaceDetail from '../screens/PlaceDetail';
+import CommentSection from '../screens/CommentSection';
 
 const Stack = createNativeStackNavigator();
 
@@ -36,6 +37,11 @@ export default function MainStackNavigation() {
       <Stack.Screen
         name="PlaceDetail"
         component={PlaceDetail}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="CommentSection"
+        component={CommentSection}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>
