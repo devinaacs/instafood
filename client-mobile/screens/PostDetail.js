@@ -232,25 +232,6 @@ export default function PostDetail() {
                   </Modal>
                 </Flex>
               </Flex>
-              {/* <Box px={1}>
-                <View style={{ backgroundColor: 'white', flexDirection: 'row', paddingBottom: 5, }}>
-                  {item.tags.map((tag, index) => {
-                    return (
-                      <TouchableOpacity style={{ paddingLeft: 10, justifyContent: 'center' }} key={index}>
-                        <View style={{
-                          backgroundColor: '#BBBBBB',
-                          paddingVertical: 7,
-                          paddingHorizontal: 14,
-                          borderRadius: 14,
-                          width: '100%',
-                        }}>
-                          <Text style={{ color: 'white', fontSize: 17, fontWeight: 'bold' }}>#{tag}</Text>
-                        </View>
-                      </TouchableOpacity>
-                    );
-                  })}
-                </View>
-              </Box> */}
               <Flex direction='row' px={'3'} mt={'0'} mb={'1'}>
 
                 <Box size={'12'} borderRadius={'full'} borderColor={'gray.200'}>
@@ -265,13 +246,13 @@ export default function PostDetail() {
                     alt={'alternate picture'}
                   />
                 </Box>
-                <Box ml={'3'}>
+                <Box ml={'3'} width={'90%'}>
                   <Text fontSize={'lg'} fontWeight={'bold'}>{item.user.username}</Text>
-                  <Flex direction='row' width={'98%'}>
+                  <Flex direction='row'>
                     <View style={{ flexDirection: 'row'}}>
-                      <Text fontSize={'lg'}>{item.caption} {item.tags.map((tag, index) => {
+                      <Text fontSize={'lg'}>{item.caption}{item.tags.map((tag, index) => {
                         return (
-                          <Text key={index} fontSize={'lg'} style={{ color: 'blue', fontWeight: 'bold' }}> #{tag}</Text>
+                          <Text key={index} fontSize={'lg'} style={{ color: '#ef4444', fontWeight: 'bold' }}> #{tag}</Text>
                         );
                       })}</Text>
 

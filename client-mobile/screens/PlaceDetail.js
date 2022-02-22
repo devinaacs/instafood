@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, View, ScrollView, Text, TouchableOpacity, Image, Dimensions, } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
-import { Input, Icon, Stack, Center, Button } from 'native-base';
+import { Input, Icon, Stack, Center, Button, Box } from 'native-base';
 import NavbarForPlaceDetail from '../components/NavbarForPlaceDetail';
 import { useRoute, useNavigation } from '@react-navigation/native';
 const windowWidth = Dimensions.get('window').width;
@@ -25,7 +25,7 @@ export default function PlaceDetail() {
           <ScrollView>
             <View style={styles.placeContainer}>
               <View style={{ backgroundColor: 'white', paddingHorizontal: 16, paddingBottom: 10, flexDirection: 'row', justifyContent: 'space-between' }}>
-                <View style={{width: '78%'}}>
+                <View style={{ width: '78%' }}>
                   <Text style={styles.placeDetailName}>{placeDetails.name}</Text>
                 </View>
                 <Image
@@ -39,7 +39,8 @@ export default function PlaceDetail() {
                   }}
                 />
               </View>
-              <View style={{ flex: 1, backgroundColor: 'white' }}>
+              <View style={{ backgroundColor: 'white' }}>
+
                 <SwiperFlatList
                   autoplay
                   autoplayDelay={6}
@@ -47,10 +48,29 @@ export default function PlaceDetail() {
                   index={0}
                   showPagination
                   paginationStyle={{ height: 13 }}
-                  paginationStyleItem={{ width: 10, height: 10, borderRadius: 10 / 2, marginHorizontal: 6 }}
+                  paginationStyleItem={{ width: 10, height: 10, borderRadius: 10 / 2, marginHorizontal: 6, zIndex: 10 }}
                   data={placeDetails.photos}
                   renderItem={({ item }) => (
                     <View style={{ width: windowWidth, justifyContent: 'center', alignItems: 'center', }}>
+                      <Box
+                        style={{
+                          position: 'absolute',
+                          bottom: 0,
+                          alignSelf: 'center',
+                          height: 100,
+                          borderBottomLeftRadius: 15,
+                          borderBottomRightRadius: 15,
+                          zIndex: 2,
+                          width: windowWidth * 0.93
+                        }}
+                        bg={{
+                          linearGradient: {
+                            colors: ['black', 'transparent'],
+                            start: [0, 1],
+                            end: [0, 0],
+                          },
+                        }}
+                      />
                       <Image
                         style={{ width: windowWidth * 0.93, height: 320, resizeMode: 'cover', borderRadius: 13 }}
                         source={{
@@ -63,7 +83,7 @@ export default function PlaceDetail() {
               </View>
               <View style={{ backgroundColor: 'white', padding: 5, paddingTop: 12, flexDirection: 'row', width: '90%' }}>
                 <Ionicons name='location-sharp' size={34} color='#929292' style={{ paddingHorizontal: 10 }} />
-                <Text style={{ fontSize: 17, paddingTop: 5, textAlign: 'justify'}}>{placeDetails.address}</Text>
+                <Text style={{ fontSize: 17, paddingTop: 5, textAlign: 'justify' }}>{placeDetails.address}</Text>
               </View>
             </View>
           </ScrollView>
@@ -71,12 +91,6 @@ export default function PlaceDetail() {
         <View style={{ paddingHorizontal: 20, paddingBottom: 20, backgroundColor: 'white' }}>
           <Text style={{ fontSize: 24, fontWeight: 'bold' }}>Related Posts</Text>
         </View>
-{/* 
-        {
-          posts.map((post) => (
-            <TrendingPost2 post={post} key={post.id} />
-          ))
-        } */}
       </ScrollView>
 
     </SafeAreaView>
