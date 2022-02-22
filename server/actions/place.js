@@ -25,9 +25,7 @@ module.exports = {
       name: data.result.name,
       address: data.result.formatted_address,
       icon: data.result.icon,
-      photos: data.result.photos
-        ? data.result.photos.map(v => v.photo_reference)
-        : [],
+      photos: data.result.photos.map(v => v.photo_reference)
     };
     redis.set(cacheKey, result);
 
