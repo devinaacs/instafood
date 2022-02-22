@@ -6,7 +6,8 @@ import {
   Text,
   TouchableOpacity,
   FlatList,
-  Image
+  Image,
+  RefreshControl
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
@@ -23,6 +24,20 @@ export default function Highlights() {
   const [trendingPosts, setTrendingPosts] = useState([]);
   const { access_token } = useSelector((state) => state.user);
   const navigation = useNavigation();
+  const [refreshTrigger, setRefreshTrigger] = useState(0);
+
+  const [refreshing, setRefreshing] = useState(false);
+
+  const onRefresh = React.useCallback(() => {
+    setTrendingPlaces([])
+    setTrendingTags([])
+    setTrendingPosts([])
+    setRefreshing(true);
+    setRefreshTrigger(refreshTrigger + 1);
+    if (trendPlaces.length > 0 && trendingPosts.length > 0 && trendingTags.length > 0) {
+      setRefreshing(false);
+    }
+  })
 
   useEffect(() => {
     fetch('https://hacktiv8-instafood.herokuapp.com/trending/places')
@@ -39,7 +54,7 @@ export default function Highlights() {
       .catch(error => {
         console.log('error', error);
       });
-  }, [access_token]);
+  }, [access_token, refreshTrigger]);
 
   useEffect(() => {
     fetch('https://hacktiv8-instafood.herokuapp.com/trending/tags')
@@ -56,7 +71,7 @@ export default function Highlights() {
       .catch(error => {
         console.log('error', error);
       });
-  }, [access_token]);
+  }, [access_token, refreshTrigger]);
 
   useEffect(() => {
     fetch('https://hacktiv8-instafood.herokuapp.com/trending/posts')
@@ -73,14 +88,21 @@ export default function Highlights() {
       .catch(error => {
         console.log('error', error);
       });
-  }, [access_token]);
+  }, [access_token, refreshTrigger]);
 
   return (
     <SafeAreaView style={styles.container}>
       <View>
         <Navbar />
       </View>
-      <ScrollView>
+      <ScrollView
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+          />
+        }
+      >
         <View style={styles.trendingPlaces}>
           <View>
             <Text style={{ fontSize: 24, fontWeight: 'bold' }}>
