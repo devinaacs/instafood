@@ -19,7 +19,6 @@ const TrendingPost2 = ({ post }) => {
   const [postDetails, setPostDetails] = useState([]);
   const [placeDetails, setPlaceDetails] = useState('');
   const navigation = useNavigation();
-
   const [likeStatus, setLikeStatus] = useState(false);
   const [likes, setLikes] = useState('');
   const [userIdLocal, setUserId] = useState(null);
@@ -199,7 +198,7 @@ const TrendingPost2 = ({ post }) => {
                 top: 20,
                 left: 10,
                 alignSelf: 'center',
-              
+
                 width: '100%',
               }}
             >
@@ -208,7 +207,7 @@ const TrendingPost2 = ({ post }) => {
                   onPress={() => {
                     navigation.push('PlaceDetail', { placeDetails });
                   }}
-                  style={{ flexDirection: 'row' , width: '80%'}}>
+                  style={{ flexDirection: 'row', width: '80%' }}>
                   <Ionicons
                     name="ios-location-sharp"
                     size={28}
@@ -367,7 +366,7 @@ const TrendingPost2 = ({ post }) => {
           {/* <Box px={'3'}>
             <Text fontSize={'md'} fontWeight={'bold'}>{likesFormat(post.likes)} likes</Text>
           </Box> */}
-          <Flex direction="row" px={'3'} mb={'3'}>
+          <Flex direction="row" px={'3'} mb={'3'} width={'90%'}>
             <Box size={'16'} borderRadius={'full'} borderColor={'gray.200'}>
               <Image
                 width={'full'}
@@ -387,7 +386,11 @@ const TrendingPost2 = ({ post }) => {
                 {post.user.username}
               </Text>
               <Flex direction="row">
-                <Text fontSize={'md'}>{post.caption}</Text>
+                <Text fontSize={'md'}>{post.caption}{post.tags.map((tag, index) => {
+                  return (
+                    <Text key={index} fontSize={'lg'} style={{ color: '#ef4444', fontWeight: 'bold' }}> #{tag}</Text>
+                  );
+                })}</Text>
               </Flex>
             </Box>
           </Flex>
@@ -398,7 +401,7 @@ const TrendingPost2 = ({ post }) => {
               }}
             >
               <Text fontSize={'sm'} color={'gray.500'}>
-                View all {postDetails.comments.length} comments
+                View all {post.comments.length} comments
               </Text>
             </TouchableOpacity>
           </Box>

@@ -65,7 +65,7 @@ export default function OtherUserProfile() {
             </View>
           </View>
           <ScrollView horizontal={true} style={{ marginBottom: 80 }}>
-            <UserPost />
+            {/* <UserPost /> */}
           </ScrollView>
         </ScrollView>
       </View>

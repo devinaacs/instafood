@@ -1,19 +1,59 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Flex, Image, Text } from 'native-base';
 import { AntDesign, Ionicons } from '@expo/vector-icons';
-import { View, Dimensions, } from 'react-native';
+import { View, Dimensions, TouchableOpacity, } from 'react-native';
 import { SwiperFlatList } from 'react-native-swiper-flatlist';
+import { useSelector } from 'react-redux';
+import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const windowWidth = Dimensions.get('window').width;
 
 const Post = ({ post }) => {
+  const [postDetails, setPostDetails] = useState([]);
+  const [placeDetails, setPlaceDetails] = useState('');
   const [likeStatus, setLikeStatus] = useState(false);
   const [likes, setLikes] = useState('');
   const [userIdLocal, setUserId] = useState(null);
   const [token, setToken] = useState(null);
   const [filteredLikes, setFilteredLikes] = useState([]);
   const [disableLike, setDisableLike] = useState(false);
+  const { access_token } = useSelector((state) => state.user);
+  const navigation = useNavigation();
+
+  useEffect(() => {
+    fetch(`https://hacktiv8-instafood.herokuapp.com/places/${post.place_id}`)
+      .then(response => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          return Promise.reject('something went wrong!');
+        }
+      })
+      .then(response => {
+        setPlaceDetails(response);
+      })
+      .catch(error => {
+        console.log('error', error);
+      });
+  }, []);
+
+  useEffect(() => {
+    fetch(`https://hacktiv8-instafood.herokuapp.com/posts/${post.id}`)
+      .then(response => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          return Promise.reject('something went wrong!');
+        }
+      })
+      .then(response => {
+        setPostDetails(response);
+      })
+      .catch(error => {
+        console.log('error', error);
+      });
+  }, [access_token]);
 
   const checkUserId = async () => {
     try {
@@ -63,7 +103,6 @@ const Post = ({ post }) => {
   const handleLike = () => {
     if (!token) return;
     if (disableLike) return;
-    console.log(token)
     let likeFound = false;
     let likeId = '';
 
@@ -115,6 +154,10 @@ const Post = ({ post }) => {
     }
   }
 
+  if (postDetails.length === 0) {
+    return null;
+  }
+
   return (
     <Box w={windowWidth}>
       <Box
@@ -156,21 +199,27 @@ const Post = ({ post }) => {
             width: '100%'
           }}>
             <Box flexDirection={'row'}>
-              <Ionicons
-                name='ios-location-sharp'
-                size={28}
-                color='white'
-                style={{ paddingTop: 1, paddingRight: 4 }}
-              />
-              <Text style={{
-                color: 'white',
-                fontSize: 20,
-                fontWeight: 'bold',
-                marginHorizontal: 3,
-                paddingTop: 6,
-              }}>Pizza Hut</Text>
+              <TouchableOpacity
+                onPress={() => {
+                  navigation.push('PlaceDetail', { placeDetails });
+                }}
+                style={{ flexDirection: 'row', width: '80%' }}>
+                <Ionicons
+                  name='ios-location-sharp'
+                  size={28}
+                  color='white'
+                  style={{ paddingTop: 1, paddingRight: 4 }}
+                />
+                <Text style={{
+                  color: 'white',
+                  fontSize: 20,
+                  fontWeight: 'bold',
+                  marginHorizontal: 3,
+                  paddingTop: 6,
+                }}>{post.place_name}</Text>
+              </TouchableOpacity>
             </Box>
-            <Box px={'6'} mt={'1'} >
+            <Box px={'6'} mt={'1'} position={'absolute'} top={0} right={0}>
               <Text fontSize={'sm'} color={'#E7E7E7'}>
                 {dateFormat(post.created_at)}
               </Text>
@@ -257,20 +306,10 @@ const Post = ({ post }) => {
         >
           <Flex direction='row' justify={'space-between'}>
             <Flex direction='row' px={'3'} py={'2'}>
-              {/* <Box mr={'4'}>
-                <AntDesign name='like2' size={30} color='black' />
-              </Box>
-              <Box>
-                <FontAwesome name='comment-o' size={30} color='black' />
-              </Box> */}
             </Flex>
           </Flex>
-          {/* <Box px={'3'}>
-            <Text fontSize={'md'} fontWeight={'bold'}>
-              {likesFormat(post.likes.length)} likes
-            </Text>
-          </Box> */}
-          <Flex direction='row' px={'3'} mb={'3'}>
+
+          <Flex direction='row' px={'3'} mb={'3'} width={'90%'}>
             <Box size={'16'} borderRadius={'full'} borderColor={'gray.200'}>
               <Image
                 width={'full'}
@@ -283,17 +322,27 @@ const Post = ({ post }) => {
                 alt={'alternate picture'}
               />
             </Box>
-            <Box ml={'3'}>
+            <Box ml={'3'} >
               <Text fontSize={'md'} fontWeight={'bold'}>
                 {post.user.username}
               </Text>
-              <Flex direction='row'>
-                <Text fontSize={'md'}>{post.caption}</Text>
+              <Flex direction='row' >
+                <Text fontSize={'md'}>{post.caption}{post.tags.map((tag, index) => {
+                  return (
+                    <Text key={index} fontSize={'lg'} style={{ color: '#ef4444', fontWeight: 'bold', }}> #{tag}</Text>
+                  );
+                })}</Text>
               </Flex>
             </Box>
           </Flex>
           <Box px={'6'} mb={'5'} >
-            <Text fontSize={'sm'} color={'gray.500'}>View all 4 comments</Text>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.push('CommentSection', { postDetails });
+              }}
+            >
+              <Text fontSize={'sm'} color={'gray.500'}>View all {post.comments.length} comments</Text>
+            </TouchableOpacity>
           </Box>
         </Box>
       </Box>

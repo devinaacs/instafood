@@ -1,16 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import { Box, FlatList, ScrollView, StatusBar, Text } from 'native-base';
+import { View, Image, Dimensions } from 'react-native';
 import Post from '../components/Post';
 import PostButton from '../components/PostButton';
 import SearchButton from '../components/SearchButton';
 import { useSelector } from 'react-redux';
 
+
 export default function Discover() {
   const [posts, setPosts] = useState([]);
+  const [loading, setLoading] = useState(false);
   const [refetch, setRefetch] = useState(false);
   const { access_token } = useSelector((state) => state.user);
+  const windowWidth = Dimensions.get('window').width;
+  const windowHeight = Dimensions.get('window').height;
 
   useEffect(() => {
+    setLoading(true);
     fetch('https://hacktiv8-instafood.herokuapp.com/posts')
       .then(response => {
         if (response.ok) {
@@ -20,6 +26,7 @@ export default function Discover() {
         }
       })
       .then(response => {
+        setLoading(false);
         setPosts(response.items);
       })
       .catch(error => {
@@ -51,6 +58,23 @@ export default function Discover() {
     <Box bg={'white'} flex={1} safeAreaTop>
       <StatusBar />
       <SearchButton />
+      {
+        loading ? (
+          <View style={{height: windowHeight, width: windowWidth, justifyContent: 'center'}}>
+            <Image
+              style={{
+                height: 80,
+                width: 80,
+                resizeMode: 'cover',
+                borderRadius: 10,
+                alignSelf: 'center',
+                marginBottom: 250
+              }}
+              source={require('../assets/loading.gif')}
+            />
+          </View>
+        ) : null
+      }
       <FlatList
         data={posts}
         renderItem={({ item }) => <Post post={item} key={item.id} />}
