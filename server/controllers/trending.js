@@ -13,10 +13,24 @@ module.exports = {
       ).populate({
         path: 'posts',
         select: { __v: 0, updated_at: 0 },
-        populate: {
-          path: 'user',
-          select: { username: 1 },
-        }
+        populate: [
+          {
+            path: 'user',
+            select: { username: 1 }
+          },
+          {
+            path: 'like_ids',
+            select: { user: 1 }
+          },
+          {
+            path: 'comment_ids',
+            select: { comment: 1 },
+            populate: {
+              path: 'user',
+              select: { username: 1 },
+            }
+          }
+        ]
       });
 
       if (trending) {
@@ -29,6 +43,27 @@ module.exports = {
             v.user.id = v.user._id;
             delete v.user._id;
           }
+
+          v.likes = v.like_ids.map(like => {
+            like.id = like._id;
+            delete like._id;
+            
+            return like;
+          });
+          delete v.like_ids;
+
+          v.comments = v.comment_ids.map(comment => {
+            comment.id = comment._id;
+            delete comment._id;
+
+            if (comment.user) {
+              comment.user.id = comment.user._id;
+              delete comment.user._id;
+            }
+
+            return comment;
+          });
+          delete v.comment_ids;
 
           return v;
         });
