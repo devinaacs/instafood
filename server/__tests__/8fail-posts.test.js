@@ -6,11 +6,7 @@ const User = require('../models/User');
 const { createToken } = require('../helpers/jwt');
 
 
-jest.mock('../models/Post', () => {
-  return {
-    find: () => Promise.reject()
-  }
-});
+
 
 jest.mock('../helpers/fstorage', () => ({
   getBucket: () => ({

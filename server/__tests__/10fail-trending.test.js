@@ -2,8 +2,20 @@ const request = require('supertest');
 const mongoose = require('mongoose');
 const app = require('../app');
 const Post = require('../models/Post');
+const User = require('../models/User');
+const { createToken } = require('../helpers/jwt');
 
+jest.mock('../models/TrendingPosts', () => {
+    return {
+        find: () => Promise.reject()
+    }
+});
 
+// jest.mock('../models/TrendingPlace', () => {
+//     return {
+//         find: () => Promise.reject()
+//     }
+// });
 
 // jest.mock('../models/TrendingTag', () => {
 //     return {
@@ -27,10 +39,10 @@ jest.mock('../helpers/fstorage', () => ({
 }));
 
 beforeAll(async () => {
-    await mongoose.connect('mongodb://localhost:27017/instafood-test-6trending', {
+    await mongoose.connect('mongodb://localhost:27017/instafood-test-2post', {
         useNewUrlParser: true,
     });
-    Post.deleteMany({})
+
 });
 
 afterAll(async () => {
@@ -57,19 +69,13 @@ describe('test /posts endpoint', () => {
             });
     });
 
-    test('failed to GET TRENDING PLACES', done => {
-        jest.mock('../models/TrendingPlace', () => {
-            return {
-                find: () => Promise.reject()
-            }
-        });
+    test.only('failed to GET TRENDING PLACES', done => {
         request(app)
             .get('/trending/places')
             .set('Accept', 'application/json')
             .expect(500)
             .end((err, res) => {
                 if (err) return done(err);
-                console.log(res)
                 expect(res.body).toEqual(expect.any(Object));
                 expect(res.body).toHaveProperty('message', 'internal server error');
                 done();
