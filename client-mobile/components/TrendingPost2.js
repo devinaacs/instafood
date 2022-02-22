@@ -199,7 +199,7 @@ const TrendingPost2 = ({ post }) => {
                 top: 20,
                 left: 10,
                 alignSelf: 'center',
-                justifyContent: 'space-between',
+              
                 width: '100%',
               }}
             >
@@ -208,7 +208,7 @@ const TrendingPost2 = ({ post }) => {
                   onPress={() => {
                     navigation.push('PlaceDetail', { placeDetails });
                   }}
-                  style={{ flexDirection: 'row' }}>
+                  style={{ flexDirection: 'row' , width: '80%'}}>
                   <Ionicons
                     name="ios-location-sharp"
                     size={28}
@@ -224,11 +224,11 @@ const TrendingPost2 = ({ post }) => {
                       paddingTop: 6,
                     }}
                   >
-                    {placeDetails.name}
+                    {post.place_name}
                   </Text>
                 </TouchableOpacity>
               </Box>
-              <Box px={'6'} mt={'1'}>
+              <Box px={'6'} mt={'1'} position={'absolute'} top={0} right={0}>
                 <Text fontSize={'sm'} color={'#E7E7E7'}>
                   {dateFormat(post.created_at)}
                 </Text>
