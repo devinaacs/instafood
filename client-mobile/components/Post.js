@@ -211,7 +211,7 @@ const Post = ({ post }) => {
                 }
               </Box>
               <Box mt={4}>
-                <Text fontSize={'md'} fontWeight={'bold'} color={'white'}>{likesFormat(likes)} likes</Text>
+                <Text fontSize={'md'} color={'white'}>{likesFormat(likes)} likes</Text>
               </Box>
             </Box>
           </Flex>
