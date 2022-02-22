@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Box, Center, Flex, Input, Text, Pressable, FlatList, Image } from 'native-base';
 import { Ionicons } from '@expo/vector-icons';
 import { Dimensions } from 'react-native';
-import { useSelector } from 'react-redux';
 import Post from '../components/Post';
 import { useRoute } from '@react-navigation/native';
 
@@ -19,8 +18,6 @@ export default function SearchScreen({ navigation }) {
   const [inputSearch, setInputSearch] = useState('');
   const [foundPlaces, setFoundPlaces] = useState([]);
   const [foundSearch, setFoundSearch] = useState(true);
-  const { access_token } = useSelector((state) => state.user);
-  const { timeoutState, setTimeoutState } = useState(null);
   const [useEffectTrigger, setUseEffectTrigger] = useState('')
 
   const route = useRoute();
@@ -28,7 +25,7 @@ export default function SearchScreen({ navigation }) {
   useEffect(() => {
     if (route.params) {
       handleFilter('posts by tags')
-      setInputSearch(route.params.tags.tag)
+      setInputSearch(route.params.tag)
     }
 
     handleSearch(inputSearch)

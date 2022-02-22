@@ -16,6 +16,7 @@ export default function PostDetail() {
   const navigation = useNavigation();
   const [placeDetails, setPlaceDetails] = useState('');
   const [userIdLocal, setUserId] = useState(null);
+  const [token, setToken] = useState(null);
 
   const getUserId = async () => {
     try {
@@ -24,6 +25,15 @@ export default function PostDetail() {
       return err;
     }
   };
+
+  const checkAccessToken = async () => {
+    try {
+      return await AsyncStorage.getItem('access_token');
+    } catch (e) {
+      return 'error reading access_token';
+    }
+  };
+
   useEffect(() => {
     getUserId()
       .then(response => {
@@ -32,6 +42,11 @@ export default function PostDetail() {
       .catch(err => {
         console.log(err);
       });
+    checkAccessToken()
+      .then((response) => {
+        setToken(response);
+      })
+      .catch((err) => console.log(err))
   }, []);
 
   useEffect(() => {
@@ -51,6 +66,29 @@ export default function PostDetail() {
       });
   }, []);
 
+  const handleDeletePost = () => {
+    fetch(`https://hacktiv8-instafood.herokuapp.com/posts/${item.id}`, {
+      method: 'DELETE',
+      headers: {
+        access_token: token
+      }
+    })
+      .then(response => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          return Promise.reject('something went wrong!');
+        }
+      })
+      .then(response => {
+        console.log(response);
+        setShowModal(false);
+        navigation.goBack();
+      })
+      .catch(error => {
+        console.log('error', error);
+      });
+  }
 
   let deleteButton;
 
@@ -74,9 +112,7 @@ export default function PostDetail() {
               }}>
                 Cancel
               </Button>
-              <Button px={6} colorScheme="red" onPress={() => {
-                setShowModal(false);
-              }}>
+              <Button px={6} colorScheme="red" onPress={handleDeletePost}>
                 Yes
               </Button>
             </Button.Group>
