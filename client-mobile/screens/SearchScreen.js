@@ -10,20 +10,21 @@ const windowWidth = Dimensions.get('window').width;
 export default function SearchScreen({ navigation }) {
   const textInputRef = React.useRef();
   const [search, setSearch] = useState('Search users');
-  const [usersColor, setUsersColor] = useState('red.200')
-  const [tagsColor, setTagsColor] = useState('red.200')
-  const [placesColor, setPlacesColor] = useState('red.200')
+  const [usersColor, setUsersColor] = useState('gray.300');
+  const [tagsColor, setTagsColor] = useState('gray.100');
+  const [placesColor, setPlacesColor] = useState('gray.100');
   const [posts, setPosts] = useState([]);
   const [users, setUsers] = useState([]);
   const [inputSearch, setInputSearch] = useState('');
   const [foundPlaces, setFoundPlaces] = useState([]);
+  const [foundSearch, setFoundSearch] = useState(true);
   const { access_token } = useSelector((state) => state.user);
   const { timeoutState, setTimeoutState } = useState(null);
 
-  const handleSearchPlace = async () => {
+  const handleSearchPlace = () => {
     const SERVER_PLACES_URL = `https://hacktiv8-instafood.herokuapp.com/places?name=${inputSearch}`;
 
-    await fetch(SERVER_PLACES_URL)
+    fetch(SERVER_PLACES_URL)
       .then(response => {
         if (response.ok) {
           return response.json();
@@ -41,7 +42,11 @@ export default function SearchScreen({ navigation }) {
 
   const handleSearch = (searchBy) => {
     if (!searchBy) return;
-    if (search === 'Search by Users') {
+    setFoundSearch(true);
+    setUsers([]);
+    setFoundPlaces([]);
+    setPosts([]);
+    if (search === 'Search users') {
       fetch('https://hacktiv8-instafood.herokuapp.com/users')
         .then(response => {
           if (response.ok) {
@@ -51,16 +56,19 @@ export default function SearchScreen({ navigation }) {
           }
         })
         .then((result) => {
+          if (result.filter((el) => el.username.includes(searchBy)).length === 0) {
+            setFoundSearch(false)
+          }
           setUsers(result.filter((el) => el.username.includes(searchBy)))
         })
         .catch((err) => console.log(err))
     }
 
-    if (search === 'Search by Places') {
+    if (search === 'Search places') {
       handleSearchPlace();
     }
 
-    if (search === 'Search by Tags') {
+    if (search === 'Search posts by tags') {
       fetch('https://hacktiv8-instafood.herokuapp.com/posts')
         .then(response => {
           if (response.ok) {
@@ -70,6 +78,19 @@ export default function SearchScreen({ navigation }) {
           }
         })
         .then(response => {
+          if (response.items.filter((el) => {
+            let flag = false;
+
+            el.tags.forEach((elTag) => {
+              if (elTag.includes(searchBy)) {
+                flag = true;
+              }
+            })
+
+            return flag;
+          }).length === 0) {
+            setFoundSearch(false);
+          }
           setPosts(response.items.filter((el) => {
             let flag = false;
 
@@ -93,27 +114,31 @@ export default function SearchScreen({ navigation }) {
   };
 
   const handleFilter = (filter) => {
-    setSearch('Search by ' + filter);
-    if (filter === 'Users') {
+    setSearch('Search ' + filter);
+    setFoundSearch(true);
+    if (filter === 'users') {
       setPosts([]);
       setFoundPlaces([]);
-      setUsersColor('red.300')
-      setTagsColor('red.200')
-      setPlacesColor('red.200')
+      setInputSearch('');
+      setUsersColor('gray.300')
+      setTagsColor('gray.100')
+      setPlacesColor('gray.100')
     }
-    if (filter === 'Tags') {
+    if (filter === 'posts by tags') {
       setUsers([]);
       setFoundPlaces([]);
-      setUsersColor('red.200')
-      setTagsColor('red.300')
-      setPlacesColor('red.200')
+      setInputSearch('');
+      setUsersColor('gray.100')
+      setTagsColor('gray.300')
+      setPlacesColor('gray.100')
     }
-    if (filter === 'Places') {
+    if (filter === 'places') {
       setUsers([]);
       setPosts([]);
-      setUsersColor('red.200')
-      setTagsColor('red.200')
-      setPlacesColor('red.300')
+      setInputSearch('');
+      setUsersColor('gray.100')
+      setTagsColor('gray.100')
+      setPlacesColor('gray.300')
     }
   };
 
@@ -134,20 +159,20 @@ export default function SearchScreen({ navigation }) {
         </Flex>
       </Flex>
 
-      <Flex direction='row' width={windowWidth} bg={'white'} justifyContent={'space-evenly'}>
-        <Pressable bg={usersColor} width={'20'} height={'8'} onPress={() => handleFilter('Users')}>
-          <Center width={'20'} height={'8'}>
-            <Text>Users</Text>
+      <Flex direction='row' width={windowWidth} bg={'white'} justifyContent={'space-evenly'} height={'16'} alignItems={'center'}>
+        <Pressable borderRadius={'xl'} bg={usersColor} width={'20'} height={'10'} onPress={() => handleFilter('users')}>
+          <Center width={'20'} height={'10'}>
+            <Text fontSize={'lg'} color={'white'} fontWeight={'bold'}>Users</Text>
           </Center>
         </Pressable>
-        <Pressable width={'20'} height={'8'} bg={tagsColor} onPress={() => handleFilter('Tags')}>
-          <Center width={'20'} height={'8'}>
-            <Text>Tags</Text>
+        <Pressable borderRadius={'xl'} width={'20'} height={'10'} bg={tagsColor} onPress={() => handleFilter('posts by tags')}>
+          <Center width={'20'} height={'10'}>
+            <Text fontSize={'lg'} color={'white'} fontWeight={'bold'}>Tags</Text>
           </Center>
         </Pressable>
-        <Pressable width={'20'} height={'8'} bg={placesColor} onPress={() => handleFilter('Places')}>
-          <Center width={'20'} height={'8'}>
-            <Text>Places</Text>
+        <Pressable borderRadius={'xl'} width={'20'} height={'10'} bg={placesColor} onPress={() => handleFilter('places')}>
+          <Center width={'20'} height={'10'}>
+            <Text fontSize={'lg'} color={'white'} fontWeight={'bold'}>Places</Text>
           </Center>
         </Pressable>
       </Flex>
@@ -155,6 +180,14 @@ export default function SearchScreen({ navigation }) {
       <Box onTouchEnd={() => handleSearch(inputSearch)}>
         <Text>Search</Text>
       </Box>
+
+      {
+        foundSearch ? null : (
+          <Center height={'full'} width={'full'}>
+            <Text>Sorry.. We cannot find what you're looking for</Text>
+          </Center>
+        )
+      }
 
       {
         users.length > 0 ? (

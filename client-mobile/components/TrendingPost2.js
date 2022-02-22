@@ -59,7 +59,7 @@ const TrendingPost2 = ({ post }) => {
       .catch(error => {
         console.log('error', error);
       });
-  }, [access_token]);
+  }, []);
 
   const checkUserId = async () => {
     try {
