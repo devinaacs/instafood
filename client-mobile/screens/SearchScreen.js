@@ -21,6 +21,7 @@ export default function SearchScreen({ navigation }) {
   const [foundSearch, setFoundSearch] = useState(true);
   const { access_token } = useSelector((state) => state.user);
   const { timeoutState, setTimeoutState } = useState(null);
+  const [useEffectTrigger, setUseEffectTrigger] = useState('')
 
   const route = useRoute();
 
@@ -30,8 +31,9 @@ export default function SearchScreen({ navigation }) {
       setInputSearch(route.params.tags.tag)
     }
 
-    handleSearch(inputSearch);
-  }, [inputSearch])
+    handleSearch(inputSearch)
+    setUseEffectTrigger(' ');
+  }, [useEffectTrigger])
 
   const handleSearchPlace = () => {
     const SERVER_PLACES_URL = `https://hacktiv8-instafood.herokuapp.com/places?name=${inputSearch}`;
@@ -161,7 +163,7 @@ export default function SearchScreen({ navigation }) {
   navigation.addListener('focus', focusOnInput);
 
   return (
-    <Box flex={1} bg={'white'}>
+    <Box flex={1} bg={'white'} safeArea>
       <Flex direction='row' pr={'5'} py={'3'} position={'relative'} bg={'white'}>
         <Center onTouchEnd={() => navigation.goBack()} px={'3'}>
           <Ionicons name='arrow-back' size={30} color='black' />
