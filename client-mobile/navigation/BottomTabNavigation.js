@@ -129,11 +129,6 @@ export default function BottomTabNavigation() {
         />
       )}
       <Tab.Screen
-        name="Comment"
-        component={CommentSection}
-        options={{ headerShown: false }}
-      />
-      <Tab.Screen
         name="PostDetail"
         component={PostDetail}
         options={{ headerShown: false }}
