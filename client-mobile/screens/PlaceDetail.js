@@ -10,7 +10,6 @@ import { SwiperFlatList } from 'react-native-swiper-flatlist';
 import TrendingPost2 from '../components/Post';
 import PostDetail from './PostDetail';
 
-
 export default function PlaceDetail() {
   const route = useRoute();
   const navigation = useNavigation();
@@ -26,14 +25,17 @@ export default function PlaceDetail() {
           <ScrollView>
             <View style={styles.placeContainer}>
               <View style={{ backgroundColor: 'white', paddingHorizontal: 16, paddingBottom: 10, flexDirection: 'row', justifyContent: 'space-between' }}>
-                <Text style={styles.placeDetailName}>{placeDetails.name}</Text>
+                <View style={{width: '78%'}}>
+                  <Text style={styles.placeDetailName}>{placeDetails.name}</Text>
+                </View>
                 <Image
                   source={{ uri: placeDetails.icon }}
                   style={{
                     width: 33,
                     height: 33,
                     resizeMode: 'contain',
-                    marginVertical: 6
+                    marginVertical: 6,
+                    alignSelf: 'center'
                   }}
                 />
               </View>
@@ -98,7 +100,7 @@ const styles = StyleSheet.create({
     borderColor: '#E1E1E1',
   },
   placeDetailName: {
-    fontSize: 35,
+    fontSize: 29,
     fontWeight: 'normal',
     paddingLeft: 1
   },

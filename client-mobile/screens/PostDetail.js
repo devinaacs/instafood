@@ -64,7 +64,7 @@ export default function PostDetail() {
                     },
                   }}
                 >
-                  <Box flexDirection={'row'} py={5} px={3}>
+                  <Box flexDirection={'row'} py={5} px={3} width={'70%'}>
                     <TouchableOpacity
                       onPress={() => {
                         navigation.push('PlaceDetail', { placeDetails });
@@ -82,7 +82,8 @@ export default function PostDetail() {
                           fontSize: 20,
                           fontWeight: 'bold',
                           marginHorizontal: 3,
-                          paddingTop: 6,
+                          paddingTop: 0,
+                          lineHeight: 30,
                         }}
                       >
                         {placeDetails.name}
@@ -144,12 +145,7 @@ export default function PostDetail() {
                     }}
                   />
                   <Box px={5} flexDirection={'row'}>
-                    <Box size={'12'} borderRadius={'full'} borderColor={'gray.200'}>
-                      <Box mr={'4'} mt={2}>
-                        <AntDesign name="like2" size={34} color="white" />
-                      </Box>
-                    </Box>
-                    <Box mt={4}>
+                    <Box mb={1}>
                       <Text fontSize={'md'} color={'white'}>
                         {likesFormat(item.likes.length)} Likes
                       </Text>
@@ -236,7 +232,7 @@ export default function PostDetail() {
                   </Modal>
                 </Flex>
               </Flex>
-              <Box px={1}>
+              {/* <Box px={1}>
                 <View style={{ backgroundColor: 'white', flexDirection: 'row', paddingBottom: 5, }}>
                   {item.tags.map((tag, index) => {
                     return (
@@ -248,14 +244,14 @@ export default function PostDetail() {
                           borderRadius: 14,
                           width: '100%',
                         }}>
-                          <Text style={{ color: 'white', fontSize: 17, fontWeight: 'bold' }}>{tag}</Text>
+                          <Text style={{ color: 'white', fontSize: 17, fontWeight: 'bold' }}>#{tag}</Text>
                         </View>
                       </TouchableOpacity>
                     );
                   })}
                 </View>
-              </Box>
-              <Flex direction='row' px={'3'} mt={'3'} mb={'1'}>
+              </Box> */}
+              <Flex direction='row' px={'3'} mt={'0'} mb={'1'}>
 
                 <Box size={'12'} borderRadius={'full'} borderColor={'gray.200'}>
                   <Image
@@ -270,9 +266,17 @@ export default function PostDetail() {
                   />
                 </Box>
                 <Box ml={'3'}>
-                  <Text fontSize={'md'} fontWeight={'bold'}>{item.user.username}</Text>
-                  <Flex direction='row'>
-                    <Text fontSize={'md'}>{item.caption}</Text>
+                  <Text fontSize={'lg'} fontWeight={'bold'}>{item.user.username}</Text>
+                  <Flex direction='row' width={'98%'}>
+                    <View style={{ flexDirection: 'row'}}>
+                      <Text fontSize={'lg'}>{item.caption} {item.tags.map((tag, index) => {
+                        return (
+                          <Text key={index} fontSize={'lg'} style={{ color: 'blue', fontWeight: 'bold' }}> #{tag}</Text>
+                        );
+                      })}</Text>
+
+                    </View>
+
                   </Flex>
                 </Box>
               </Flex>
