@@ -6,10 +6,13 @@ import {
   Text,
   TouchableOpacity,
 } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 export default function TrendingTags({ tags }) {
+  const navigation = useNavigation();
+
   return (
-    <TouchableOpacity style={styles.tagsContainer}>
+    <TouchableOpacity onPress={() => navigation.navigate('SearchScreen', { tags })} style={styles.tagsContainer}>
       <View style={styles.tagsBox}>
         <Text style={styles.text}>#{tags.tag}</Text>
       </View>
