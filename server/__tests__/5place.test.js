@@ -1,8 +1,7 @@
 const request = require('supertest');
 const mongoose = require('mongoose');
+const axios = require('axios');
 const app = require('../app');
-
-process.env.GPLACES_API_KEY = 'AIzaSyChgN3eiM_Da0_gJpF3XmpkQ_53CfZyrsk';
 
 jest.mock('../helpers/fstorage', () => ({
   getBucket: () => ({
@@ -19,6 +18,8 @@ jest.mock('../helpers/fstorage', () => ({
   }),
 }));
 
+jest.mock('axios');
+
 let place_ref_test = 'ChIJj9vzoKX2aS4RF3EGNHjn2tU';
 let search_resto = { name: 'Bebek BKB' };
 let search_photo = {
@@ -31,6 +32,10 @@ beforeAll(async () => {
   });
 });
 
+beforeEach(() => {
+  jest.resetAllMocks();
+});
+
 afterAll(async () => {
   await mongoose.disconnect();
   require('../helpers/redis').disconnect();
@@ -38,16 +43,30 @@ afterAll(async () => {
 
 describe('test places endpoint', () => {
   test('successfully GET ALL places', done => {
+    axios.get.mockResolvedValue({
+      data: {
+        results: [
+          {
+            place_id: 'place id',
+            name: 'place name',
+            formatted_address: 'place address',
+            icon: 'place icon',
+            photos: [{
+              photo_reference: 'photo reference'
+            }]
+          }
+        ]
+      }
+    });
+
     request(app)
       .get('/places')
       .query(search_resto)
       .set('Accept', 'application/json')
       .expect(200)
       .end((err, res) => {
-        if (err) {
-          console.log(err);
-          return done(err);
-        }
+        if (err) done(err);
+
         expect(res.body).toBeInstanceOf(Array);
         expect(res.body[0]).toEqual(
           expect.objectContaining({
@@ -58,12 +77,25 @@ describe('test places endpoint', () => {
             photo_reference: expect.any(String),
           })
         );
+
         done();
       });
   });
 
-  // done
   test('successfully GET places BY place_id', done => {
+    axios.get.mockResolvedValue({
+      data: {
+        result: {
+          name: 'place name',
+          formatted_address: 'place address',
+          icon: 'place icon',
+          photos: [{
+            photo_reference: 'photo reference'
+          }]
+        }
+      }
+    });
+
     request(app)
       .get(`/places/${place_ref_test}`)
       .set('Accept', 'application/json')
@@ -88,14 +120,18 @@ describe('test places endpoint', () => {
   });
 
   test('successfully GET places PHOTO', done => {
+    axios.get.mockResolvedValue({
+      data: new ArrayBuffer(16)
+    });
+
     request(app)
       .get('/places/photo')
       .query(search_photo)
       .set('Accept', 'application/json')
       .expect(200)
       .end(err => {
-        if (err) return done(err);
-        done();
+        if (err) done(err);
+        else done();
       });
   });
 });
