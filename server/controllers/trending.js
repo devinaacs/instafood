@@ -12,11 +12,11 @@ module.exports = {
         { _id: 0, __v: 0 }
       ).populate({
         path: 'posts',
-        select: ['user', 'images', 'tags'],
+        select: { __v: 0, updated_at: 0 },
         populate: {
           path: 'user',
           select: { username: 1 },
-        },
+        }
       });
 
       if (trending) {

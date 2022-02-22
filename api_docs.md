@@ -458,6 +458,8 @@ _Response 200 - OK_
 [
   {
     "id": "621063ecc93e6b0ae05b6f83",
+    "place_id": "6210cc70bf599130a9a9c40f",
+    "caption": "Very delicious!",
     "user": {
       "id": "62105d4046db9b1297368fce",
       "username": "user.two"
@@ -468,7 +470,8 @@ _Response 200 - OK_
     "tags": [
       "sweet",
       "food"
-    ]
+    ],
+    "created_at": "2022-02-21T16:38:17.975Z"
   }
 ]
 ```
