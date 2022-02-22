@@ -21,9 +21,9 @@ const Post = ({ post }) => {
 
       setUserId(userIdStorage);
     } catch (e) {
-      return 'error reading access_token'
+      return 'error reading access_token';
     }
-  }
+  };
 
   const checkAccessToken = async () => {
     try {
@@ -31,9 +31,9 @@ const Post = ({ post }) => {
 
       setToken(access_token_storage);
     } catch (e) {
-      return 'error reading access_token'
+      return 'error reading access_token';
     }
-  }
+  };
 
   useEffect(() => {
     checkUserId()
@@ -63,6 +63,7 @@ const Post = ({ post }) => {
   const handleLike = () => {
     if (!token) return;
     if (disableLike) return;
+    console.log(token)
     let likeFound = false;
     let likeId = '';
 

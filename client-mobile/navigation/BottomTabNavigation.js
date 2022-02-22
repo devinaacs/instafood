@@ -16,7 +16,6 @@ const Tab = createBottomTabNavigator();
 export default function BottomTabNavigation() {
   const { access_token } = useSelector(state => state.user);
   const [token, setToken] = useState(null);
-  const [userId, setUserId] = useState(null);
 
   const checkAccessToken = async () => {
     try {
@@ -26,14 +25,6 @@ export default function BottomTabNavigation() {
     }
   };
 
-  const checkUserId = async () => {
-    try {
-      return await AsyncStorage.getItem('userId');
-    } catch (e) {
-      return 'error reading access_token';
-    }
-  };
-
   useEffect(() => {
     checkAccessToken()
       .then(access_token => {
@@ -42,37 +33,17 @@ export default function BottomTabNavigation() {
       .catch(err => {
         console.log(err);
       });
-    checkUserId()
-      .then(access_token => {
-        setUserId(access_token);
-      })
-      .catch(err => {
-        console.log(err);
-      });
-  }, [access_token]);
+  }, [access_token, token]);
 
   useEffect(() => {
     checkAccessToken()
       .then(access_token => {
         setToken(access_token);
-      })
-      .catch(err => {
-        console.log(err);
-      });
-    checkUserId()
-      .then(access_token => {
-        setUserId(access_token);
       })
       .catch(err => {
         console.log(err);
       });
   }, []);
-
-  // checkAccessToken().then(access_token => {
-  //   setToken(access_token);
-  // });
-
-  // console.log(userId)
 
   return (
     <Tab.Navigator
