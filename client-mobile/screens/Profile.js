@@ -58,7 +58,6 @@ export default function Profile() {
       fetch(`https://hacktiv8-instafood.herokuapp.com/users/${userIdLocal}`)
         .then(response => response.json())
         .then(result => {
-          console.log(result)
           setUserProfile(result)
         })
         .catch(err => console.log(err));

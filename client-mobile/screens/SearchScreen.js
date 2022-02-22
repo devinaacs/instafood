@@ -4,7 +4,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { Dimensions } from 'react-native';
 import Post from '../components/Post';
 import { useRoute } from '@react-navigation/native';
-
+import { useSelector } from 'react-redux';
 
 const windowWidth = Dimensions.get('window').width;
 
