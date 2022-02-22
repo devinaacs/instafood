@@ -8,6 +8,7 @@ const initialState = {
 
 function user(state = initialState, action) {
   if (action.type === USER_LOGIN) {
+    console.log('hai')
     const storeData = async (value) => {
       try {
         await AsyncStorage.setItem('access_token', value.access_token)
