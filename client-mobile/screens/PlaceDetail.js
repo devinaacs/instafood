@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, View, ScrollView, Text, TouchableOpacity, Image, Dimensions, } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { Input, Icon, Stack, Center, Button, Box } from 'native-base';
 import NavbarForPlaceDetail from '../components/NavbarForPlaceDetail';
 import { useRoute, useNavigation } from '@react-navigation/native';
@@ -28,7 +28,7 @@ export default function PlaceDetail() {
                 <View style={{ width: '78%' }}>
                   <Text style={styles.placeDetailName}>{placeDetails.name}</Text>
                 </View>
-                <Image
+                {/* <Image
                   source={{ uri: placeDetails.icon }}
                   style={{
                     width: 33,
@@ -37,7 +37,8 @@ export default function PlaceDetail() {
                     marginVertical: 6,
                     alignSelf: 'center'
                   }}
-                />
+                /> */}
+                <MaterialCommunityIcons name='silverware-fork-knife' size={40} color='#EC5D5D' style={{ paddingHorizontal: 10, alignSelf: 'center' }} />
               </View>
               <View style={{ backgroundColor: 'white' }}>
 
@@ -83,7 +84,7 @@ export default function PlaceDetail() {
               </View>
               <View style={{ backgroundColor: 'white', padding: 5, paddingTop: 12, flexDirection: 'row', width: '90%' }}>
                 <Ionicons name='location-sharp' size={34} color='#929292' style={{ paddingHorizontal: 10 }} />
-                <Text style={{ fontSize: 17, paddingTop: 5, textAlign: 'justify' }}>{placeDetails.address}</Text>
+                <Text style={{ fontSize: 17, paddingTop: 5, textAlign: 'justify', color: '#4D4D4D' }}>{placeDetails.address}</Text>
               </View>
             </View>
           </ScrollView>
@@ -116,80 +117,7 @@ const styles = StyleSheet.create({
   placeDetailName: {
     fontSize: 29,
     fontWeight: 'normal',
-    paddingLeft: 1
+    paddingLeft: 1,
   },
   containerSwiper: { flex: 1, backgroundColor: 'white', margin: 18 },
 });
-
-const posts = [
-  {
-    id: 1,
-    imageUrl: [
-      'https://images.pexels.com/photos/3779791/pexels-photo-3779791.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260',
-      'https://images.unsplash.com/photo-1529042410759-befb1204b468?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=686&q=80',
-      'https://images.unsplash.com/photo-1529042410759-befb1204b468?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=686&q=80'],
-    user: {
-      name: 'Bambang',
-      profilePicture:
-        'https://cdn.pixabay.com/photo/2015/03/04/22/35/head-659651__340.png',
-    },
-    likes: 781019389,
-    place: 'Pizza Hut',
-    createdAt: 'February 16, 2022',
-    caption: 'Enak bangett!',
-    comments: [
-      {
-        user: 'Daniel',
-        comment: 'Bener bangett!',
-      },
-      {
-        user: 'Devina',
-        comment: 'Setuju!',
-      },
-      {
-        user: 'Rafi',
-        comment: 'Harus coba sih..',
-      },
-      {
-        user: 'Bima',
-        comment: 'Jadi pengen..',
-      },
-    ],
-  },
-  {
-    id: 2,
-    imageUrl: [
-      'https://images.unsplash.com/photo-1529042410759-befb1204b468?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=686&q=80',
-      'https://images.unsplash.com/photo-1529042410759-befb1204b468?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=686&q=80',
-      'https://images.unsplash.com/photo-1529042410759-befb1204b468?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=686&q=80',
-      'https://images.unsplash.com/photo-1529042410759-befb1204b468?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=686&q=80',
-    ],
-    user: {
-      name: 'Jefri',
-      profilePicture:
-        'https://cdn.pixabay.com/photo/2015/03/04/22/35/head-659651__340.png',
-    },
-    likes: 7810,
-    place: 'Holy Cow',
-    createdAt: 'February 12, 2022',
-    caption: 'Enak bangett!',
-    comments: [
-      {
-        user: 'Daniel',
-        comment: 'Bener bangett!',
-      },
-      {
-        user: 'Devina',
-        comment: 'Setuju!',
-      },
-      {
-        user: 'Rafi',
-        comment: 'Harus coba sih..',
-      },
-      {
-        user: 'Bima',
-        comment: 'Jadi pengen..',
-      },
-    ],
-  },
-];

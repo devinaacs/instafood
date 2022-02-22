@@ -161,7 +161,7 @@ export default function SearchScreen({ navigation }) {
   navigation.addListener('focus', focusOnInput);
 
   return (
-    <Box flex={1} bg={'white'}>
+    <Box flex={1} bg={'white'} safeArea>
       <Flex direction='row' pr={'5'} py={'3'} position={'relative'} bg={'white'}>
         <Center onTouchEnd={() => navigation.goBack()} px={'3'}>
           <Ionicons name='arrow-back' size={30} color='black' />
