@@ -63,7 +63,7 @@ export default function OtherUserProfile() {
               <Image
                 style={styles.profilePic}
                 source={{
-                  uri: 'https://cdn-icons-png.flaticon.com/512/236/236832.png',
+                  uri: 'https://cdn.pixabay.com/photo/2015/03/04/22/35/head-659651__340.png',
                 }}
               />
               <Text style={styles.profileName}>{post.user.username}</Text>
@@ -72,14 +72,18 @@ export default function OtherUserProfile() {
             <View style={styles.post}>
               <View style={{ width: '35%' }}>
                 <Text style={{ alignSelf: 'center', fontSize: 16 }}>Posts</Text>
-                <Text style={styles.postsCount}>100</Text>
+                {
+                  userPosts.items ? (
+                    <View>
+                      <Text style={styles.postsCount}>{userPosts.items.length}</Text>
+                    </View>
+                  ) :
+                    <View>
+                      <Text style={styles.postsCount}>0</Text>
+                    </View>
+                }
               </View>
-              <View style={{ width: '35%' }}>
-                <Text style={{ alignSelf: 'center', fontSize: 16 }}>
-                  Liked Posts
-                </Text>
-                <Text style={styles.likesCount}>100</Text>
-              </View>
+       
             </View>
           </View>
           <View style={styles.postsTextContainer}>
