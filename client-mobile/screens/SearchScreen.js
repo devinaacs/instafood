@@ -4,6 +4,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { Dimensions } from 'react-native';
 import { useSelector } from 'react-redux';
 import Post from '../components/Post';
+import { useRoute } from '@react-navigation/native';
 
 const windowWidth = Dimensions.get('window').width;
 
@@ -20,6 +21,17 @@ export default function SearchScreen({ navigation }) {
   const [foundSearch, setFoundSearch] = useState(true);
   const { access_token } = useSelector((state) => state.user);
   const { timeoutState, setTimeoutState } = useState(null);
+
+  const route = useRoute();
+
+  useEffect(() => {
+    if (route.params) {
+      handleFilter('posts by tags')
+      setInputSearch(route.params.tags.tag)
+    }
+
+    handleSearch(inputSearch);
+  }, [inputSearch])
 
   const handleSearchPlace = () => {
     const SERVER_PLACES_URL = `https://hacktiv8-instafood.herokuapp.com/places?name=${inputSearch}`;

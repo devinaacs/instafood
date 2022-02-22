@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import * as ImagePicker from 'expo-image-picker';
 import { Dimensions } from 'react-native';
 import { Box, Center, Flex, Image, Input, Pressable, ScrollView, StatusBar, Text, TextArea } from 'native-base';
 import { Feather } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
+import { useSelector } from 'react-redux';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 export default function CreatePostScreen({ navigation }) {
@@ -17,6 +19,25 @@ export default function CreatePostScreen({ navigation }) {
   const [tag, setTag] = useState('');
   const [postLoading, setPostLoading] = useState(false);
   const windowWidth = Dimensions.get('window').width;
+  const { access_token } = useSelector((state) => state.user);
+  const [token, setToken] = useState(null);
+
+  const checkAccessToken = async () => {
+    try {
+      return await AsyncStorage.getItem('access_token');
+    } catch (e) {
+      return 'error reading access_token';
+    }
+  };
+
+  useEffect(() => {
+    checkAccessToken()
+      .then((tokenStorage) => {
+        setToken(tokenStorage)
+      })
+      .catch((err) => console.log(err))
+  }, [access_token])
+
   // Functions:
   const pickImage = async () => {
     // No permissions request is necessary for launching the image library
@@ -73,8 +94,7 @@ export default function CreatePostScreen({ navigation }) {
         method: 'POST',
         body: formData,
         headers: {
-          access_token:
-            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyMGYxMjFjZDUwNDBjNzM4MGZjN2RlYSIsImVtYWlsIjoidXNlci5vbmVAbWFpbC5jb20iLCJpYXQiOjE2NDUyNDg1MDN9.F6-_Rt1HeADDVfWR-c5mDdouBi5GZLFlhDC-t8GrV5U',
+          access_token: token,
         },
       })
         .then(response => {
