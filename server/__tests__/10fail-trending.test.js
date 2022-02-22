@@ -1,142 +1,80 @@
 const request = require('supertest');
 const mongoose = require('mongoose');
-const app = require('../app');
 const Post = require('../models/Post');
-const tplaceController = require('../controllers/trending');
+const app = require('../app');
 
-// jest.mock('../models/TrendingPosts', () => {
-//     return {
-//         find: () => Promise.reject()
-//     }
-// });
-
-
-// jest.mock('../workers/trending', () => {
-//     return {
-//         find: () => Promise.reject()
-//     }
-// });
-
-
-
-jest.mock('../controllers/trending');
-
-// jest.mock('../models/TrendingPlace', () => {
-//     return {
-//         find: () => Promise.reject()
-//     }
-// });
-
-// jest.mock('../models/TrendingTag', () => {
-//     return {
-//         find: () => Promise.reject()
-//     }
-// });
+jest.mock('../actions/trendingVersion', () => {
+  return {
+    readyVersion: () => Promise.reject({ name: 'unexpected error' }),
+  };
+});
 
 jest.mock('../helpers/fstorage', () => ({
-    getBucket: () => ({
-        upload(a, b, c) {
-            c(null, {
-                makePublic(c2) {
-                    c2(null);
-                },
-                publicUrl() {
-                    return 'image';
-                },
-            });
+  getBucket: () => ({
+    upload(a, b, c) {
+      c(null, {
+        makePublic(c2) {
+          c2(null);
         },
-    }),
+        publicUrl() {
+          return 'image';
+        },
+      });
+    },
+  }),
 }));
 
 beforeAll(async () => {
-    await mongoose.connect('mongodb://localhost:27017/instafood-test-10trend', {
-        useNewUrlParser: true,
-    });
-
+  await mongoose.connect('mongodb://localhost:27017/instafood-test-10trend', {
+    useNewUrlParser: true,
+  });
 });
 
 afterAll(async () => {
-    require('../helpers/redis').disconnect();
-    Post.deleteMany({});
-    await mongoose.disconnect();
+  require('../helpers/redis').disconnect();
+  Post.deleteMany({});
+  await mongoose.disconnect();
 });
 
-describe('test /posts endpoint', () => {
-    test('failed to GET TRENDING POSTS', done => {
-        // jest.mock('../models/TrendingPosts', () => {
-        //     return {
-        //         find: () => Promise.reject()
-        //     }
-        // });
-        const mtplaceController = jest.mocked(tplaceController)
-        mtplaceController.getPosts.mockImplementation(() => {
-            throw new Error({ name: 'network' });
-        });
-        request(app)
-            .get('/trending/posts')
-            .set('Accept', 'application/json')
-            .expect(500)
-            .end((err, res) => {
-                if (err) return done(err);
-                expect(res.body).toEqual(expect.any(Object));
-                expect(res.body).toHaveProperty('message', 'internal server error');
-                done();
-            });
-    });
+describe('test /trending', () => {
+  test('GET /trending/posts - failed to GET TRENDING POSTS', done => {
+    request(app)
+      .get('/trending/posts')
+      .set('Accept', 'application/json')
+      .expect(500)
+      .end((err, res) => {
+        if (err) return done(err);
 
-    test('failed to GET TRENDING PLACES', done => {
-        // const mtplaceController = jest.mocked(tplaceController)
-        const mtplaceController = jest.mocked(tplaceController)
-        // jest.mocked(tplaceController).getPlaces.mockRejectedValue(new Error('Async error')); 
+        expect(res.body).toEqual(expect.any(Object));
+        expect(res.body).toHaveProperty('message', 'internal server error');
+        done();
+      });
+  });
 
+  test('GET /trending/places - failed to GET TRENDING PLACES', done => {
+    request(app)
+      .get('/trending/places')
+      .set('Accept', 'application/json')
+      .expect(500)
+      .end((err, res) => {
+        if (err) return done(err);
 
-        // const mtplaceController = jest.mocked(tplaceController);
-        // const mError = new Error('network');
-        // mtplaceController.getPlaces().mockRejectedValue(mError);
-        mtplaceController.getPlaces.mockImplementation(() => {
-            throw new Error({ name: 'network' });
-        });
+        expect(res.body).toEqual(expect.any(Object));
+        expect(res.body).toHaveProperty('message', 'internal server error');
+        done();
+      });
+  });
 
-        // const expectedError = new Error('Failed to connect to ApplePay');
-        // payService.initiateApplePayment.mockRejectedValue(expectedError);
-
-        // try {
-        //     await payController.createApplePayRequest();
-
-        // jest.mock('../models/TrendingPlace', () => {
-        //     return {
-        //         find: () => Promise.reject()
-        //     }
-        // });
-        request(app)
-            .get('/trending/places')
-            .set('Accept', 'application/json')
-            .expect(500)
-            .end((err, res) => {
-                if (err) {
-                    console.log(err)
-                    return done(err)
-                };
-                expect(res.body).toEqual(expect.any(Object));
-                expect(res.body).toHaveProperty('message', 'internal server error');
-                done();
-            });
-    });
-
-    test('failed to GET TRENDING POSTS', done => {
-        const mtplaceController = jest.mocked(tplaceController)
-        mtplaceController.getTags.mockImplementation(() => {
-            throw new Error({ name: 'network' });
-        });
-        request(app)
-            .get('/trending/tags')
-            .set('Accept', 'application/json')
-            .expect(500)
-            .end((err, res) => {
-                if (err) return done(err);
-                expect(res.body).toEqual(expect.any(Object));
-                expect(res.body).toHaveProperty('message', 'internal server error');
-                done();
-            });
-    });
+  test('failed to GET TRENDING POSTS', done => {
+    request(app)
+      .get('/trending/tags')
+      .set('Accept', 'application/json')
+      .expect(500)
+      .end((err, res) => {
+        if (err) return done(err);
+        expect(res.body).toEqual(expect.any(Object));
+        expect(res.body).toHaveProperty('message', 'internal server error');
+        done();
+      });
+  });
 });

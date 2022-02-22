@@ -14,11 +14,7 @@ module.exports = {
   },
 
   async set(key, value, exp = 30) {
-    if (typeof value != 'string') {
-      value = JSON.stringify(value);
-    }
-
-    return redis.set(key, value, 'EX', exp);
+    return redis.set(key, JSON.stringify(value), 'EX', exp);
   },
 
   async del(key) {
