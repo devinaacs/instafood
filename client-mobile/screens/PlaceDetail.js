@@ -4,7 +4,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { Input, Icon, Stack, Center, Button } from 'native-base';
 import NavbarForPlaceDetail from '../components/NavbarForPlaceDetail';
-import { useRoute, useNavigation } from "@react-navigation/native";
+import { useRoute, useNavigation } from '@react-navigation/native';
 const windowWidth = Dimensions.get('window').width;
 import { SwiperFlatList } from 'react-native-swiper-flatlist';
 import TrendingPost2 from '../components/Post';
@@ -60,7 +60,7 @@ export default function PlaceDetail() {
                 />
               </View>
               <View style={{ backgroundColor: 'white', padding: 5, paddingTop: 12, flexDirection: 'row', width: '90%' }}>
-                <Ionicons name="location-sharp" size={34} color="#929292" style={{ paddingHorizontal: 10 }} />
+                <Ionicons name='location-sharp' size={34} color='#929292' style={{ paddingHorizontal: 10 }} />
                 <Text style={{ fontSize: 17, paddingTop: 5, textAlign: 'justify'}}>{placeDetails.address}</Text>
               </View>
             </View>

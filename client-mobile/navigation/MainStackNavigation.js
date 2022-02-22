@@ -7,6 +7,7 @@ import Register from '../screens/Register';
 import Profile from '../screens/Profile';
 import PlaceDetail from '../screens/PlaceDetail';
 import CommentSection from '../screens/CommentSection';
+import PostDetail from '../screens/PostDetail';
 
 const Stack = createNativeStackNavigator();
 
@@ -42,6 +43,11 @@ export default function MainStackNavigation() {
       <Stack.Screen
         name="CommentSection"
         component={CommentSection}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="PostDetail"
+        component={PostDetail}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>

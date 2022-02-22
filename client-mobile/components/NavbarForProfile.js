@@ -30,6 +30,7 @@ export default function NavbarForProfile() {
       </View>
       <View style={{ flexDirection: 'row' }}>
         <TouchableOpacity style={{ flexDirection: 'row' }}
+
           onPress={() => {
             dispatch(userLogout())
             navigation.navigate('Highlights')
