@@ -7,6 +7,7 @@ import NavbarForPostDetail from '../components/NavbarForPostDetail';
 const windowWidth = Dimensions.get('window').width;
 import { SwiperFlatList } from 'react-native-swiper-flatlist';
 import { useRoute, useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function PostDetail() {
   const route = useRoute();
@@ -14,6 +15,24 @@ export default function PostDetail() {
   const [showModal, setShowModal] = useState(false);
   const navigation = useNavigation();
   const [placeDetails, setPlaceDetails] = useState('');
+  const [userIdLocal, setUserId] = useState(null);
+
+  const getUserId = async () => {
+    try {
+      return await AsyncStorage.getItem('userId');
+    } catch (err) {
+      return err;
+    }
+  };
+  useEffect(() => {
+    getUserId()
+      .then(response => {
+        setUserId(response);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }, []);
 
   useEffect(() => {
     fetch(`https://hacktiv8-instafood.herokuapp.com/places/${item.place_id}`)
@@ -31,6 +50,43 @@ export default function PostDetail() {
         console.log('error', error);
       });
   }, []);
+
+
+  let deleteButton;
+
+  if (userIdLocal === item.user.id) {
+    deleteButton = <Flex direction='row' px={'2'} py={'3'}>
+      <TouchableOpacity mr={'4'} onPress={() => setShowModal(true)}>
+        <Ionicons name='trash-outline' size={31} color='#9B9B9B' />
+      </TouchableOpacity>
+      <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
+        <Modal.Content maxWidth="400px">
+          <Modal.CloseButton />
+          <Modal.Body>
+            <Center pt={10}>
+              <Text style={{ fontSize: 20 }}>Are you sure, you want to delete this post?</Text>
+            </Center>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button.Group space={2}>
+              <Button variant="ghost" colorScheme="blueGray" onPress={() => {
+                setShowModal(false);
+              }}>
+                Cancel
+              </Button>
+              <Button px={6} colorScheme="red" onPress={() => {
+                setShowModal(false);
+              }}>
+                Yes
+              </Button>
+            </Button.Group>
+          </Modal.Footer>
+        </Modal.Content>
+      </Modal>
+    </Flex>;
+  } else {
+    deleteButton = <Flex></Flex>;
+  }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -201,36 +257,7 @@ export default function PostDetail() {
                     </TouchableOpacity>
                   </Box>
                 </Flex>
-                <Flex direction='row' px={'2'} py={'3'}>
-                  <TouchableOpacity mr={'4'} onPress={() => setShowModal(true)}>
-                    <Ionicons name='trash-outline' size={31} color='#9B9B9B' />
-                  </TouchableOpacity>
-                  <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
-                    <Modal.Content maxWidth="400px">
-                      <Modal.CloseButton />
-                      <Modal.Body>
-                        <Center pt={10}>
-                          <Text style={{ fontSize: 20 }}>Are you sure, you want to delete this post?</Text>
-
-                        </Center>
-                      </Modal.Body>
-                      <Modal.Footer>
-                        <Button.Group space={2}>
-                          <Button variant="ghost" colorScheme="blueGray" onPress={() => {
-                            setShowModal(false);
-                          }}>
-                            Cancel
-                          </Button>
-                          <Button px={6} colorScheme="red" onPress={() => {
-                            setShowModal(false);
-                          }}>
-                            Yes
-                          </Button>
-                        </Button.Group>
-                      </Modal.Footer>
-                    </Modal.Content>
-                  </Modal>
-                </Flex>
+                {deleteButton}
               </Flex>
               <Flex direction='row' px={'3'} mt={'0'} mb={'1'}>
 
@@ -249,7 +276,7 @@ export default function PostDetail() {
                 <Box ml={'3'} width={'90%'}>
                   <Text fontSize={'lg'} fontWeight={'bold'}>{item.user.username}</Text>
                   <Flex direction='row'>
-                    <View style={{ flexDirection: 'row'}}>
+                    <View style={{ flexDirection: 'row' }}>
                       <Text fontSize={'lg'}>{item.caption}{item.tags.map((tag, index) => {
                         return (
                           <Text key={index} fontSize={'lg'} style={{ color: '#ef4444', fontWeight: 'bold' }}> #{tag}</Text>

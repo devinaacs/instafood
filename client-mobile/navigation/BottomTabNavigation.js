@@ -80,11 +80,6 @@ export default function BottomTabNavigation() {
         component={Discover}
         options={{ headerShown: false }}
       />
-      <Tab.Screen
-        name="Other User"
-        component={OtherUserProfile}
-        options={{ headerShown: false }}
-      />
 
       {token ? (
         <Tab.Screen

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   StyleSheet,
   View,
@@ -12,10 +12,33 @@ import { Ionicons } from '@expo/vector-icons';
 import Navbar from '../components/Navbar';
 import UserPost from '../components/UserPost';
 import PostButton from '../components/PostButton';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute, } from '@react-navigation/native';
+
 
 export default function OtherUserProfile() {
+  const [userProfile, setUserProfile] = useState(null);
+  const [userPosts, setUserPosts] = useState([]);
   const navigation = useNavigation();
+  const route = useRoute();
+  const { post } = route.params;
+
+  useEffect(() => {
+    fetch(`https://hacktiv8-instafood.herokuapp.com/users/${post.user.id}`)
+      .then(response => response.json())
+      .then(result => setUserProfile(result))
+      .catch(err => console.log(err));
+
+    fetch(
+      `https://hacktiv8-instafood.herokuapp.com/posts/?user_id=${post.user.id}`
+    )
+      .then(response => response.json())
+      .then(result => setUserPosts(result))
+      .catch(err => console.log(err));
+  }, []);
+
+  if (!userProfile) {
+    return null;
+  }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -43,8 +66,8 @@ export default function OtherUserProfile() {
                   uri: 'https://cdn-icons-png.flaticon.com/512/236/236832.png',
                 }}
               />
-              <Text style={styles.profileName}>Dummy</Text>
-              <Text style={{ color: 'gray' }}>dummy@email.com</Text>
+              <Text style={styles.profileName}>{post.user.username}</Text>
+              <Text style={{ color: 'gray' }}>{userProfile.email}</Text>
             </View>
             <View style={styles.post}>
               <View style={{ width: '35%' }}>
@@ -66,10 +89,10 @@ export default function OtherUserProfile() {
           </View>
           <ScrollView horizontal={true} style={{ marginBottom: 80 }}>
             {/* <UserPost /> */}
+            <UserPost post={userPosts} />
           </ScrollView>
         </ScrollView>
       </View>
-      <PostButton />
     </SafeAreaView>
   );
 }

@@ -311,16 +311,24 @@ const Post = ({ post }) => {
 
           <Flex direction='row' px={'3'} mb={'3'} width={'90%'}>
             <Box size={'16'} borderRadius={'full'} borderColor={'gray.200'}>
-              <Image
-                width={'full'}
-                height={'full'}
-                resizeMode={'cover'}
-                borderRadius={'full'}
-                source={{
-                  uri: post.user.profilePicture || 'https://cdn.pixabay.com/photo/2015/03/04/22/35/head-659651__340.png',
-                }}
-                alt={'alternate picture'}
-              />
+              <TouchableOpacity onPress={() => {
+                if (post.user.id === userIdLocal) {
+                  navigation.navigate('Profile');
+                } else {
+                  navigation.navigate('OtherUserProfile', {post});
+                }
+              }}>
+                <Image
+                  width={'full'}
+                  height={'full'}
+                  resizeMode={'cover'}
+                  borderRadius={'full'}
+                  source={{
+                    uri: post.user.profilePicture || 'https://cdn.pixabay.com/photo/2015/03/04/22/35/head-659651__340.png',
+                  }}
+                  alt={'alternate picture'}
+                />
+              </TouchableOpacity>
             </Box>
             <Box ml={'3'} >
               <Text fontSize={'md'} fontWeight={'bold'}>
