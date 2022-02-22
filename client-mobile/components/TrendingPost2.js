@@ -11,6 +11,7 @@ import {
 import { SwiperFlatList } from 'react-native-swiper-flatlist';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useSelector } from 'react-redux';
 
 const windowWidth = Dimensions.get('window').width;
 
@@ -25,6 +26,7 @@ const TrendingPost2 = ({ post }) => {
   const [token, setToken] = useState(null);
   const [filteredLikes, setFilteredLikes] = useState([]);
   const [disableLike, setDisableLike] = useState(false);
+  const { access_token } = useSelector((state) => state.user);
 
   useEffect(() => {
     fetch(`https://hacktiv8-instafood.herokuapp.com/places/${post.place_id}`)
@@ -58,9 +60,7 @@ const TrendingPost2 = ({ post }) => {
       .catch(error => {
         console.log('error', error);
       });
-  }, []);
-
-
+  }, [access_token]);
 
   const checkUserId = async () => {
     try {
@@ -88,7 +88,7 @@ const TrendingPost2 = ({ post }) => {
         let foundUser = false;
 
         post.likes.forEach(el => {
-          if (el.user.id === userIdLocal) {
+          if (el.user === userIdLocal) {
             foundUser = true;
           }
         });
@@ -104,7 +104,7 @@ const TrendingPost2 = ({ post }) => {
     setLikes(post.likes.length);
     setFilteredLikes(post.likes);
     checkAccessToken();
-  }, [userIdLocal, post]);
+  }, [userIdLocal, post, access_token]);
 
   const handleLike = () => {
     if (!token) return;
@@ -113,7 +113,7 @@ const TrendingPost2 = ({ post }) => {
     let likeId = '';
 
     filteredLikes.forEach(el => {
-      if (el.user.id === userIdLocal) {
+      if (el.user === userIdLocal) {
         likeFound = true;
         likeId = el.id;
       }

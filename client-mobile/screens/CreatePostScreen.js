@@ -86,7 +86,7 @@ export default function CreatePostScreen({ navigation }) {
         .then(response => {
           console.log('response', response);
           setPostLoading(false);
-          navigation.navigate('Highlights')
+          navigation.goBack();
         })
         .catch(error => {
           console.log('error', error);

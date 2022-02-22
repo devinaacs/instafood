@@ -1,19 +1,33 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Center, Pressable } from 'native-base'
 import { AntDesign } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function PostButton() {
   const navigation = useNavigation();
   const { access_token } = useSelector((state) => state.user);
+  const [token, setToken] = useState(null);
+
+  const checkAccessToken = async () => {
+    try {
+      const tokenLocal = await AsyncStorage.getItem('access_token');
+
+      setToken(tokenLocal);
+    } catch (e) {
+      return 'error reading access_token';
+    }
+  };
+
+  useEffect(() => {
+    checkAccessToken()
+  }, [access_token])
 
   return (
     <Center onTouchEnd={() => {
-      if (access_token) {
+      if (token) {
         navigation.navigate('CreatePostScreen')
-      } else {
-        navigation.navigate('Login')
       }
     }} position={'absolute'} right={'5'} bottom={'5'} size={'16'} borderRadius={'full'}>
       <Pressable _pressed={{
