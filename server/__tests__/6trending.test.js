@@ -7,15 +7,10 @@ const TrendingPosts = require('../models/TrendingPosts');
 const TrendingTag = require('../models/TrendingTag');
 const TrendingPlace = require('../models/TrendingPlace');
 const TrendingVersion = require('../models/TrendingVersion');
+const actTrendingVersion = require('../actions/trendingVersion');
 
 jest.mock('../helpers/fstorage', () => ({
   getBucket: () => ({}),
-}));
-
-jest.mock('../actions/trendingVersion', () => ({
-  readyVersion() {
-    return 1;
-  },
 }));
 
 const PLACE_ID = '6210cc70bf599130a9a9c40f';
@@ -53,6 +48,12 @@ let trendingPlace = {
   },
 };
 
+let postTwo = null;
+let trendingPostsTwo = {
+  version: 2,
+  posts: []
+}
+
 beforeAll(async () => {
   await mongoose.connect('mongodb://localhost:27017/instafood-test-6trending', {
     useNewUrlParser: true,
@@ -69,6 +70,11 @@ beforeAll(async () => {
     email: 'user.100@mail.com',
     password: '12345aaa',
   });
+  const userTwo = await User.create({
+    username: 'user.200',
+    email: 'user.200@mail.com',
+    password: '12345aaa',
+  });
 
   postOne = await Post.create({
     user: user._id,
@@ -80,10 +86,19 @@ beforeAll(async () => {
   trendingPlace.most_popular.post = postOne._id;
   trendingTag.most_popular.post = postOne._id;
 
-  await TrendingVersion.create(trendingVersion);
+  trendingVersion = await TrendingVersion.create(trendingVersion);
   await TrendingPosts.create(trendingPosts);
   await TrendingPlace.create(trendingPlace);
   await TrendingTag.create(trendingTag);
+
+  postTwo = await Post.create({
+    user: userTwo._id,
+    place_id: PLACE_ID,
+    tags: []
+  });
+  trendingPostsTwo.posts.push(postTwo);
+
+  await TrendingPosts.create(trendingPostsTwo);
 });
 
 afterAll(async () => {
@@ -99,7 +114,7 @@ describe('test /trending endpoint', () => {
       .expect(200)
       .end((err, res) => {
         if (err) return done(err);
-        console.log(res.body);
+
         expect(res.body).toBeInstanceOf(Array);
         expect(res.body[0]).toEqual(
           expect.objectContaining({
@@ -177,5 +192,35 @@ describe('test /trending endpoint', () => {
 
         done();
       });
+  });
+
+  test('sucessfully retrieve shifted trending version', done => {
+    actTrendingVersion.instance()
+      .then(result => {
+        result.ready = 1;
+        result.draft = 2;
+        return result.save()
+      })
+      .then(actTrendingVersion.shiftVersion)
+      .then(() => {
+        return actTrendingVersion.draftVersion()
+          .then(draft => expect(draft).toEqual(1))
+          .then(() => actTrendingVersion.readyVersion())
+          .then(ready => expect(ready).toEqual(2));
+      })
+      .then(() => {
+        request(app)
+          .get('/trending/posts')
+          .set('Accept', 'application/json')
+          .expect(200)
+          .end((err, res) => {
+            if (err) return done(err);
+
+            expect(res.body).toBeInstanceOf(Array);
+            expect(res.body[0].user.username).toEqual('user.200');
+
+            done();
+          });
+      })
   });
 });

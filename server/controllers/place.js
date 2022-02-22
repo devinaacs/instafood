@@ -10,7 +10,6 @@ const PLACE_DETAIL_URL =
 module.exports = {
   async searchPlaces(req, res, next) {
     try {
-      // console.log(process.env.GPLACES_API_KEY, "<<<<<")
       let locationKey = 'default';
 
       if (req.query.location) {

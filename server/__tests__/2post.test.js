@@ -27,8 +27,7 @@ const invalid_id = '620f55de92e0babea2ccb10a';
 let post_one = {
   place_id: '6210cc70bf599130a9a9c40f',
   caption: 'Test caption food',
-  tags: ['test', 'success', 'failed'],
-  // images: [testImage]
+  tags: ['test', 'success', 'failed']
 };
 
 const edit_post = { caption: 'caption yg sudah di edit' };
@@ -77,8 +76,6 @@ describe('test /posts endpoint', () => {
       .field('place_id', post_one.place_id)
       .field('caption', post_one.caption)
       .field('tags', post_one.tags[0])
-      .field('tags', post_one.tags[1])
-      .field('tags', post_one.tags[2])
       .attach('images', '../server/assets/BebekBkb.jpg')
       .set('access_token', access_token)
       .expect(201)
