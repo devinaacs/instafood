@@ -471,6 +471,22 @@ _Response 200 - OK_
       "sweet",
       "food"
     ],
+    "likes": [
+      {
+        "id": "621485140ad1b09b81950531",
+        "user": "6213bff8b61a4543bc42a83c"
+      }
+    ],
+    "comments": [
+      {
+        "user": {
+          "id": "6213bff8b61a4543bc42a83c",
+          "username": "user.one"
+        },
+        "comment": "new comment",
+        "id": "6213bffa52e1b393f83f86dd"
+      }
+    ],
     "created_at": "2022-02-21T16:38:17.975Z"
   }
 ]
