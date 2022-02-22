@@ -1,4 +1,4 @@
-import { USER_LOGIN, USER_LOGOUT } from "../actionTypes";
+import { USER_LOGIN, USER_LOGOUT, USER_TOKEN_USERID } from "../actionTypes";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const initialState = {
@@ -40,6 +40,29 @@ function user(state = initialState, action) {
       ...state,
       access_token: null,
       userId: null,
+    }
+  } else if (action.type === USER_TOKEN_USERID) {
+    let access_token_reducer = '';
+    let userId_reducer = '';
+
+    const getData = async () => {
+      try {
+        const access_token_storage = await AsyncStorage.getItem('access_token');
+        const userId_storage = await AsyncStorage.getItem('userId');
+
+        access_token_reducer = access_token_storage;
+        userId_reducer = userId_storage;
+      } catch (e) {
+        console.log(e)
+      }
+    }
+
+    getData();
+
+    return {
+      ...state,
+      access_token: access_token_reducer,
+      userId_reducer: userId_reducer,
     }
   }
 
