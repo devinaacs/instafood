@@ -183,11 +183,12 @@ describe('test /posts endpoint', () => {
 
   // done
   test('successfully GET ALL posts (with query user_id)', done => {
-    page_query.user_id = post_one.user;
+    const user_id = post_one.user;
+
     request(app)
       .get('/posts')
       .send(post_one)
-      .query(page_query)
+      .query({ user_id: user_id })
       .set('Accept', 'application/json')
       .expect(200)
       .end((err, res) => {
