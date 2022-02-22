@@ -36,7 +36,7 @@ export default function TrendingPlacesCard({ places }) {
     <Box>
       <TouchableOpacity style={styles.cardContainer}
         onPress={() => {
-          navigation.push('PlaceDetail' , {placeDetails});
+          navigation.push('PlaceDetail' , { placeId: places.place_id });
         }}>
         {
           placeDetails ? (

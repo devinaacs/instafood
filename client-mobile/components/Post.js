@@ -11,7 +11,6 @@ const windowWidth = Dimensions.get('window').width;
 
 const Post = ({ post }) => {
   const [postDetails, setPostDetails] = useState([]);
-  const [placeDetails, setPlaceDetails] = useState('');
   const [likeStatus, setLikeStatus] = useState(false);
   const [likes, setLikes] = useState('');
   const [userIdLocal, setUserId] = useState(null);
@@ -20,23 +19,6 @@ const Post = ({ post }) => {
   const [disableLike, setDisableLike] = useState(false);
   const { access_token } = useSelector((state) => state.user);
   const navigation = useNavigation();
-
-  useEffect(() => {
-    fetch(`https://hacktiv8-instafood.herokuapp.com/places/${post.place_id}`)
-      .then(response => {
-        if (response.ok) {
-          return response.json();
-        } else {
-          return Promise.reject('something went wrong!');
-        }
-      })
-      .then(response => {
-        setPlaceDetails(response);
-      })
-      .catch(error => {
-        console.log('error', error);
-      });
-  }, []);
 
   useEffect(() => {
     fetch(`https://hacktiv8-instafood.herokuapp.com/posts/${post.id}`)
@@ -201,7 +183,7 @@ const Post = ({ post }) => {
             <Box flexDirection={'row'}>
               <TouchableOpacity
                 onPress={() => {
-                  navigation.push('PlaceDetail', { placeDetails });
+                  navigation.push('PlaceDetail', { placeId: post.place_id });
                 }}
                 style={{ flexDirection: 'row', width: '80%' }}>
                 <Ionicons
@@ -337,7 +319,7 @@ const Post = ({ post }) => {
               <Flex direction='row' >
                 <Text fontSize={'md'}>{post.caption}{post.tags.map((tag, index) => {
                   return (
-                    <Text key={index} fontSize={'lg'} style={{ color: '#ef4444', fontWeight: 'bold', }}> #{tag}</Text>
+                    <Text onPress={() => navigation.navigate('SearchScreen', { tag })} key={index} fontSize={'lg'} style={{ color: '#ef4444', fontWeight: 'bold', }}> #{tag}</Text>
                   );
                 })}</Text>
               </Flex>

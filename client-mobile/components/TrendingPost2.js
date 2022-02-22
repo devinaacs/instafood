@@ -17,7 +17,6 @@ const windowWidth = Dimensions.get('window').width;
 
 const TrendingPost2 = ({ post }) => {
   const [postDetails, setPostDetails] = useState([]);
-  const [placeDetails, setPlaceDetails] = useState('');
   const navigation = useNavigation();
   const [likeStatus, setLikeStatus] = useState(false);
   const [likes, setLikes] = useState('');
@@ -27,22 +26,6 @@ const TrendingPost2 = ({ post }) => {
   const [disableLike, setDisableLike] = useState(false);
   const { access_token } = useSelector((state) => state.user);
 
-  useEffect(() => {
-    fetch(`https://hacktiv8-instafood.herokuapp.com/places/${post.place_id}`)
-      .then(response => {
-        if (response.ok) {
-          return response.json();
-        } else {
-          return Promise.reject('something went wrong!');
-        }
-      })
-      .then(response => {
-        setPlaceDetails(response);
-      })
-      .catch(error => {
-        console.log('error', error);
-      });
-  }, []);
 
   useEffect(() => {
     fetch(`https://hacktiv8-instafood.herokuapp.com/posts/${post.id}`)
@@ -205,7 +188,7 @@ const TrendingPost2 = ({ post }) => {
               <Box flexDirection={'row'}>
                 <TouchableOpacity
                   onPress={() => {
-                    navigation.push('PlaceDetail', { placeDetails });
+                    navigation.push('PlaceDetail', { placeId:post.place_id });
                   }}
                   style={{ flexDirection: 'row', width: '80%' }}>
                   <Ionicons
@@ -373,7 +356,7 @@ const TrendingPost2 = ({ post }) => {
                   if (post.user.id === userIdLocal) {
                     navigation.navigate('Profile');
                   } else {
-                    navigation.navigate('OtherUserProfile');
+                    navigation.navigate('OtherUserProfile', {post});
                   }
                 }}>
                 <Image
@@ -397,7 +380,7 @@ const TrendingPost2 = ({ post }) => {
               <Flex direction="row">
                 <Text fontSize={'md'}>{post.caption}{post.tags.map((tag, index) => {
                   return (
-                    <Text key={index} fontSize={'lg'} style={{ color: '#ef4444', fontWeight: 'bold' }}> #{tag}</Text>
+                    <Text onPress={() => navigation.navigate('SearchScreen', { tag })} key={index} fontSize={'lg'} style={{ color: '#ef4444', fontWeight: 'bold' }}> #{tag}</Text>
                   );
                 })}</Text>
               </Flex>

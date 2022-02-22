@@ -123,7 +123,7 @@ export default function PostDetail() {
                   <Box flexDirection={'row'} py={5} px={3} width={'70%'}>
                     <TouchableOpacity
                       onPress={() => {
-                        navigation.push('PlaceDetail', { placeDetails });
+                        navigation.push('PlaceDetail', { placeId: item.place_id });
                       }}
                       style={{ flexDirection: 'row' }}>
                       <Ionicons
@@ -279,7 +279,7 @@ export default function PostDetail() {
                     <View style={{ flexDirection: 'row' }}>
                       <Text fontSize={'lg'}>{item.caption}{item.tags.map((tag, index) => {
                         return (
-                          <Text key={index} fontSize={'lg'} style={{ color: '#ef4444', fontWeight: 'bold' }}> #{tag}</Text>
+                          <Text onPress={() => navigation.navigate('SearchScreen', { tag })} key={index} fontSize={'lg'} style={{ color: '#ef4444', fontWeight: 'bold' }}> #{tag}</Text>
                         );
                       })}</Text>
 
