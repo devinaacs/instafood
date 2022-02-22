@@ -2,6 +2,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { NativeBaseProvider } from 'native-base';
 import { NavigationContainer } from '@react-navigation/native';
 import MainStackNavigation from './navigation/MainStackNavigation';
+import { MenuProvider } from 'react-native-popup-menu';
 import { LinearGradient } from 'expo-linear-gradient';
 import DrawerNavigator from './navigation/DrawerNavigator';
 import { Provider } from 'react-redux';
@@ -18,10 +19,12 @@ export default function App() {
     <NativeBaseProvider config={config}>
       <SafeAreaProvider>
         <Provider store={store}>
-          <NavigationContainer>
-            {/* <MainStackNavigation /> */}
-            <DrawerNavigator />
-          </NavigationContainer>
+          <MenuProvider>
+            <NavigationContainer>
+              {/* <MainStackNavigation /> */}
+              <DrawerNavigator />
+            </NavigationContainer>
+          </MenuProvider>
         </Provider>
       </SafeAreaProvider>
     </NativeBaseProvider>
