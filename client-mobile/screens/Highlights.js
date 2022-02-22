@@ -15,11 +15,13 @@ import TrendingPlacesCard from '../components/TrendingPlacesCard';
 import TrendingTags from '../components/TrendingTags';
 import PostButton from '../components/PostButton';
 import TrendingPost2 from '../components/TrendingPost2';
+import { useSelector } from 'react-redux';
 
 export default function Highlights() {
   const [trendPlaces, setTrendingPlaces] = useState([]);
   const [trendingTags, setTrendingTags] = useState([]);
   const [trendingPosts, setTrendingPosts] = useState([]);
+  const { access_token } = useSelector((state) => state.user);
   const navigation = useNavigation();
 
   useEffect(() => {
@@ -37,7 +39,7 @@ export default function Highlights() {
       .catch(error => {
         console.log('error', error);
       });
-  }, []);
+  }, [access_token]);
 
   useEffect(() => {
     fetch('https://hacktiv8-instafood.herokuapp.com/trending/tags')
@@ -54,7 +56,7 @@ export default function Highlights() {
       .catch(error => {
         console.log('error', error);
       });
-  }, []);
+  }, [access_token]);
 
   useEffect(() => {
     fetch('https://hacktiv8-instafood.herokuapp.com/trending/posts')
@@ -71,7 +73,7 @@ export default function Highlights() {
       .catch(error => {
         console.log('error', error);
       });
-  }, []);
+  }, [access_token]);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -153,7 +155,7 @@ export default function Highlights() {
               trendingPosts.map((post, index) => (
                 <TrendingPost2 post={post} key={index} />
               )) :
-              <View style={{justifyContent: 'center', alignItems: 'center', alignContent: 'center', height: 360}}>
+              <View style={{ justifyContent: 'center', alignItems: 'center', alignContent: 'center', height: 360 }}>
                 <Image
                   style={{
                     height: 60,
