@@ -4,12 +4,9 @@ import Highlights from '../screens/Highlights';
 import Discover from '../screens/Discover';
 import Profile from '../screens/Profile';
 import Login from '../screens/LoginPage';
-import CommentSection from '../screens/CommentSection';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import PostDetail from '../screens/PostDetail';
-import OtherUserProfile from '../screens/OtherUserProfile';
 
 const Tab = createBottomTabNavigator();
 

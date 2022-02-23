@@ -36,6 +36,7 @@ export default function Discover() {
 
   useFocusEffect(
     React.useCallback(() => {
+      setPosts([]);
       setLoading(true);
       fetch('https://hacktiv8-instafood.herokuapp.com/posts')
         .then(response => {

@@ -1,29 +1,24 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
   StyleSheet,
   View,
   ScrollView,
   Text,
-  TouchableOpacity,
-  FlatList,
   Image,
   RefreshControl
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect } from '@react-navigation/native';
 import Navbar from '../components/Navbar';
 import TrendingPlacesCard from '../components/TrendingPlacesCard';
 import TrendingTags from '../components/TrendingTags';
 import PostButton from '../components/PostButton';
 import TrendingPost2 from '../components/TrendingPost2';
-import { useSelector } from 'react-redux';
 
 export default function Highlights() {
   const [trendPlaces, setTrendingPlaces] = useState([]);
   const [trendingTags, setTrendingTags] = useState([]);
   const [trendingPosts, setTrendingPosts] = useState([]);
-  const { access_token } = useSelector((state) => state.user);
-  const navigation = useNavigation();
   const [refreshTrigger, setRefreshTrigger] = useState(0);
 
   const [refreshing, setRefreshing] = useState(false);
@@ -34,12 +29,6 @@ export default function Highlights() {
     setTrendingPosts([])
     setRefreshing(true);
     setRefreshTrigger(refreshTrigger + 1);
-    if (trendPlaces.length > 0 && trendingPosts.length > 0 && trendingTags.length > 0) {
-      setRefreshing(false);
-    }
-  })
-
-  useEffect(() => {
     fetch('https://hacktiv8-instafood.herokuapp.com/trending/places')
       .then(response => {
         if (response.ok) {
@@ -54,9 +43,6 @@ export default function Highlights() {
       .catch(error => {
         console.log('error', error);
       });
-  }, [access_token, refreshTrigger]);
-
-  useEffect(() => {
     fetch('https://hacktiv8-instafood.herokuapp.com/trending/tags')
       .then(response => {
         if (response.ok) {
@@ -71,9 +57,6 @@ export default function Highlights() {
       .catch(error => {
         console.log('error', error);
       });
-  }, [access_token, refreshTrigger]);
-
-  useEffect(() => {
     fetch('https://hacktiv8-instafood.herokuapp.com/trending/posts')
       .then(response => {
         if (response.ok) {
@@ -88,7 +71,59 @@ export default function Highlights() {
       .catch(error => {
         console.log('error', error);
       });
-  }, [access_token, refreshTrigger]);
+    if (trendPlaces.length > 0 && trendingPosts.length > 0 && trendingTags.length > 0) {
+      setRefreshing(false);
+    }
+  })
+
+  useFocusEffect(
+    React.useCallback(() => {
+      onRefresh()
+      fetch('https://hacktiv8-instafood.herokuapp.com/trending/places')
+        .then(response => {
+          if (response.ok) {
+            return response.json();
+          } else {
+            return Promise.reject('something went wrong!');
+          }
+        })
+        .then(response => {
+          setTrendingPlaces(response);
+        })
+        .catch(error => {
+          console.log('error', error);
+        });
+      fetch('https://hacktiv8-instafood.herokuapp.com/trending/tags')
+        .then(response => {
+          if (response.ok) {
+            return response.json();
+          } else {
+            return Promise.reject('something went wrong!');
+          }
+        })
+        .then(response => {
+          setTrendingTags(response);
+        })
+        .catch(error => {
+          console.log('error', error);
+        });
+      fetch('https://hacktiv8-instafood.herokuapp.com/trending/posts')
+        .then(response => {
+          if (response.ok) {
+            return response.json();
+          } else {
+            return Promise.reject('something went wrong!');
+          }
+        })
+        .then(response => {
+          setTrendingPosts(response);
+        })
+        .catch(error => {
+          console.log('error', error);
+        });
+      setRefreshing(false);
+    }, [])
+  )
 
   return (
     <SafeAreaView style={styles.container}>

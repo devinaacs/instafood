@@ -4,7 +4,6 @@ import { Ionicons } from '@expo/vector-icons';
 import { Dimensions } from 'react-native';
 import Post from '../components/Post';
 import { useFocusEffect, useRoute } from '@react-navigation/native';
-import { useSelector } from 'react-redux';
 
 const windowWidth = Dimensions.get('window').width;
 
@@ -19,9 +18,8 @@ export default function SearchScreen({ navigation }) {
   const [inputSearch, setInputSearch] = useState('');
   const [foundPlaces, setFoundPlaces] = useState([]);
   const [foundSearch, setFoundSearch] = useState(true);
-  const { access_token } = useSelector((state) => state.user);
-  const { timeoutState, setTimeoutState } = useState(null);
   const [useEffectTrigger, setUseEffectTrigger] = useState('');
+  const [userTrigger, setUserTrigger] = useState(false);
 
   const [usersLoading, setUsersLoading] = useState(false);
   const [tagsLoading, setTagsLoading] = useState(false);
@@ -33,6 +31,7 @@ export default function SearchScreen({ navigation }) {
     if (route.params) {
       handleFilter('posts by tags')
       setInputSearch(route.params.tag)
+      setUserTrigger(false)
     }
 
     handleSearch(inputSearch)
@@ -41,7 +40,6 @@ export default function SearchScreen({ navigation }) {
 
   useFocusEffect(
     React.useCallback(() => {
-      setUsersLoading(true);
       fetch('https://hacktiv8-instafood.herokuapp.com/users')
         .then(response => {
           if (response.ok) {
@@ -53,6 +51,7 @@ export default function SearchScreen({ navigation }) {
         .then(result => {
           setUsersLoading(false)
           setUsers(result)
+          setUserTrigger(true)
         })
         .catch(err => console.log(err))
     }, [])
@@ -281,7 +280,7 @@ export default function SearchScreen({ navigation }) {
       }
 
       {
-        users.length > 0 ? (
+        users.length > 0 && posts.length === 0 && userTrigger ? (
           <FlatList
             data={users}
             renderItem={({ item }) => (
