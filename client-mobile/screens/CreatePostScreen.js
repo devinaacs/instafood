@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import * as ImagePicker from 'expo-image-picker';
 import { Dimensions } from 'react-native';
-import { Box, Center, Flex, Image, Input, Pressable, ScrollView, StatusBar, Text, TextArea } from 'native-base';
+import { Box, Center, Flex, Image, Input, Pressable, ScrollView, StatusBar, Text, TextArea, Modal } from 'native-base';
 import { Feather } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 import { useSelector } from 'react-redux';
@@ -58,6 +58,7 @@ export default function CreatePostScreen({ navigation }) {
   };
   const handleUploadPhoto = async () => {
     const SERVER_POSTS_URL = 'https://hacktiv8-instafood.herokuapp.com/posts';
+    // setPostLoading(true);
     try {
       if (!image) return;
       if (!pickedPlace) return;
@@ -294,10 +295,21 @@ export default function CreatePostScreen({ navigation }) {
       </Flex>
       {
         postLoading ? (
-          <Flex alignItems={'center'} width={'full'} height={'20'} mb={'4'}>
-            <Image resizeMode={'contain'} height={'20'} source={require('../assets/loading.gif')} alt={'alternate'} />
-            <Text fontSize={'md'}>Posting..</Text>
+          <Flex>
+            <Modal isOpen={postLoading} pb={100}>
+              <Modal.Content maxWidth="400px">
+                <Modal.Body>
+                  <Center py={10}>
+                    <Flex alignItems={'center'} width={'full'} height={'20'} mb={'4'}>
+                      <Image mb={2} resizeMode={'contain'} height={'20'} source={require('../assets/loading.gif')} alt={'alternate'} />
+                      <Text fontSize={'lg'}>Posting..</Text>
+                    </Flex>
+                  </Center>
+                </Modal.Body>
+              </Modal.Content>
+            </Modal>
           </Flex>
+
         ) : null
       }
       <ScrollView>
