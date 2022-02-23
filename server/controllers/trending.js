@@ -17,7 +17,7 @@ module.exports = {
         populate: [
           {
             path: 'user',
-            select: { username: 1 }
+            select: { username: 1, image_url: 1 }
           },
           {
             path: 'like_ids',
@@ -28,7 +28,7 @@ module.exports = {
             select: { comment: 1 },
             populate: {
               path: 'user',
-              select: { username: 1 },
+              select: { username: 1, image_url: 1 },
             }
           }
         ]

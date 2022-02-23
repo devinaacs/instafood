@@ -82,7 +82,7 @@ class Controller {
       let posts = await Post.find(filter, { __v: 0 })
         .populate({
           path: 'user',
-          select: { username: 1 },
+          select: { username: 1, image_url: 1 },
         })
         .populate({
           path: 'like_ids',
@@ -97,7 +97,7 @@ class Controller {
           select: { comment: 1 },
           populate: {
             path: 'user',
-            select: { username: 1 },
+            select: { username: 1, image_url: 1 },
           },
         })
         .skip((pageNumber - 1) * pageSize)
@@ -131,6 +131,7 @@ class Controller {
             : {
               id: comment.user._id,
               username: comment.user.username,
+              image_url: comment.image_url
             },
         }));
 
@@ -140,8 +141,6 @@ class Controller {
 
         return post;
       });
-
-      console.log(posts);
 
       const promises = [];
       posts.forEach(post => {
@@ -181,7 +180,7 @@ class Controller {
       let post = await Post.findOne({ _id: req.params.id }, { __v: 0 })
         .populate({
           path: 'user',
-          select: { username: 1 },
+          select: { username: 1, image_url: 1 },
         })
         .populate({
           path: 'like_ids',
@@ -196,7 +195,7 @@ class Controller {
           select: { comment: 1 },
           populate: {
             path: 'user',
-            select: { username: 1 },
+            select: { username: 1, image_url: 1 },
           },
         });
 
@@ -220,6 +219,7 @@ class Controller {
         user: {
           id: comment.user._id,
           username: comment.user.username,
+          image_url: comment.user.image_url
         },
       }));
 
