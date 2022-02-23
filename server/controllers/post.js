@@ -141,6 +141,8 @@ class Controller {
         return post;
       });
 
+      console.log(posts);
+
       const promises = [];
       posts.forEach(post => {
         const p = actPlace.getPlaceDetail(post.place_id)
@@ -158,7 +160,12 @@ class Controller {
 
         promises.push(p);
       });
-      await Promise.all(promises);
+      await Promise.all(promises)
+        .catch(err => {
+          console.log(err);
+
+          return Promise.resolve();
+        });
 
       res.status(200).json({
         pages_count: Math.ceil(postsCount / pageSize),
@@ -252,8 +259,8 @@ class Controller {
       if (!post) throw { name: 'NOT_FOUND' };
 
       await Post.deleteOne({ _id: id });
-      await Like.deleteMany({ PostId: { $eq: post._id } });
-      await Comment.deleteMany({ PostId: { $eq: post._id } });
+      await Like.deleteMany({ post: { $eq: post._id } });
+      await Comment.deleteMany({ post: { $eq: post._id } });
 
       res.status(200).json({
         message: 'post has been deleted successfully',
