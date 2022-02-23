@@ -5,8 +5,9 @@ import {
   ScrollView,
   Text,
   TouchableOpacity,
-  Image,
+  Dimensions
 } from 'react-native';
+import { Box, Image } from 'native-base';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import Navbar from '../components/Navbar';
@@ -14,13 +15,13 @@ import UserPost from '../components/UserPost';
 import PostButton from '../components/PostButton';
 import { useNavigation, useRoute, } from '@react-navigation/native';
 
-
 export default function OtherUserProfile() {
   const [userProfile, setUserProfile] = useState(null);
   const [userPosts, setUserPosts] = useState([]);
   const navigation = useNavigation();
   const route = useRoute();
   const { post } = route.params;
+  const windowWidth = Dimensions.get('window').width;
 
   useEffect(() => {
     fetch(`https://hacktiv8-instafood.herokuapp.com/users/${post.user.id}`)
@@ -61,6 +62,7 @@ export default function OtherUserProfile() {
             </View>
             <View style={{ alignItems: 'center', marginVertical: 10 }}>
               <Image
+                alt='profilepic'
                 style={styles.profilePic}
                 source={{
                   uri: userProfile.image_url || 'https://cdn.pixabay.com/photo/2015/03/04/22/35/head-659651__340.png',
@@ -83,7 +85,7 @@ export default function OtherUserProfile() {
                     </View>
                 }
               </View>
-       
+
             </View>
           </View>
           <View style={styles.postsTextContainer}>
@@ -93,7 +95,13 @@ export default function OtherUserProfile() {
           </View>
           <ScrollView horizontal={true} style={{ marginBottom: 80 }}>
             {/* <UserPost /> */}
-            <UserPost post={userPosts} />
+            {
+              userPosts.length > 0 ? <UserPost post={userPosts} /> :
+                <Box justifyContent={'center'} width={windowWidth} mt={12}>
+                  <Image alignSelf={'center'} mb={3} resizeMode={'contain'} width={'150'} height={'150'} source={require('../assets/camera.png')} alt={'alternate'} />
+                  <Text style={{fontSize:24, fontWeight: 'bold', alignSelf:'center', color:'#373737'}}>No post yet</Text>
+                </Box>
+            }
           </ScrollView>
         </ScrollView>
       </View>
