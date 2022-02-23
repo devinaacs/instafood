@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Flex, Image, Text } from 'native-base';
-import { AntDesign, FontAwesome, Ionicons } from '@expo/vector-icons';
+import { AntDesign, Entypo, Ionicons } from '@expo/vector-icons';
 import {
   StyleSheet,
   View,
@@ -12,6 +12,12 @@ import { SwiperFlatList } from 'react-native-swiper-flatlist';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useSelector } from 'react-redux';
+import {
+  Menu,
+  MenuOptions,
+  MenuOption,
+  MenuTrigger,
+} from 'react-native-popup-menu';
 
 const windowWidth = Dimensions.get('window').width;
 
@@ -188,7 +194,7 @@ const TrendingPost2 = ({ post }) => {
               <Box flexDirection={'row'}>
                 <TouchableOpacity
                   onPress={() => {
-                    navigation.push('PlaceDetail', { placeId:post.place_id });
+                    navigation.push('PlaceDetail', { placeId: post.place_id });
                   }}
                   style={{ flexDirection: 'row', width: '80%' }}>
                   <Ionicons
@@ -349,42 +355,57 @@ const TrendingPost2 = ({ post }) => {
           {/* <Box px={'3'}>
             <Text fontSize={'md'} fontWeight={'bold'}>{likesFormat(post.likes)} likes</Text>
           </Box> */}
-          <Flex direction="row" px={'3'} mb={'3'} width={'90%'}>
-            <Box size={'16'} borderRadius={'full'} borderColor={'gray.200'}>
-              <TouchableOpacity
-                onPress={() => {
-                  if (post.user.id === userIdLocal) {
-                    navigation.navigate('Profile');
-                  } else {
-                    navigation.navigate('OtherUserProfile', {post});
-                  }
-                }}>
-                <Image
-                  width={'full'}
-                  height={'full'}
-                  resizeMode={'cover'}
-                  borderRadius={'full'}
-                  source={{
-                    uri:
-                      post.user.profilePicture ||
-                      'https://cdn.pixabay.com/photo/2015/03/04/22/35/head-659651__340.png',
-                  }}
-                  alt={'alternate picture'}
-                />
-              </TouchableOpacity>
-            </Box>
-            <Box ml={'3'} pt={1}>
-              <Text fontSize={'md'} fontWeight={'bold'}>
-                {post.user.username}
-              </Text>
-              <Flex direction="row">
-                <Text fontSize={'md'}>{post.caption}{post.tags.map((tag, index) => {
-                  return (
-                    <Text onPress={() => navigation.navigate('SearchScreen', { tag })} key={index} fontSize={'lg'} style={{ color: '#ef4444', fontWeight: 'bold' }}> #{tag}</Text>
-                  );
-                })}</Text>
-              </Flex>
-            </Box>
+          <Flex direction="row" justifyContent={'space-between'}>
+            <Flex direction="row" px={'3'} mb={'3'} width={'86%'}>
+              <Box size={'16'} borderRadius={'full'} borderColor={'gray.200'}>
+                <TouchableOpacity
+                  onPress={() => {
+                    if (post.user.id === userIdLocal) {
+                      navigation.navigate('Profile');
+                    } else {
+                      navigation.navigate('OtherUserProfile', { post });
+                    }
+                  }}>
+                  <Image
+                    width={'full'}
+                    height={'full'}
+                    resizeMode={'cover'}
+                    borderRadius={'full'}
+                    source={{
+                      uri:
+                        post.user.profilePicture ||
+                        'https://cdn.pixabay.com/photo/2015/03/04/22/35/head-659651__340.png',
+                    }}
+                    alt={'alternate picture'}
+                  />
+                </TouchableOpacity>
+              </Box>
+              <Box ml={'3'} pt={1}>
+                <Text fontSize={'md'} fontWeight={'bold'}>
+                  {post.user.username}
+                </Text>
+                <Flex direction="row">
+                  <Text fontSize={'md'}>{post.caption}{post.tags.map((tag, index) => {
+                    return (
+                      <Text onPress={() => navigation.navigate('SearchScreen', { tag })} key={index} fontSize={'lg'} style={{ color: '#ef4444', fontWeight: 'bold' }}> #{tag}</Text>
+                    );
+                  })}</Text>
+
+                </Flex>
+              </Box>
+            </Flex>
+            <TouchableOpacity style={{ justifyContent: 'center', paddingBottom: 10, paddingEnd: 7 }}>
+              <Menu>
+                <MenuTrigger>
+                  <Entypo name='dots-three-vertical' size={30} color='gray' />
+                </MenuTrigger>
+                <MenuOptions optionsContainerStyle={{ marginTop: 20, marginLeft: -10 }} >
+                  <MenuOption onSelect={() => navigation.navigate('PostDetail', {item : postDetails})}>
+                    <Text style={{ color: 'black', padding: 10 }}>See details</Text>
+                  </MenuOption>
+                </MenuOptions>
+              </Menu>
+            </TouchableOpacity>
           </Flex>
           <Box px={'6'} mb={'5'}>
             <TouchableOpacity
