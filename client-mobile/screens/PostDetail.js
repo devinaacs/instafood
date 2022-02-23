@@ -123,7 +123,7 @@ export default function PostDetail() {
   } else {
     deleteButton = <Flex></Flex>;
   }
-
+  
   return (
     <SafeAreaView style={styles.container}>
       <View>
@@ -304,7 +304,7 @@ export default function PostDetail() {
                     resizeMode={'cover'}
                     borderRadius={'full'}
                     source={{
-                      uri: 'https://cdn.pixabay.com/photo/2015/03/04/22/35/head-659651__340.png',
+                      uri: item.user.image_url||'https://cdn.pixabay.com/photo/2015/03/04/22/35/head-659651__340.png',
                     }}
                     alt={'alternate picture'}
                   />
@@ -338,7 +338,7 @@ export default function PostDetail() {
                         resizeMode={'cover'}
                         borderRadius={'full'}
                         source={{
-                          uri: comment.user.profilePicture || 'https://cdn.pixabay.com/photo/2015/03/04/22/35/head-659651__340.png',
+                          uri: comment.user.image_url || 'https://cdn.pixabay.com/photo/2015/03/04/22/35/head-659651__340.png',
                         }}
                         alt={'alternate picture'}
                       />

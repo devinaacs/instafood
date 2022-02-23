@@ -63,7 +63,7 @@ export default function OtherUserProfile() {
               <Image
                 style={styles.profilePic}
                 source={{
-                  uri: 'https://cdn.pixabay.com/photo/2015/03/04/22/35/head-659651__340.png',
+                  uri: userProfile.image_url || 'https://cdn.pixabay.com/photo/2015/03/04/22/35/head-659651__340.png',
                 }}
               />
               <Text style={styles.profileName}>{userProfile.username}</Text>

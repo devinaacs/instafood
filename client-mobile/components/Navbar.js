@@ -49,10 +49,7 @@ export default function Navbar() {
                 color="#929292"
                 style={{ paddingVertical: 12, paddingRight: 13 }}
               /></MenuTrigger>
-            <MenuOptions optionsContainerStyle={{ marginTop: 45, marginLeft: -21 }} >
-              <MenuOption onSelect={() => navigation.navigate('Highlights')}>
-              <Text style={{ color: 'black' , padding: 10}}>Highlights</Text>
-              </MenuOption>
+            <MenuOptions optionsContainerStyle={{ marginTop: 34, marginLeft: -40 }} >
               <MenuOption onSelect={() => navigation.navigate('Discover')} >
                 <Text style={{ color: 'black', padding: 10 }}>Discover</Text>
               </MenuOption>

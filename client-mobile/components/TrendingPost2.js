@@ -373,7 +373,7 @@ const TrendingPost2 = ({ post }) => {
                     borderRadius={'full'}
                     source={{
                       uri:
-                        post.user.profilePicture ||
+                        post.user.image_url ||
                         'https://cdn.pixabay.com/photo/2015/03/04/22/35/head-659651__340.png',
                     }}
                     alt={'alternate picture'}
@@ -385,7 +385,7 @@ const TrendingPost2 = ({ post }) => {
                   {post.user.username}
                 </Text>
                 <Flex direction="row">
-                  <Text fontSize={'md'} lineHeight={26}>{post.caption}{post.tags.map((tag, index) => {
+                  <Text numberOfLines={2} fontSize={'md'} lineHeight={26}>{post.caption}{post.tags.map((tag, index) => {
                     return (
                       <Text onPress={() => navigation.navigate('SearchScreen', { tag })} key={index} fontSize={'lg'} style={{ color: '#ef4444', fontWeight: 'bold' }}> #{tag}</Text>
                     );
@@ -394,7 +394,7 @@ const TrendingPost2 = ({ post }) => {
                 </Flex>
               </Box>
             </Flex>
-            <TouchableOpacity style={{ justifyContent: 'center', paddingBottom: 10, paddingEnd: 7 }}>
+            <TouchableOpacity style={{ justifyContent: 'center', paddingBottom: 10, paddingEnd: 7, position: 'absolute', right: 0, top: 10}}>
               <Menu>
                 <MenuTrigger>
                   <Entypo name='dots-three-vertical' size={30} color='gray' />

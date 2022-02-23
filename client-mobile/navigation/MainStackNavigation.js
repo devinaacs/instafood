@@ -9,6 +9,7 @@ import PlaceDetail from '../screens/PlaceDetail';
 import CommentSection from '../screens/CommentSection';
 import PostDetail from '../screens/PostDetail';
 import Highlights from '../screens/Highlights';
+import Login from '../screens/LoginPage';
 import OtherUserProfile from '../screens/OtherUserProfile';
 
 const Stack = createNativeStackNavigator();
@@ -61,6 +62,11 @@ export default function MainStackNavigation() {
         component={OtherUserProfile}
         options={{ headerShown: false }}
       />
+      {/* <Stack.Screen
+        name="Login"
+        component={Login}
+        options={{ headerShown: false }}
+      /> */}
     </Stack.Navigator>
   );
 }
