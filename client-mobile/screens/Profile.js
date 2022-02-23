@@ -176,7 +176,7 @@ export default function Profile() {
               userPosts.items.length > 0 ? <UserPost post={userPosts} /> :
                 <Box justifyContent={'center'} width={windowWidth} mt={12}>
                   <Image alignSelf={'center'} mb={3} resizeMode={'contain'} width={'150'} height={'150'} source={require('../assets/camera.png')} alt={'alternate'} />
-                  <Text style={{ fontSize: 24, fontWeight: 'bold', alignSelf: 'center', color: '#373737' }}>No post yet</Text>
+                  <Text style={{ fontSize: 24, fontWeight: 'bold', alignSelf: 'center', color: '#A2A2A2' }}>No post yet</Text>
                 </Box>
             }
           </ScrollView>
