@@ -21,6 +21,7 @@ export default function CreatePostScreen({ navigation }) {
   const windowWidth = Dimensions.get('window').width;
   const { access_token } = useSelector((state) => state.user);
   const [token, setToken] = useState(null);
+  const [showModalNotFood, setShowModalNotFood] = useState(false);
 
   const checkAccessToken = async () => {
     try {
@@ -165,7 +166,7 @@ export default function CreatePostScreen({ navigation }) {
               });
           } else {
             setPostLoading(false);
-            throw 'not food'
+            setShowModalNotFood(true);
           }
         })
         .catch(err => console.log('error ' + err))
@@ -310,6 +311,11 @@ export default function CreatePostScreen({ navigation }) {
             </Modal>
           </Flex>
 
+        ) : null
+      }
+      {
+        showModalNotFood ? (
+          <Box onTouchEnd={() => setShowModalNotFood(false)}><Text>Our AI detect that some of your images are not related to food..</Text></Box>
         ) : null
       }
       <ScrollView>
