@@ -7,7 +7,7 @@ import {
   Dimensions,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Input, Icon, Stack, Text, Button } from 'native-base';
+import { Input, Icon, Stack, Text, Button, Box, Center } from 'native-base';
 import { MaterialIcons, Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch } from 'react-redux';
@@ -23,6 +23,8 @@ export default function Register() {
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [username, setUsername] = React.useState('');
+  const [errorRegister, setErrorRegister] = React.useState(null);
+  const [showModalError, setShowModalError] = React.useState(false);
 
   const handleClick = () => setShow(!show);
 
@@ -45,10 +47,39 @@ export default function Register() {
       .then(() => {
         navigation.goBack()
       })
+      .catch((err) => {
+        err
+          .text()
+          .then((error) => {
+            setErrorRegister(JSON.parse(error))
+            setShowModalError(true)
+          })
+      })
   }
 
   return (
     <SafeAreaView style={styles.container}>
+      {
+        errorRegister && showModalError ? (
+          <Center width={'full'} onTouchEnd={() => setShowModalError(false)}>
+            {
+              errorRegister.message.email ? (
+                <Text color={'red.700'}>{errorRegister.message.email}</Text>
+              ) : null
+            }
+            {
+              errorRegister.message.username ? (
+                <Text color={'red.700'}>{errorRegister.message.username}</Text>
+              ) : null
+            }
+            {
+              errorRegister.message.password ? (
+                <Text color={'red.700'}>{errorRegister.message.password}</Text>
+              ) : null
+            }
+          </Center>
+        ) : null
+      }
       <View style={{ position: 'absolute', top: 0 }}>
         <TouchableOpacity
           onPress={() => {

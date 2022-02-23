@@ -7,7 +7,7 @@ import {
   Dimensions,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Input, Icon, Stack, Text, Button } from 'native-base';
+import { Input, Icon, Stack, Text, Button, Center } from 'native-base';
 import { MaterialIcons, Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
@@ -20,6 +20,8 @@ export default function Login() {
   const [show, setShow] = React.useState(false);
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
+  const [errorLogin, setErrorLogin] = React.useState(null);
+  const [showModalError, setShowModalError] = React.useState(false);
 
   const dispatch = useDispatch();
 
@@ -35,20 +37,28 @@ export default function Login() {
 
   const handleLogin = () => {
     dispatch(userLogin({ email, password }))
-      .then(() => navigation.navigate('Highlights'))
+      .then(() => {
+        navigation.navigate('Highlights')
+      })
+      .catch((err) => {
+        err
+          .text()
+          .then((error) => {
+            setErrorLogin(JSON.parse(error))
+            setShowModalError(true)
+          })
+      })
   }
 
   return (
     <SafeAreaView style={styles.container}>
-      {/* <View style={{ position: 'absolute', top: 0 }}>
-        <TouchableOpacity
-          onPress={() => {
-            navigation.goBack();
-          }}
-          style={{ paddingVertical: 10, paddingHorizontal: 13 }}>
-          <Ionicons name="arrow-back" size={34} color="#929292" />
-        </TouchableOpacity>
-      </View> */}
+      {
+        errorLogin && showModalError ? (
+          <Center width={'full'} onTouchEnd={() => setShowModalError(false)}>
+            <Text color={'red.700'}>{errorLogin.message}</Text>
+          </Center>
+        ) : null
+      }
       <Image
         source={require('../assets/logo_black_small_textonly.png')}
         style={{
