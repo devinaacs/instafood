@@ -21,7 +21,7 @@ export default function TrendingPlacesCard({ places }) {
         if (response.ok) {
           return response.json();
         } else {
-          return Promise.reject('something went wrong!');
+          return Promise.reject('something went wrong!trendplace');
         }
       })
       .then(response => {
@@ -36,7 +36,7 @@ export default function TrendingPlacesCard({ places }) {
     <Box>
       <TouchableOpacity style={styles.cardContainer}
         onPress={() => {
-          navigation.push('PlaceDetail' , { placeId: places.place_id });
+          navigation.push('PlaceDetail', { placeId: places.place_id });
         }}>
         {
           placeDetails ? (

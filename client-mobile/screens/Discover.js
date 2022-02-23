@@ -22,7 +22,7 @@ export default function Discover() {
         if (response.ok) {
           return response.json();
         } else {
-          return Promise.reject('something went wrong!');
+          return Promise.reject('something went wrong!1');
         }
       })
       .then(response => {
@@ -43,7 +43,7 @@ export default function Discover() {
           if (response.ok) {
             return response.json();
           } else {
-            return Promise.reject('something went wrong!');
+            return Promise.reject('something went wrong!2');
           }
         })
         .then(response => {
@@ -64,7 +64,7 @@ export default function Discover() {
         if (response.ok) {
           return response.json();
         } else {
-          return Promise.reject('something went wrong!');
+          return Promise.reject('something went wrong!3');
         }
       })
       .then(response => {
