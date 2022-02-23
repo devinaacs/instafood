@@ -131,7 +131,7 @@ class Controller {
             : {
               id: comment.user._id,
               username: comment.user.username,
-              image_url: comment.image_url
+              image_url: comment.user.image_url
             },
         }));
 
