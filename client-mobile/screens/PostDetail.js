@@ -6,7 +6,7 @@ import { AntDesign, FontAwesome, Ionicons } from '@expo/vector-icons';
 import NavbarForPostDetail from '../components/NavbarForPostDetail';
 const windowWidth = Dimensions.get('window').width;
 import { SwiperFlatList } from 'react-native-swiper-flatlist';
-import { useRoute, useNavigation } from '@react-navigation/native';
+import { useRoute, useNavigation, useFocusEffect } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function PostDetail() {
@@ -49,22 +49,24 @@ export default function PostDetail() {
       .catch((err) => console.log(err))
   }, []);
 
-  useEffect(() => {
-    fetch(`https://hacktiv8-instafood.herokuapp.com/places/${item.place_id}`)
-      .then(response => {
-        if (response.ok) {
-          return response.json();
-        } else {
-          return Promise.reject('something went wrong!');
-        }
-      })
-      .then(response => {
-        setPlaceDetails(response);
-      })
-      .catch(error => {
-        console.log('error', error);
-      });
-  }, []);
+  useFocusEffect(
+    React.useCallback(() => {
+      fetch(`https://hacktiv8-instafood.herokuapp.com/places/${item.place_id}`)
+        .then(response => {
+          if (response.ok) {
+            return response.json();
+          } else {
+            return Promise.reject('something went wrong!');
+          }
+        })
+        .then(response => {
+          setPlaceDetails(response);
+        })
+        .catch(error => {
+          console.log('error', error);
+        });
+    }, [])
+  )
 
   const handleDeletePost = () => {
     fetch(`https://hacktiv8-instafood.herokuapp.com/posts/${item.id}`, {
@@ -123,7 +125,7 @@ export default function PostDetail() {
   } else {
     deleteButton = <Flex></Flex>;
   }
-  
+
   return (
     <SafeAreaView style={styles.container}>
       <View>
@@ -304,7 +306,7 @@ export default function PostDetail() {
                     resizeMode={'cover'}
                     borderRadius={'full'}
                     source={{
-                      uri: item.user.image_url||'https://cdn.pixabay.com/photo/2015/03/04/22/35/head-659651__340.png',
+                      uri: item.user.image_url || 'https://cdn.pixabay.com/photo/2015/03/04/22/35/head-659651__340.png',
                     }}
                     alt={'alternate picture'}
                   />

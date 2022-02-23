@@ -30,7 +30,7 @@ export default function BottomTabNavigation() {
       .catch(err => {
         console.log(err);
       });
-  }, [access_token, token]);
+  }, [access_token]);
 
   return (
     <Tab.Navigator
