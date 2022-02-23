@@ -35,16 +35,6 @@ export default function BottomTabNavigation() {
       });
   }, [access_token, token]);
 
-  useEffect(() => {
-    checkAccessToken()
-      .then(access_token => {
-        setToken(access_token);
-      })
-      .catch(err => {
-        console.log(err);
-      });
-  }, []);
-
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({

@@ -3,7 +3,7 @@ import { Box, Center, Flex, Input, Text, Pressable, FlatList, Image } from 'nati
 import { Ionicons } from '@expo/vector-icons';
 import { Dimensions } from 'react-native';
 import Post from '../components/Post';
-import { useRoute } from '@react-navigation/native';
+import { useFocusEffect, useRoute } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
 
 const windowWidth = Dimensions.get('window').width;
@@ -38,6 +38,25 @@ export default function SearchScreen({ navigation }) {
     handleSearch(inputSearch)
     setUseEffectTrigger(' ');
   }, [useEffectTrigger])
+
+  useFocusEffect(
+    React.useCallback(() => {
+      setUsersLoading(true);
+      fetch('https://hacktiv8-instafood.herokuapp.com/users')
+        .then(response => {
+          if (response.ok) {
+            return response.json();
+          } else {
+            return Promise.reject('something went wrong!');
+          }
+        })
+        .then(result => {
+          setUsersLoading(false)
+          setUsers(result)
+        })
+        .catch(err => console.log(err))
+    }, [])
+  )
 
   const handleSearchPlace = () => {
     const SERVER_PLACES_URL = `https://hacktiv8-instafood.herokuapp.com/places?name=${inputSearch}`;
@@ -76,10 +95,10 @@ export default function SearchScreen({ navigation }) {
           }
         })
         .then((result) => {
-          if (result.filter((el) => el.username.includes(searchBy)).length === 0) {
+          if (result.filter((el) => el.username.toLowerCase().includes(searchBy.toLowerCase())).length === 0) {
             setFoundSearch(false)
           }
-          setUsers(result.filter((el) => el.username.includes(searchBy)))
+          setUsers(result.filter((el) => el.username.toLowerCase().includes(searchBy.toLowerCase())))
           setUsersLoading(false)
         })
         .catch((err) => console.log(err))
@@ -104,7 +123,7 @@ export default function SearchScreen({ navigation }) {
             let flag = false;
 
             el.tags.forEach((elTag) => {
-              if (elTag.includes(searchBy)) {
+              if (elTag.toLowerCase().includes(searchBy.toLowerCase())) {
                 flag = true;
               }
             })
@@ -117,7 +136,7 @@ export default function SearchScreen({ navigation }) {
             let flag = false;
 
             el.tags.forEach((elTag) => {
-              if (elTag.includes(searchBy)) {
+              if (elTag.toLowerCase().includes(searchBy.toLowerCase())) {
                 flag = true;
               }
             })

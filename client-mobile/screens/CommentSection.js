@@ -34,7 +34,7 @@ export default function CommentSection() {
         return tokenStorage
       })
       .then((tokenFetch) => {
-        fetch(`https://hacktiv8-instafood.herokuapp.com/comments/${postDetails.id}`, {
+        fetch(`https://hacktiv8-instafood.herokuapp.com/posts/${postDetails.id}`, {
           method: 'GET',
           headers: {
             access_token: tokenFetch
@@ -47,7 +47,7 @@ export default function CommentSection() {
               return Promise.reject('something went wrong!');
             }
           })
-          .then((result) => setComments(result))
+          .then((result) => setComments(result.comments))
           .catch((err) => console.log(err))
       })
       .catch((err) => console.log(err));
@@ -126,7 +126,7 @@ export default function CommentSection() {
             </View>
           </View>
         )}
-        keyExtractor={(item) => item._id}
+        keyExtractor={(item) => item.id}
       />
       {/* </ScrollView> */}
       <Box justifyContent={'space-between'} my={3} flexDirection={'row'}>
