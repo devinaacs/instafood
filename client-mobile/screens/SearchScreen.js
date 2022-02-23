@@ -11,9 +11,9 @@ const windowWidth = Dimensions.get('window').width;
 export default function SearchScreen({ navigation }) {
   const textInputRef = React.useRef();
   const [search, setSearch] = useState('Search users');
-  const [usersColor, setUsersColor] = useState('gray.300');
-  const [tagsColor, setTagsColor] = useState('gray.100');
-  const [placesColor, setPlacesColor] = useState('gray.100');
+  const [usersColor, setUsersColor] = useState('red.500');
+  const [tagsColor, setTagsColor] = useState('gray.400');
+  const [placesColor, setPlacesColor] = useState('gray.400');
   const [posts, setPosts] = useState([]);
   const [users, setUsers] = useState([]);
   const [inputSearch, setInputSearch] = useState('');
@@ -162,25 +162,25 @@ export default function SearchScreen({ navigation }) {
       setPosts([]);
       setFoundPlaces([]);
       setInputSearch('');
-      setUsersColor('gray.300')
-      setTagsColor('gray.100')
-      setPlacesColor('gray.100')
+      setUsersColor('red.500')
+      setTagsColor('gray.400')
+      setPlacesColor('gray.400')
     }
     if (filter === 'posts by tags') {
       setUsers([]);
       setFoundPlaces([]);
       setInputSearch('');
-      setUsersColor('gray.100')
-      setTagsColor('gray.300')
-      setPlacesColor('gray.100')
+      setUsersColor('gray.400')
+      setTagsColor('red.500')
+      setPlacesColor('gray.400')
     }
     if (filter === 'places') {
       setUsers([]);
       setPosts([]);
       setInputSearch('');
-      setUsersColor('gray.100')
-      setTagsColor('gray.100')
-      setPlacesColor('gray.300')
+      setUsersColor('gray.400')
+      setTagsColor('gray.400')
+      setPlacesColor('red.500')
     }
   };
 
@@ -204,21 +204,21 @@ export default function SearchScreen({ navigation }) {
         </Flex>
       </Flex>
 
-      <Flex direction='row' width={windowWidth} bg={'white'} justifyContent={'space-evenly'} height={'16'} alignItems={'center'} borderBottomWidth={1} borderBottomColor={'muted.200'} pb={2}>
-        <Pressable borderRadius={'xl'} bg={usersColor} width={'20'} height={'10'} onPress={() => handleFilter('users')}>
-          <Center width={'20'} height={'10'}>
-            <Text fontSize={'lg'} color={'white'} fontWeight={'bold'}>Users</Text>
-          </Center>
+      <Flex direction='row' width={windowWidth} bg={'white'} justifyContent={'space-evenly'} height={'16'} alignItems={'center'}  pb={2}>
+        <Pressable borderRadius={'xl'} borderBottomWidth={2} borderBottomColor={usersColor}  onPress={() => handleFilter('users')}>
+          <Box height={'10'} width={windowWidth / 2.73} alignContent={'center'}>
+            <Text fontSize={'lg'} alignSelf={'center'} color={usersColor} fontWeight={'bold'}>Users</Text>
+          </Box>
         </Pressable>
-        <Pressable borderRadius={'xl'} width={'20'} height={'10'} bg={tagsColor} onPress={() => handleFilter('posts by tags')}>
-          <Center width={'20'} height={'10'}>
-            <Text fontSize={'lg'} color={'white'} fontWeight={'bold'}>Tags</Text>
-          </Center>
+        <Pressable borderRadius={'xl'} borderBottomWidth={2} borderBottomColor={tagsColor} onPress={() => handleFilter('posts by tags')}>
+          <Box height={'10'} width={windowWidth / 2.7}>
+            <Text fontSize={'lg'} alignSelf={'center'} color={tagsColor} fontWeight={'bold'}>Tags</Text>
+          </Box>
         </Pressable>
-        <Pressable borderRadius={'xl'} width={'20'} height={'10'} bg={placesColor} onPress={() => handleFilter('places')}>
-          <Center width={'20'} height={'10'}>
-            <Text fontSize={'lg'} color={'white'} fontWeight={'bold'}>Places</Text>
-          </Center>
+        <Pressable borderRadius={'xl'} borderBottomWidth={2} borderBottomColor={placesColor} onPress={() => handleFilter('places')}>
+          <Box height={'10'} width={windowWidth / 2.7}>
+            <Text fontSize={'lg'} alignSelf={'center'} color={placesColor} fontWeight={'bold'}>Places</Text>
+          </Box>
         </Pressable>
       </Flex>
 

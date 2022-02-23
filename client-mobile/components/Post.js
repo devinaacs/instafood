@@ -319,11 +319,11 @@ const Post = ({ post }) => {
                 </TouchableOpacity>
               </Box>
               <Box ml={'3'} >
-                <Text fontSize={'md'} fontWeight={'bold'}>
+                <Text fontSize={'md'} fontWeight={'bold'} pb={1}>
                   {post.user.username}
                 </Text>
                 <Flex direction='row' >
-                  <Text fontSize={'md'}>{post.caption}{post.tags.map((tag, index) => {
+                  <Text fontSize={'md'} lineHeight={26}>{post.caption}{post.tags.map((tag, index) => {
                     return (
                       <Text onPress={() => navigation.navigate('SearchScreen', { tag })} key={index} fontSize={'lg'} style={{ color: '#ef4444', fontWeight: 'bold', }}> #{tag}</Text>
                     );

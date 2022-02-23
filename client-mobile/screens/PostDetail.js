@@ -310,10 +310,10 @@ export default function PostDetail() {
                   />
                 </Box>
                 <Box ml={'3'} width={'90%'}>
-                  <Text fontSize={'lg'} fontWeight={'bold'}>{item.user.username}</Text>
+                  <Text fontSize={'lg'} fontWeight={'bold'} pb={1}>{item.user.username}</Text>
                   <Flex direction='row'>
                     <View style={{ flexDirection: 'row' }}>
-                      <Text fontSize={'lg'}>{item.caption}{item.tags.map((tag, index) => {
+                      <Text lineHeight={28} fontSize={'lg'}>{item.caption}{item.tags.map((tag, index) => {
                         return (
                           <Text onPress={() => navigation.navigate('SearchScreen', { tag })} key={index} fontSize={'lg'} style={{ color: '#ef4444', fontWeight: 'bold' }}> #{tag}</Text>
                         );
