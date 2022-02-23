@@ -25,9 +25,6 @@ const schema = mongoose.Schema({
     select: false,
   },
   image_url: String,
-  profile_picture: {
-    type: String
-  },
   created_at: {
     type: Date,
     required: true,
