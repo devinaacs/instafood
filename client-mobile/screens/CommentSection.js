@@ -43,7 +43,6 @@ export default function CommentSection() {
       .catch(err => console.log(err));
   }, [userIdLocal]);
 
-
   const getAccessToken = async () => {
     try {
       return await AsyncStorage.getItem('access_token');
@@ -110,10 +109,45 @@ export default function CommentSection() {
       .catch((err) => console.log(err))
   }
 
-  let commentInput;
+  const CommentInput = () => {
+    if (token && userProfile) {
+      return (
+        <Box justifyContent={'space-between'} my={3} flexDirection={'row'}>
+          <Image
+            style={{
+              width: 45,
+              height: 45,
+              resizeMode: 'cover',
+              borderRadius: 45 / 2,
+              borderWidth: 1,
+              borderColor: '#D1D1D1',
+              marginLeft: 12
+            }}
+            source={{
+              uri: userProfile.image_url,
+            }}
+          />
+          <Input value={comment} onChangeText={handleCommentChange} mx="1" placeholder="Add a comment..." w="75%" maxWidth="500px" borderRadius={10} bg={'muted.100'} />
+          <TouchableOpacity onPress={handlePostComment} style={{ justifyContent: 'center', alignItems: 'center', alignSelf: 'center', }}>
+            <Text style={{ color: '#007DEC', marginEnd: 10, fontSize: 20 }}>Post</Text>
+          </TouchableOpacity>
+        </Box>
+      )
+    } else if (token && !userProfile) {
+      return (
+        <Box justifyContent={'space-between'} my={5} flexDirection={'row'}>
+          <Box />
+          <Box>
+            <Text>You need to <Text onPress={() => {
+              navigation.navigate('Login');
+            }} style={{ fontWeight: 'bold' }}>Sign in</Text> to comment this post.</Text>
+          </Box>
+          <Box />
+        </Box>
+      )
+    }
 
-  if (token) {
-    commentInput =
+    return (
       <Box justifyContent={'space-between'} my={3} flexDirection={'row'}>
         <Image
           style={{
@@ -126,25 +160,15 @@ export default function CommentSection() {
             marginLeft: 12
           }}
           source={{
-            uri:  userProfile.image_url ||'https://cdn.pixabay.com/photo/2015/03/04/22/35/head-659651__340.png',
+            uri: 'https://cdn.pixabay.com/photo/2015/03/04/22/35/head-659651__340.png',
           }}
         />
         <Input value={comment} onChangeText={handleCommentChange} mx="1" placeholder="Add a comment..." w="75%" maxWidth="500px" borderRadius={10} bg={'muted.100'} />
         <TouchableOpacity onPress={handlePostComment} style={{ justifyContent: 'center', alignItems: 'center', alignSelf: 'center', }}>
           <Text style={{ color: '#007DEC', marginEnd: 10, fontSize: 20 }}>Post</Text>
         </TouchableOpacity>
-      </Box>;
-  } else {
-    commentInput =
-      <Box justifyContent={'space-between'} my={5} flexDirection={'row'}>
-        <Box />
-        <Box>
-          <Text>You need to <Text  onPress={() => {
-            navigation.navigate('Login');
-          }} style={{fontWeight:'bold'}}>Sign in</Text> to comment this post.</Text>
-        </Box>
-        <Box />
-      </Box>;
+      </Box>
+    )
   }
 
   return (
@@ -191,7 +215,7 @@ export default function CommentSection() {
         keyExtractor={(item) => item.id}
       />
       {/* </ScrollView> */}
-      {commentInput}
+      <CommentInput />
     </SafeAreaView>
   );
 }

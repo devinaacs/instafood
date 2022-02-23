@@ -35,6 +35,7 @@ export default function Login() {
 
   const handleLogin = () => {
     dispatch(userLogin({ email, password }))
+      .then(() => navigation.navigate('Highlights'))
   }
 
   return (
