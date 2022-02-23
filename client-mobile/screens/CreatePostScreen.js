@@ -90,7 +90,7 @@ export default function CreatePostScreen({ navigation }) {
       formData.append('place_id', pickedPlace.place.place_id);
       formData.append('caption', caption);
 
-      await fetch(SERVER_POSTS_URL, {
+      await fetch('https://hacktiv8-instafood.herokuapp.com/posts/images-lables', {
         method: 'POST',
         body: formData,
         headers: {
@@ -104,14 +104,70 @@ export default function CreatePostScreen({ navigation }) {
             return Promise.reject('something went wrong!');
           }
         })
-        .then(response => {
-          console.log('response', response);
-          setPostLoading(false);
-          navigation.goBack();
+        .then(result => {
+          let isFoodFlag = [];
+          let foodScannerValid = true;
+
+          result.forEach((el) => {
+            let foundFood = false;
+
+            el.forEach((el2, i) => {
+
+              if (el2.name === 'Food') {
+                if (+el2.score >= 0.9) {
+                  foundFood = true;
+                  isFoodFlag.push(true);
+                } else {
+                  isFoodFlag.push(false);
+                  foundFood = false;
+                }
+              }
+
+              if (i === el2.length - 1 && !foundFood) {
+                isFoodFlag.push(false);
+              }
+            })
+
+            if (!foundFood) {
+              isFoodFlag.push(false);
+            }
+          })
+
+          isFoodFlag.forEach((el) => {
+            if (!el) {
+              foodScannerValid = false
+            }
+          })
+
+          if (foodScannerValid) {
+            fetch(SERVER_POSTS_URL, {
+              method: 'POST',
+              body: formData,
+              headers: {
+                access_token: token,
+              },
+            })
+              .then(response => {
+                if (response.ok) {
+                  return response.json();
+                } else {
+                  return Promise.reject('something went wrong!');
+                }
+              })
+              .then(response => {
+                console.log('response', response);
+                setPostLoading(false);
+                navigation.goBack();
+              })
+              .catch(error => {
+                console.log('error', error);
+              });
+          } else {
+            setPostLoading(false);
+            throw 'not food'
+          }
         })
-        .catch(error => {
-          console.log('error', error);
-        });
+        .catch(err => console.log('error ' + err))
     } catch (err) {
       console.log(err);
     }
