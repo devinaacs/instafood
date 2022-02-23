@@ -47,8 +47,8 @@ module.exports = {
     try {
       const response = await axios.get(PHOTO_URL, {
         params: {
-          maxwidth: 250,
-          maxheight: 250,
+          maxwidth: 600,
+          maxheight: 600,
           key: process.env.GPLACES_API_KEY,
           photo_reference: req.query.ref,
         },
