@@ -5,8 +5,9 @@ import {
   ScrollView,
   Text,
   TouchableOpacity,
-  Image,
+  Dimensions
 } from 'react-native';
+import { Box, Image } from 'native-base';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import NavbarForProfile from '../components/NavbarForProfile';
@@ -17,10 +18,11 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function Profile() {
   const navigation = useNavigation();
-
   const [userIdLocal, setUserId] = useState(null);
   const [userProfile, setUserProfile] = useState(null);
   const [userPosts, setUserPosts] = useState([]);
+
+  const windowWidth = Dimensions.get('window').width;
 
   const checkUserId = async () => {
     try {
@@ -31,7 +33,6 @@ export default function Profile() {
       return 'error reading access_token';
     }
   };
-
 
   useEffect(() => {
     checkUserId()
@@ -98,6 +99,7 @@ export default function Profile() {
             </View>
             <View style={{ alignItems: 'center', marginVertical: 10 }}>
               <Image
+                alt='profilepic'
                 style={styles.profilePic}
                 source={{
                   uri: userProfile.image_url || 'https://cdn.pixabay.com/photo/2015/03/04/22/35/head-659651__340.png',
@@ -141,7 +143,14 @@ export default function Profile() {
             </View>
           </View>
           <ScrollView horizontal={true} style={{ marginBottom: 80 }}>
-            <UserPost post={userPosts} />
+            {/* <UserPost post={userPosts} /> */}
+            {
+              userPosts.length > 0 ? <UserPost post={userPosts} /> :
+                <Box justifyContent={'center'} width={windowWidth} mt={12}>
+                  <Image alignSelf={'center'} mb={3} resizeMode={'contain'} width={'150'} height={'150'} source={require('../assets/camera.png')} alt={'alternate'} />
+                  <Text style={{ fontSize: 24, fontWeight: 'bold', alignSelf: 'center', color: '#373737' }}>No post yet</Text>
+                </Box>
+            }
           </ScrollView>
         </ScrollView>
       </View>

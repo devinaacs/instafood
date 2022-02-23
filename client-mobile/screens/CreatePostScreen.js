@@ -3,7 +3,7 @@ import * as ImagePicker from 'expo-image-picker';
 import { Dimensions } from 'react-native';
 import { Box, Center, Flex, Image, Input, Pressable, ScrollView, StatusBar, Text, TextArea, Modal } from 'native-base';
 import { Feather } from '@expo/vector-icons';
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useSelector } from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -315,7 +315,22 @@ export default function CreatePostScreen({ navigation }) {
       }
       {
         showModalNotFood ? (
-          <Box onTouchEnd={() => setShowModalNotFood(false)}><Text>Our AI detect that some of your images are not related to food..</Text></Box>
+          <Flex>
+            <Modal isOpen={showModalNotFood} onClose={() => setShowModalNotFood(false)} size="lg" pb={100}>
+              <Modal.Content maxWidth="400px">
+                <Modal.CloseButton />
+                <Modal.Body>
+                  <Center py={10}>
+                    <Flex alignItems={'center'} width={'full'} height={'40'} mb={'4'}>
+                      <Image mb={1} resizeMode={'contain'} height={'24'} source={require('../assets/robot.png')} alt={'alternate'} />
+                      <Text fontSize={'2xl'} fontWeight={'bold'} mb={1} color={'muted.900'}>Ooops..</Text>
+                      <Text fontSize={'lg'} textAlign={'center'} color={'muted.700'}>Our app detect that some of your images are not related to food...</Text>
+                    </Flex>
+                  </Center>
+                </Modal.Body>
+              </Modal.Content>
+            </Modal>
+          </Flex>
         ) : null
       }
       <ScrollView>
