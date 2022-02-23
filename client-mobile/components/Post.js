@@ -318,7 +318,7 @@ const Post = ({ post }) => {
                   />
                 </TouchableOpacity>
               </Box>
-              <Box ml={'3'} >
+              <Box ml={'3'}>
                 <Text fontSize={'md'} fontWeight={'bold'} pb={1}>
                   {post.user.username}
                 </Text>
