@@ -2,6 +2,15 @@ const User = require('../models/User');
 const { compareHash } = require('../helpers/bcrypt');
 const { createToken } = require('../helpers/jwt');
 
+const PROFILE_IMAGES = [
+  'https://firebasestorage.googleapis.com/v0/b/hacktiv8-instafood.appspot.com/o/avatar-1.jpg?alt=media',
+  'https://firebasestorage.googleapis.com/v0/b/hacktiv8-instafood.appspot.com/o/avatar-2.jpg?alt=media',
+  'https://firebasestorage.googleapis.com/v0/b/hacktiv8-instafood.appspot.com/o/avatar-3.jpg?alt=media',
+  'https://firebasestorage.googleapis.com/v0/b/hacktiv8-instafood.appspot.com/o/avatar-4.jpg?alt=media',
+  'https://firebasestorage.googleapis.com/v0/b/hacktiv8-instafood.appspot.com/o/avatar-5.jpg?alt=media',
+  'https://firebasestorage.googleapis.com/v0/b/hacktiv8-instafood.appspot.com/o/avatar-6.jpg?alt=media'
+];
+
 class Controller {
   static async login(req, res, next) {
     try {
@@ -39,6 +48,7 @@ class Controller {
         username: username,
         email: email,
         password: password,
+        image_url: PROFILE_IMAGES[Math.floor(Math.random() * 6)]
       });
 
       await user.save();
