@@ -50,7 +50,8 @@ class Controller {
         username: username,
         email: email,
         password: password,
-        image_url: PROFILE_IMAGES[Math.floor(Math.random() * 8)]
+        image_url: PROFILE_IMAGES[Math.floor(Math.random() * 8)],
+        profile_picture: PROFILE_IMAGES[Math.floor(Math.random() * 8)]
       });
 
       await user.save();
