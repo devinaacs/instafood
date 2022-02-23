@@ -171,7 +171,6 @@ export default function Profile() {
             </View>
           </View>
           <ScrollView horizontal={true} style={{ marginBottom: 80 }}>
-            {/* <UserPost post={userPosts} /> */}
             {
               userPosts.items.length > 0 ? <UserPost post={userPosts} /> :
                 <Box justifyContent={'center'} width={windowWidth} mt={12}>
