@@ -12,12 +12,37 @@ const windowWidth = Dimensions.get('window').width;
 export default function CommentSection() {
   const [comment, setComment] = useState('');
   const [token, setToken] = useState('');
-
   const route = useRoute();
   const navigation = useNavigation();
   const { postDetails } = route.params;
   const [comments, setComments] = useState([]);
   const [refreshCommentFlag, setRefreshCommentFlag] = useState(0);
+
+  const [userIdLocal, setUserId] = useState(null);
+  const [userProfile, setUserProfile] = useState(null);
+
+  const checkUserId = async () => {
+    try {
+      const userIdStorage = await AsyncStorage.getItem('userId');
+
+      return userIdStorage
+    } catch (e) {
+      return 'error reading access_token';
+    }
+  };
+
+  useEffect(() => {
+    checkUserId()
+      .then((userId) => {
+        setUserId(userId)
+      })
+      .catch((err) => console.log(err))
+    fetch(`https://hacktiv8-instafood.herokuapp.com/users/${userIdLocal}`)
+      .then(response => response.json())
+      .then(result => setUserProfile(result))
+      .catch(err => console.log(err));
+  }, [userIdLocal]);
+
 
   const getAccessToken = async () => {
     try {
@@ -101,7 +126,7 @@ export default function CommentSection() {
             marginLeft: 12
           }}
           source={{
-            uri: 'https://cdn.pixabay.com/photo/2015/03/04/22/35/head-659651__340.png',
+            uri:  userProfile.image_url ||'https://cdn.pixabay.com/photo/2015/03/04/22/35/head-659651__340.png',
           }}
         />
         <Input value={comment} onChangeText={handleCommentChange} mx="1" placeholder="Add a comment..." w="75%" maxWidth="500px" borderRadius={10} bg={'muted.100'} />
