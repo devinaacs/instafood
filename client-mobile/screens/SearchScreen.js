@@ -50,6 +50,7 @@ export default function SearchScreen({ navigation }) {
         })
         .then(result => {
           setUsersLoading(false)
+          console.log(result)
           setUsers(result)
           setUserTrigger(true)
         })
@@ -203,8 +204,8 @@ export default function SearchScreen({ navigation }) {
         </Flex>
       </Flex>
 
-      <Flex direction='row' width={windowWidth} bg={'white'} justifyContent={'space-evenly'} height={'16'} alignItems={'center'}  pb={2}>
-        <Pressable borderRadius={'xl'} borderBottomWidth={2} borderBottomColor={usersColor}  onPress={() => handleFilter('users')}>
+      <Flex direction='row' width={windowWidth} bg={'white'} justifyContent={'space-evenly'} height={'16'} alignItems={'center'} pb={2}>
+        <Pressable borderRadius={'xl'} borderBottomWidth={2} borderBottomColor={usersColor} onPress={() => handleFilter('users')}>
           <Box height={'10'} width={windowWidth / 2.73} alignContent={'center'}>
             <Text fontSize={'lg'} alignSelf={'center'} color={usersColor} fontWeight={'bold'}>Users</Text>
           </Box>
@@ -291,7 +292,7 @@ export default function SearchScreen({ navigation }) {
                   <Flex direction='row' width={'full'} height={'20'} my={'2'}>
                     <Box >
                       <Image borderRadius={'full'} width={'16'} height={'16'} source={{
-                        uri: 'https://cdn.pixabay.com/photo/2015/03/04/22/35/head-659651__340.png'
+                        uri: item.image_url || 'https://cdn.pixabay.com/photo/2015/03/04/22/35/head-659651__340.png'
                       }} alt={'alternate'} />
                     </Box>
                     <Box ml={'4'} mt={'4'}>

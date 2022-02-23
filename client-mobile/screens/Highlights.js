@@ -23,18 +23,17 @@ export default function Highlights() {
 
   const [refreshing, setRefreshing] = useState(false);
 
-  const onRefresh = React.useCallback(() => {
+  const onRefresh = () => {
     setTrendingPlaces([])
     setTrendingTags([])
     setTrendingPosts([])
-    setRefreshing(true);
     setRefreshTrigger(refreshTrigger + 1);
     fetch('https://hacktiv8-instafood.herokuapp.com/trending/places')
       .then(response => {
         if (response.ok) {
           return response.json();
         } else {
-          return Promise.reject('something went wrong!');
+          return Promise.reject('something went wrong!1');
         }
       })
       .then(response => {
@@ -48,7 +47,7 @@ export default function Highlights() {
         if (response.ok) {
           return response.json();
         } else {
-          return Promise.reject('something went wrong!');
+          return Promise.reject('something went wrong!2');
         }
       })
       .then(response => {
@@ -62,7 +61,7 @@ export default function Highlights() {
         if (response.ok) {
           return response.json();
         } else {
-          return Promise.reject('something went wrong!');
+          return Promise.reject('something went wrong!3');
         }
       })
       .then(response => {
@@ -71,56 +70,11 @@ export default function Highlights() {
       .catch(error => {
         console.log('error', error);
       });
-    if (trendPlaces.length > 0 && trendingPosts.length > 0 && trendingTags.length > 0) {
-      setRefreshing(false);
-    }
-  })
+  }
 
   useFocusEffect(
     React.useCallback(() => {
-      onRefresh()
-      fetch('https://hacktiv8-instafood.herokuapp.com/trending/places')
-        .then(response => {
-          if (response.ok) {
-            return response.json();
-          } else {
-            return Promise.reject('something went wrong!');
-          }
-        })
-        .then(response => {
-          setTrendingPlaces(response);
-        })
-        .catch(error => {
-          console.log('error', error);
-        });
-      fetch('https://hacktiv8-instafood.herokuapp.com/trending/tags')
-        .then(response => {
-          if (response.ok) {
-            return response.json();
-          } else {
-            return Promise.reject('something went wrong!');
-          }
-        })
-        .then(response => {
-          setTrendingTags(response);
-        })
-        .catch(error => {
-          console.log('error', error);
-        });
-      fetch('https://hacktiv8-instafood.herokuapp.com/trending/posts')
-        .then(response => {
-          if (response.ok) {
-            return response.json();
-          } else {
-            return Promise.reject('something went wrong!');
-          }
-        })
-        .then(response => {
-          setTrendingPosts(response);
-        })
-        .catch(error => {
-          console.log('error', error);
-        });
+      onRefresh();
       setRefreshing(false);
     }, [])
   )

@@ -39,7 +39,7 @@ const TrendingPost2 = ({ post }) => {
         if (response.ok) {
           return response.json();
         } else {
-          return Promise.reject('something went wrong!');
+          return Promise.reject('something went wrong!trendpost');
         }
       })
       .then(response => {
@@ -394,13 +394,13 @@ const TrendingPost2 = ({ post }) => {
                 </Flex>
               </Box>
             </Flex>
-            <TouchableOpacity style={{ justifyContent: 'center', paddingBottom: 10, paddingEnd: 7, position: 'absolute', right: 0, top: 10}}>
+            <TouchableOpacity style={{ justifyContent: 'center', paddingBottom: 10, paddingEnd: 7, position: 'absolute', right: 0, top: 10 }}>
               <Menu>
                 <MenuTrigger>
                   <Entypo name='dots-three-vertical' size={30} color='gray' />
                 </MenuTrigger>
                 <MenuOptions optionsContainerStyle={{ marginTop: 20, marginLeft: -10 }} >
-                  <MenuOption onSelect={() => navigation.navigate('PostDetail', {item : postDetails})}>
+                  <MenuOption onSelect={() => navigation.navigate('PostDetail', { item: postDetails })}>
                     <Text style={{ color: 'black', padding: 10 }}>See details</Text>
                   </MenuOption>
                 </MenuOptions>
