@@ -41,6 +41,11 @@ export default function OtherUserProfile() {
     return null;
   }
 
+  if (userPosts.length === 0) {
+    return null;
+  }
+
+  console.log(userPosts);
   return (
     <SafeAreaView style={styles.container}>
       <View>
@@ -96,7 +101,7 @@ export default function OtherUserProfile() {
           <ScrollView horizontal={true} style={{ marginBottom: 80 }}>
             {/* <UserPost /> */}
             {
-              userPosts.length > 0 ? <UserPost post={userPosts} /> :
+              userPosts.items.length > 0 ? <UserPost post={userPosts} /> :
                 <Box justifyContent={'center'} width={windowWidth} mt={12}>
                   <Image alignSelf={'center'} mb={3} resizeMode={'contain'} width={'150'} height={'150'} source={require('../assets/camera.png')} alt={'alternate'} />
                   <Text style={{fontSize:24, fontWeight: 'bold', alignSelf:'center', color:'#373737'}}>No post yet</Text>
