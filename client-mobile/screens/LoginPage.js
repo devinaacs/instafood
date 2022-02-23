@@ -7,7 +7,7 @@ import {
   Dimensions,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Input, Icon, Stack, Text, Button, Center } from 'native-base';
+import { Input, Icon, Stack, Text, Button, Center, Modal, Flex } from 'native-base';
 import { MaterialIcons, Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
@@ -54,9 +54,25 @@ export default function Login() {
     <SafeAreaView style={styles.container}>
       {
         errorLogin && showModalError ? (
-          <Center width={'full'} onTouchEnd={() => setShowModalError(false)}>
-            <Text color={'red.700'}>{errorLogin.message}</Text>
-          </Center>
+          <Flex>
+            <Modal isOpen={showModalError} onClose={() => setShowModalError(false)} pb={24}>
+              <Modal.Content maxWidth="400px">
+                <Modal.CloseButton />
+                <Modal.Body>
+                  <Center pt={5}>
+                    <Flex alignItems={'center'} width={'full'} >
+                      <Text mb={2} color={'gray.900'}><Text color={'red.500'}>*</Text>{errorLogin.message}</Text>
+                      <Button mt={4} width={60} colorScheme={'danger'} onPress={() => {
+                        setShowModalError(false);
+                      }}>
+                        <Text fontWeight={'bold'} color={'white'}>Ok</Text>
+                      </Button>
+                    </Flex>
+                  </Center>
+                </Modal.Body>
+              </Modal.Content>
+            </Modal>
+          </Flex>
         ) : null
       }
       <Image

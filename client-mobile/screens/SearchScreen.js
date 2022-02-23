@@ -50,7 +50,7 @@ export default function SearchScreen({ navigation }) {
         })
         .then(result => {
           setUsersLoading(false)
-          console.log(result)
+          // console.log(result)
           setUsers(result)
           setUserTrigger(true)
         })

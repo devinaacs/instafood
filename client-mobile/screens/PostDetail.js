@@ -329,7 +329,7 @@ export default function PostDetail() {
                     alt={'alternate picture'}
                   />
                 </Box>
-                <Box ml={'3'} width={'90%'}>
+                <Box ml={'3'} width={'85%'}>
                   <Text fontSize={'lg'} fontWeight={'bold'} pb={1}>{item.user.username}</Text>
                   <Flex direction='row'>
                     <View style={{ flexDirection: 'row' }}>
@@ -347,15 +347,16 @@ export default function PostDetail() {
               <Box px={'3'} mt={'1'} mb={'4'}>
                 <Text fontSize={'xs'} color={'gray.400'}>{dateFormat(item.created_at)}</Text>
               </Box>
-              {/*  */}
               {
                 post ? (
                   post.comments.length === 0 ? (
-                    <Box><Text>Kosong buangg..</Text></Box>
+                    <Center pb={2}>
+                      <Text color={'muted.500'}>No comment yet</Text>
+                    </Center>
                   ) : (
                     post.comments.map((comment) => {
                       return (
-                        <Flex key={comment.id} direction='row' px={'3'} mt={'3'} mb={'6'}>
+                        <Flex key={comment.id} direction='row' px={'3'} mt={'3'} mb={'6'} width={'90%'}>
                           <Box size={'12'} borderRadius={'full'} borderColor={'gray.200'}>
                             <Image
                               width={'full'}

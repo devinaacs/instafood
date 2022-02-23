@@ -7,7 +7,7 @@ import {
   Dimensions,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Input, Icon, Stack, Text, Button, Box, Center } from 'native-base';
+import { Input, Icon, Stack, Text, Button, Box, Center, Modal, Flex } from 'native-base';
 import { MaterialIcons, Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch } from 'react-redux';
@@ -61,23 +61,39 @@ export default function Register() {
     <SafeAreaView style={styles.container}>
       {
         errorRegister && showModalError ? (
-          <Center width={'full'} onTouchEnd={() => setShowModalError(false)}>
-            {
-              errorRegister.message.email ? (
-                <Text color={'red.700'}>{errorRegister.message.email}</Text>
-              ) : null
-            }
-            {
-              errorRegister.message.username ? (
-                <Text color={'red.700'}>{errorRegister.message.username}</Text>
-              ) : null
-            }
-            {
-              errorRegister.message.password ? (
-                <Text color={'red.700'}>{errorRegister.message.password}</Text>
-              ) : null
-            }
-          </Center>
+          <Flex>
+            <Modal isOpen={showModalError} onClose={() => setShowModalError(false)} pb={0}>
+              <Modal.Content maxWidth="400px">
+                <Modal.CloseButton />
+                <Modal.Body>
+                  <Center pt={5}>
+                    <Flex alignItems={'center'} width={'full'} >
+                      {
+                        errorRegister.message.email ? (
+                          <Text mb={2} color={'gray.900'}><Text color={'red.500'}>*</Text>{errorRegister.message.email}</Text>
+                        ) : null
+                      }
+                      {
+                        errorRegister.message.username ? (
+                          <Text mb={2} color={'gray.900'}><Text color={'red.500'}>*</Text>{errorRegister.message.username}</Text>
+                        ) : null
+                      }
+                      {
+                        errorRegister.message.password ? (
+                          <Text color={'gray.900'}><Text color={'red.500'}>*</Text>{errorRegister.message.password}</Text>
+                        ) : null
+                      }
+                      <Button mt={4} width={60} colorScheme={'danger'} onPress={() => {
+                        setShowModalError(false);
+                      }}>
+                        <Text fontWeight={'bold'} color={'white'}>Ok</Text>
+                      </Button>
+                    </Flex>
+                  </Center>
+                </Modal.Body>
+              </Modal.Content>
+            </Modal>
+          </Flex>
         ) : null
       }
       <View style={{ position: 'absolute', top: 0 }}>

@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, ScrollView, Text, TouchableOpacity, Image, Dimensions, FlatList } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Ionicons } from '@expo/vector-icons';
-import { Input, Icon, Stack, Center, Button, Box } from 'native-base';
+import { Ionicons, FontAwesome } from '@expo/vector-icons';
+import { Input, Icon, Stack, Center, Button, Box, Flex } from 'native-base';
 import { useRoute, useNavigation } from "@react-navigation/native";
 import NavbarForComment from '../components/NavbarForComment';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
 
 export default function CommentSection() {
   const [comment, setComment] = useState('');
@@ -114,48 +115,59 @@ export default function CommentSection() {
       <View>
         <NavbarForComment />
       </View>
-      {/* <ScrollView> */}
-      <FlatList
-        data={comments}
-        renderItem={({ item }) => (
-          <View style={{ backgroundColor: 'white', paddingHorizontal: 12, paddingVertical: 10, flexDirection: 'row', width: '100%', borderBottomWidth: 1, borderColor: '#E4E4E4' }}>
-            <View style={{ backgroundColor: 'white', width: '18%', alignItems: 'center' }}>
-              <Image
-                style={{
-                  width: 67,
-                  height: 67,
-                  resizeMode: 'cover',
-                  borderRadius: 67 / 2,
-                  borderWidth: 1,
-                  borderColor: '#D1D1D1'
-                }}
-                source={{
-                  uri: item.user.image_url || 'https://cdn.pixabay.com/photo/2015/03/04/22/35/head-659651__340.png',
-                }}
-              />
-            </View>
-            <View style={{ backgroundColor: 'white', width: '72%', paddingHorizontal: 7 }}>
-              <Text style={{ fontSize: 16, fontWeight: 'bold', marginVertical: 5 }}>{item.user.username}</Text>
-              <Text style={{ fontSize: 16 }}>{item.comment}</Text>
-            </View>
-            <View style={{ backgroundColor: 'white', width: '10%', paddingHorizontal: 7, alignItems: 'center', justifyContent: 'center' }}>
-              <TouchableOpacity>
-                <Ionicons
-                  name="heart-outline"
-                  size={24}
-                  color="#929292"
-                  style={{}}
-                />
-              </TouchableOpacity>
-            </View>
-          </View>
-        )}
-        keyExtractor={(item) => item.id}
-      />
-      {/* </ScrollView> */}
+      {
+        comments.length > 0 ? (
+          <FlatList
+            data={comments}
+            renderItem={({ item }) => (
+              <View style={{ backgroundColor: 'white', paddingHorizontal: 12, paddingVertical: 10, flexDirection: 'row', width: '100%', borderBottomWidth: 1, borderColor: '#E4E4E4' }}>
+                <View style={{ backgroundColor: 'white', width: '18%', alignItems: 'center' }}>
+                  <Image
+                    style={{
+                      width: 67,
+                      height: 67,
+                      resizeMode: 'cover',
+                      borderRadius: 67 / 2,
+                      borderWidth: 1,
+                      borderColor: '#D1D1D1'
+                    }}
+                    source={{
+                      uri: item.user.image_url || 'https://cdn.pixabay.com/photo/2015/03/04/22/35/head-659651__340.png',
+                    }}
+                  />
+                </View>
+                <View style={{ backgroundColor: 'white', width: '72%', paddingHorizontal: 7 }}>
+                  <Text style={{ fontSize: 16, fontWeight: 'bold', marginVertical: 5 }}>{item.user.username}</Text>
+                  <Text style={{ fontSize: 16 }}>{item.comment}</Text>
+                </View>
+                <View style={{ backgroundColor: 'white', width: '10%', paddingHorizontal: 7, alignItems: 'center', justifyContent: 'center' }}>
+                  <TouchableOpacity>
+                    <Ionicons
+                      name="heart-outline"
+                      size={24}
+                      color="#929292"
+                      style={{}}
+                    />
+                  </TouchableOpacity>
+                </View>
+              </View>
+            )}
+            keyExtractor={(item) => item.id}
+          />) : (
+          <Flex style={{ backgroundColor: 'white', width: '100%', }}>
+            <Center >
+              <FontAwesome name="commenting-o" size={120} color="#A2A2A2" style={{ paddingTop: 260 }} />
+              <Text style={{ fontSize: 24, fontWeight: 'bold', alignSelf: 'center', color: '#A2A2A2' }}>No comment yet</Text>
+              <Text></Text>
+            </Center>
+          </Flex>
+
+        )
+      }
+
       {
         userProfile && token ? (
-          <Box justifyContent={'space-between'} my={3} flexDirection={'row'}>
+          <Box justifyContent={'space-between'} my={3} flexDirection={'row'} position={'absolute'} bottom={0} bgColor={'white'}>
             <Image
               style={{
                 width: 45,
@@ -176,15 +188,11 @@ export default function CommentSection() {
             </TouchableOpacity>
           </Box>
         ) : (
-          <Box justifyContent={'space-between'} my={5} flexDirection={'row'}>
-            <Box />
-            <Box>
-              <Text>You need to <Text onPress={() => {
-                navigation.navigate('Login');
-              }} style={{ fontWeight: 'bold' }}>Sign in</Text> to comment this post.</Text>
-            </Box>
-            <Box />
-          </Box>
+          <Center width={'100%'} my={5} flexDirection={'row'} position={'absolute'} bottom={0} bgColor={'white'}>
+            <Text style={{ alignSelf: 'center' }}>You need to <Text onPress={() => {
+              navigation.navigate('Login');
+            }} style={{ fontWeight: 'bold' }}>Sign in</Text> to comment this post.</Text>
+          </Center>
         )
       }
     </SafeAreaView>
@@ -196,5 +204,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     width: '100%',
     height: '100%',
+    flex: 1
   },
 });
