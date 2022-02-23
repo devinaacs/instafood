@@ -20,7 +20,7 @@ export default function Profile() {
   const navigation = useNavigation();
   const [userIdLocal, setUserId] = useState(null);
   const [userProfile, setUserProfile] = useState(null);
-  const [userPosts, setUserPosts] = useState([]);
+  const [userPosts, setUserPosts] = useState(null);
 
   const windowWidth = Dimensions.get('window').width;
 
@@ -42,14 +42,26 @@ export default function Profile() {
       .catch((err) => console.log(err))
 
     fetch(`https://hacktiv8-instafood.herokuapp.com/users/${userIdLocal}`)
-      .then(response => response.json())
+      .then(response => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          return Promise.reject('something went wrong!1');
+        }
+      })
       .then(result => setUserProfile(result))
       .catch(err => console.log(err));
 
     fetch(
       `https://hacktiv8-instafood.herokuapp.com/posts/?user_id=${userIdLocal}`
     )
-      .then(response => response.json())
+      .then(response => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          return Promise.reject('something went wrong!2');
+        }
+      })
       .then(result => setUserPosts(result))
       .catch(err => console.log(err));
   }, [userIdLocal]);
@@ -57,7 +69,13 @@ export default function Profile() {
   useEffect(() => {
     const refresh = navigation.addListener('focus', () => {
       fetch(`https://hacktiv8-instafood.herokuapp.com/users/${userIdLocal}`)
-        .then(response => response.json())
+        .then(response => {
+          if (response.ok) {
+            return response.json();
+          } else {
+            return Promise.reject('something went wrong!3');
+          }
+        })
         .then(result => {
           setUserProfile(result)
         })
@@ -66,7 +84,13 @@ export default function Profile() {
       fetch(
         `https://hacktiv8-instafood.herokuapp.com/posts/?user_id=${userIdLocal}`
       )
-        .then(response => response.json())
+        .then(response => {
+          if (response.ok) {
+            return response.json();
+          } else {
+            return Promise.reject('something went wrong!4');
+          }
+        })
         .then(result => setUserPosts(result))
         .catch(err => console.log(err));
     })
@@ -74,7 +98,13 @@ export default function Profile() {
     return refresh;
   }, [navigation, userIdLocal])
 
+  console.log(userPosts);
+
   if (!userProfile) {
+    return null;
+  }
+
+  if (!userPosts) {
     return null;
   }
 
@@ -145,7 +175,7 @@ export default function Profile() {
           <ScrollView horizontal={true} style={{ marginBottom: 80 }}>
             {/* <UserPost post={userPosts} /> */}
             {
-              userPosts.length > 0 ? <UserPost post={userPosts} /> :
+              userPosts.items.length > 0 ? <UserPost post={userPosts} /> :
                 <Box justifyContent={'center'} width={windowWidth} mt={12}>
                   <Image alignSelf={'center'} mb={3} resizeMode={'contain'} width={'150'} height={'150'} source={require('../assets/camera.png')} alt={'alternate'} />
                   <Text style={{ fontSize: 24, fontWeight: 'bold', alignSelf: 'center', color: '#373737' }}>No post yet</Text>
