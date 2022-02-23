@@ -8,7 +8,9 @@ const PROFILE_IMAGES = [
   'https://firebasestorage.googleapis.com/v0/b/hacktiv8-instafood.appspot.com/o/avatar-3.jpg?alt=media',
   'https://firebasestorage.googleapis.com/v0/b/hacktiv8-instafood.appspot.com/o/avatar-4.jpg?alt=media',
   'https://firebasestorage.googleapis.com/v0/b/hacktiv8-instafood.appspot.com/o/avatar-5.jpg?alt=media',
-  'https://firebasestorage.googleapis.com/v0/b/hacktiv8-instafood.appspot.com/o/avatar-6.jpg?alt=media'
+  'https://firebasestorage.googleapis.com/v0/b/hacktiv8-instafood.appspot.com/o/avatar-6.jpg?alt=media',
+  'https://i.pinimg.com/550x/be/d5/83/bed5833ae412f5c5bb7265a085b6b1d3.jpg',
+  'https://i.pinimg.com/736x/71/b4/e8/71b4e8558fe461d0bc1b1714c748b3a0.jpg'
 ];
 
 class Controller {
@@ -48,7 +50,7 @@ class Controller {
         username: username,
         email: email,
         password: password,
-        image_url: PROFILE_IMAGES[Math.floor(Math.random() * 6)]
+        image_url: PROFILE_IMAGES[Math.floor(Math.random() * 8)]
       });
 
       await user.save();
