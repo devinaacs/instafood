@@ -289,8 +289,8 @@ export default function SearchScreen({ navigation }) {
                 <Pressable onPress={() => navigation.navigate('OtherUserProfile', { post: { user: { id: item.id } } })} _pressed={{
                   bg: 'gray.100'
                 }} height={'20'} borderBottomWidth={'1'} borderBottomColor={'gray.300'}>
-                  <Flex direction='row' width={'full'} height={'20'} my={'2'}>
-                    <Box >
+                  <Flex direction='row' width={'full'} height={'20'} my={'2'} px={'3'}>
+                    <Box>
                       <Image borderRadius={'full'} width={'16'} height={'16'} source={{
                         uri: item.image_url || 'https://cdn.pixabay.com/photo/2015/03/04/22/35/head-659651__340.png'
                       }} alt={'alternate'} />

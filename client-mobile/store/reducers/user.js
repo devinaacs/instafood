@@ -4,11 +4,13 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const initialState = {
   access_token: null,
   userId: null,
+  loadingLogin: false,
 }
 
 function user(state = initialState, action) {
   if (action.type === USER_LOGIN) {
     const storeData = async (value) => {
+      console.log(value)
       try {
         await AsyncStorage.setItem('access_token', value.access_token)
         await AsyncStorage.setItem('userId', value.id)

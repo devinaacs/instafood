@@ -2,9 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Box, Flex, Image, Text } from 'native-base';
 import { AntDesign, Entypo, Ionicons } from '@expo/vector-icons';
 import {
-  StyleSheet,
   View,
-  ScrollView,
   TouchableOpacity,
   Dimensions,
 } from 'react-native';
@@ -31,7 +29,6 @@ const TrendingPost2 = ({ post }) => {
   const [filteredLikes, setFilteredLikes] = useState([]);
   const [disableLike, setDisableLike] = useState(false);
   const { access_token } = useSelector((state) => state.user);
-
 
   useEffect(() => {
     fetch(`https://hacktiv8-instafood.herokuapp.com/posts/${post.id}`)
@@ -111,6 +108,7 @@ const TrendingPost2 = ({ post }) => {
       setDisableLike(true);
       setLikeStatus(true);
       setLikes(likes + 1);
+      setFilteredLikes([...filteredLikes, {}])
       fetch('https://hacktiv8-instafood.herokuapp.com/likes', {
         method: 'POST',
         headers: {
@@ -119,20 +117,28 @@ const TrendingPost2 = ({ post }) => {
         },
         body: JSON.stringify({ post_id: post.id }),
       })
-        .then(response => response.json())
+        .then(response => {
+          if (response.ok) {
+            return response.json();
+          } else {
+            return Promise.reject('something went wrong! like');
+          }
+        })
         .then(result => {
           setDisableLike(false);
           setFilteredLikes([
             ...filteredLikes,
             {
-              user: {
-                id: userIdLocal,
-              },
+              user: result.user,
               id: result._id,
             },
           ]);
+          console.log(result)
         })
-        .catch(err => console.log(err));
+        .catch(err => {
+          setDisableLike(false);
+          console.log(err)
+        });
     } else {
       setDisableLike(true);
       setLikeStatus(false);
@@ -144,10 +150,21 @@ const TrendingPost2 = ({ post }) => {
           access_token: token,
         },
       })
-        .then(() => {
+        .then(response => {
+          if (response.ok) {
+            return response.json();
+          } else {
+            return Promise.reject('something went wrong! unlike');
+          }
+        })
+        .then((result) => {
+          console.log(result)
           setDisableLike(false);
         })
-        .catch(err => console.log(err));
+        .catch(err => {
+          setDisableLike(false);
+          console.log(err)
+        });
     }
   };
 

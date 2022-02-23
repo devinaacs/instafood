@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   StyleSheet,
   View,
@@ -19,16 +19,11 @@ export default function Highlights() {
   const [trendPlaces, setTrendingPlaces] = useState([]);
   const [trendingTags, setTrendingTags] = useState([]);
   const [trendingPosts, setTrendingPosts] = useState([]);
-  const [refreshTrigger, setRefreshTrigger] = useState(0);
 
   const [refreshing, setRefreshing] = useState(false);
 
-  const onRefresh = () => {
-    setTrendingPlaces([])
-    setTrendingTags([])
-    setTrendingPosts([])
-    setRefreshTrigger(refreshTrigger + 1);
-    fetch('https://hacktiv8-instafood.herokuapp.com/trending/places')
+  const fetchData = async () => {
+    await fetch('https://hacktiv8-instafood.herokuapp.com/trending/places')
       .then(response => {
         if (response.ok) {
           return response.json();
@@ -42,7 +37,7 @@ export default function Highlights() {
       .catch(error => {
         console.log('error', error);
       });
-    fetch('https://hacktiv8-instafood.herokuapp.com/trending/tags')
+    await fetch('https://hacktiv8-instafood.herokuapp.com/trending/tags')
       .then(response => {
         if (response.ok) {
           return response.json();
@@ -56,7 +51,7 @@ export default function Highlights() {
       .catch(error => {
         console.log('error', error);
       });
-    fetch('https://hacktiv8-instafood.herokuapp.com/trending/posts')
+    await fetch('https://hacktiv8-instafood.herokuapp.com/trending/posts')
       .then(response => {
         if (response.ok) {
           return response.json();
@@ -72,10 +67,19 @@ export default function Highlights() {
       });
   }
 
+  const onRefresh = () => {
+    setTrendingPlaces([])
+    setTrendingTags([])
+    setTrendingPosts([])
+    fetchData()
+  }
+
   useFocusEffect(
     React.useCallback(() => {
-      onRefresh();
-      setRefreshing(false);
+      setTrendingPlaces([])
+      setTrendingTags([])
+      setTrendingPosts([])
+      fetchData()
     }, [])
   )
 

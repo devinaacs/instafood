@@ -6,7 +6,7 @@ import { AntDesign, FontAwesome, Ionicons } from '@expo/vector-icons';
 import NavbarForPostDetail from '../components/NavbarForPostDetail';
 const windowWidth = Dimensions.get('window').width;
 import { SwiperFlatList } from 'react-native-swiper-flatlist';
-import { useRoute, useNavigation } from '@react-navigation/native';
+import { useRoute, useNavigation, useFocusEffect } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function PostDetail() {
@@ -17,6 +17,7 @@ export default function PostDetail() {
   const [placeDetails, setPlaceDetails] = useState('');
   const [userIdLocal, setUserId] = useState(null);
   const [token, setToken] = useState(null);
+  const [post, setPost] = useState(null);
 
   const getUserId = async () => {
     try {
@@ -49,22 +50,41 @@ export default function PostDetail() {
       .catch((err) => console.log(err))
   }, []);
 
-  useEffect(() => {
-    fetch(`https://hacktiv8-instafood.herokuapp.com/places/${item.place_id}`)
-      .then(response => {
-        if (response.ok) {
-          return response.json();
-        } else {
-          return Promise.reject('something went wrong!');
-        }
-      })
-      .then(response => {
-        setPlaceDetails(response);
-      })
-      .catch(error => {
-        console.log('error', error);
-      });
-  }, []);
+  useFocusEffect(
+    React.useCallback(() => {
+      fetch(`https://hacktiv8-instafood.herokuapp.com/places/${item.place_id}`)
+        .then(response => {
+          if (response.ok) {
+            return response.json();
+          } else {
+            return Promise.reject('something went wrong!');
+          }
+        })
+        .then(response => {
+          setPlaceDetails(response);
+        })
+        .catch(error => {
+          console.log('error', error);
+        });
+      fetch(`https://hacktiv8-instafood.herokuapp.com/posts/${item.id}`)
+        .then(response => {
+          if (response.ok) {
+            return response.json();
+          } else {
+            return Promise.reject('something went wrong!');
+          }
+        })
+        .then(response => {
+          setPost(response);
+        })
+        .catch(error => {
+          console.log('error', error);
+        });
+
+    }, [])
+  )
+
+  // console.log(post.comments)
 
   const handleDeletePost = () => {
     fetch(`https://hacktiv8-instafood.herokuapp.com/posts/${item.id}`, {
@@ -123,7 +143,7 @@ export default function PostDetail() {
   } else {
     deleteButton = <Flex></Flex>;
   }
-  
+
   return (
     <SafeAreaView style={styles.container}>
       <View>
@@ -304,7 +324,7 @@ export default function PostDetail() {
                     resizeMode={'cover'}
                     borderRadius={'full'}
                     source={{
-                      uri: item.user.image_url||'https://cdn.pixabay.com/photo/2015/03/04/22/35/head-659651__340.png',
+                      uri: item.user.image_url || 'https://cdn.pixabay.com/photo/2015/03/04/22/35/head-659651__340.png',
                     }}
                     alt={'alternate picture'}
                   />
@@ -328,32 +348,65 @@ export default function PostDetail() {
                 <Text fontSize={'xs'} color={'gray.400'}>{dateFormat(item.created_at)}</Text>
               </Box>
               {/*  */}
-              {item.comments.map((comment) => {
-                return (
-                  <Flex key={comment.id} direction='row' px={'3'} mt={'3'} mb={'6'}>
-                    <Box size={'12'} borderRadius={'full'} borderColor={'gray.200'}>
-                      <Image
-                        width={'full'}
-                        height={'full'}
-                        resizeMode={'cover'}
-                        borderRadius={'full'}
-                        source={{
-                          uri: comment.user.image_url || 'https://cdn.pixabay.com/photo/2015/03/04/22/35/head-659651__340.png',
-                        }}
-                        alt={'alternate picture'}
-                      />
-                    </Box>
-                    <Box ml={'3'}>
-                      <Text fontSize={'md'} fontWeight={'bold'}>{comment.user.username}</Text>
-                      <Flex direction='row'>
-                        <Text fontSize={'md'}>{comment.comment}</Text>
-                      </Flex>
-                    </Box>
-                  </Flex>
-                );
-              })}
+              {
+                post ? (
+                  post.comments.length === 0 ? (
+                    <Box><Text>Kosong buangg..</Text></Box>
+                  ) : (
+                    post.comments.map((comment) => {
+                      return (
+                        <Flex key={comment.id} direction='row' px={'3'} mt={'3'} mb={'6'}>
+                          <Box size={'12'} borderRadius={'full'} borderColor={'gray.200'}>
+                            <Image
+                              width={'full'}
+                              height={'full'}
+                              resizeMode={'cover'}
+                              borderRadius={'full'}
+                              source={{
+                                uri: comment.user.image_url || 'https://cdn.pixabay.com/photo/2015/03/04/22/35/head-659651__340.png',
+                              }}
+                              alt={'alternate picture'}
+                            />
+                          </Box>
+                          <Box ml={'3'}>
+                            <Text fontSize={'md'} fontWeight={'bold'}>{comment.user.username}</Text>
+                            <Flex direction='row'>
+                              <Text fontSize={'md'}>{comment.comment}</Text>
+                            </Flex>
+                          </Box>
+                        </Flex>
+                      );
+                    })
+                  )
+                ) : null
+              }
 
-              {/*  */}
+              {/* 
+              post.comments.map((comment) => {
+                    return (
+                      <Flex key={comment.id} direction='row' px={'3'} mt={'3'} mb={'6'}>
+                        <Box size={'12'} borderRadius={'full'} borderColor={'gray.200'}>
+                          <Image
+                            width={'full'}
+                            height={'full'}
+                            resizeMode={'cover'}
+                            borderRadius={'full'}
+                            source={{
+                              uri: comment.user.image_url || 'https://cdn.pixabay.com/photo/2015/03/04/22/35/head-659651__340.png',
+                            }}
+                            alt={'alternate picture'}
+                          />
+                        </Box>
+                        <Box ml={'3'}>
+                          <Text fontSize={'md'} fontWeight={'bold'}>{comment.user.username}</Text>
+                          <Flex direction='row'>
+                            <Text fontSize={'md'}>{comment.comment}</Text>
+                          </Flex>
+                        </Box>
+                      </Flex>
+                    );
+                  }) 
+                  */}
             </Box>
           </Box>
         </Box>

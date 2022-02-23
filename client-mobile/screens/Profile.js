@@ -98,7 +98,6 @@ export default function Profile() {
     return refresh;
   }, [navigation, userIdLocal])
 
-
   if (!userProfile) {
     return null;
   }
