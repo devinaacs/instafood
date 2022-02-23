@@ -49,7 +49,7 @@ export default function Register() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={{ position: 'absolute', top: 35 }}>
+      <View style={{ position: 'absolute', top: 0 }}>
         <TouchableOpacity
           onPress={() => {
             navigation.goBack();
