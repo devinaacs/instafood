@@ -98,8 +98,6 @@ export default function Profile() {
     return refresh;
   }, [navigation, userIdLocal])
 
-  console.log(userPosts);
-
   if (!userProfile) {
     return null;
   }

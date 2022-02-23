@@ -9,9 +9,17 @@ export const userLogin = (payload) => {
       },
       body: JSON.stringify(payload)
     })
-      .then((response) => response.json())
+      .then(response => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          throw response;
+        }
+      })
       .then((result) => dispatch(loginUser(result)))
-      .catch((err) => console.log(err))
+      .catch((err) => {
+        throw err
+      })
   }
 }
 
@@ -37,8 +45,16 @@ export const userRegister = (payload) => {
       },
       body: JSON.stringify(payload)
     })
-      .then((response) => response.json())
+      .then(response => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          throw response;
+        }
+      })
       .then((result) => dispatch(loginUser(result)))
-      .catch((err) => console.log(err))
+      .catch((err) => {
+        throw err;
+      })
   }
 }
