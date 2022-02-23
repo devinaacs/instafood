@@ -5,7 +5,7 @@ import Post from '../components/Post';
 import PostButton from '../components/PostButton';
 import SearchButton from '../components/SearchButton';
 import { useSelector } from 'react-redux';
-
+import { useFocusEffect } from '@react-navigation/native';
 
 export default function Discover() {
   const [posts, setPosts] = useState([]);
@@ -33,6 +33,27 @@ export default function Discover() {
         console.log('error', error);
       });
   }, [access_token]);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      setLoading(true);
+      fetch('https://hacktiv8-instafood.herokuapp.com/posts')
+        .then(response => {
+          if (response.ok) {
+            return response.json();
+          } else {
+            return Promise.reject('something went wrong!');
+          }
+        })
+        .then(response => {
+          setLoading(false);
+          setPosts(response.items);
+        })
+        .catch(error => {
+          console.log('error', error);
+        });
+    }, [])
+  )
 
   const handleRefresh = () => {
     setRefetch(true);

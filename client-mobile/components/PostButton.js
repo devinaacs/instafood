@@ -24,6 +24,10 @@ export default function PostButton() {
     checkAccessToken()
   }, [access_token])
 
+  if (!token) {
+    return null;
+  }
+
   return (
     <Center onTouchEnd={() => {
       if (token) {
