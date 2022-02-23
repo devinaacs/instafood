@@ -7,6 +7,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import DrawerNavigator from './navigation/DrawerNavigator';
 import { Provider } from 'react-redux';
 import store from './store/store';
+import { LogBox } from 'react-native';
 
 const config = {
   dependencies: {
@@ -15,6 +16,7 @@ const config = {
 };
 
 export default function App() {
+  LogBox.ignoreLogs(["Warning: Can't perform a React state update on an unmounted component. This is a no-op, but it indicates a memory leak in your application. To fix, cancel all subscriptions and asynchronous tasks in a useEffect cleanup function."]);
   return (
     <NativeBaseProvider config={config}>
       <SafeAreaProvider>
