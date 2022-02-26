@@ -13,18 +13,45 @@
 <table>
   <tr>
     <td align=center>
-     <img src="https://raw.githubusercontent.com/devinaacs/instafood/development/assets/daniel.jpg" height="150" />
-     <br />
-      <a href="https://www.linkedin.com/in/rl-daniel/" title="linkedin" target="_blank">
-       <img src="https://raw.githubusercontent.com/devinaacs/instafood/development/assets/linkedin.png" height="20" />
-      </a>
-      <a href="https://github.com/danielrylv" title="github">
-       <img src="https://raw.githubusercontent.com/devinaacs/instafood/development/assets/github.png" height="20" />
-      </a>
+      <img src="https://raw.githubusercontent.com/devinaacs/instafood/development/assets/daniel.jpg" height="150" />
+      <br />
+        <a href="https://www.linkedin.com/in/rl-daniel/" title="linkedin" target="_blank">
+          <img src="https://raw.githubusercontent.com/devinaacs/instafood/development/assets/linkedin.png" height="20" />
+        </a>
+        <a href="https://github.com/danielrylv" title="github">
+         <img src="https://raw.githubusercontent.com/devinaacs/instafood/development/assets/github.png" height="20" />
+        </a>
     </td>
-    <td><img src="https://raw.githubusercontent.com/devinaacs/instafood/development/assets/bima.png" height="150" /></td>
-    <td><img src="https://raw.githubusercontent.com/devinaacs/instafood/development/assets/rafi.png" height="150" /></td>
-    <td><img src="https://raw.githubusercontent.com/devinaacs/instafood/development/assets/devina.png" height="150" /></td>
+    <td align=center>
+      <img src="https://raw.githubusercontent.com/devinaacs/instafood/development/assets/bima.png" height="150" />
+      <br />
+        <a href="https://www.linkedin.com/in/bimansyah-pratama-345329215/" title="linkedin" target="_blank">
+          <img src="https://raw.githubusercontent.com/devinaacs/instafood/development/assets/linkedin.png" height="20" />
+        </a>
+        <a href="https://github.com/acr8" title="github">
+         <img src="https://raw.githubusercontent.com/devinaacs/instafood/development/assets/github.png" height="20" />
+        </a>
+    </td>
+    <td>
+      <img src="https://raw.githubusercontent.com/devinaacs/instafood/development/assets/rafi.png" height="150" />
+      <br />
+        <a href="https://www.linkedin.com/in/rafi-ramdhani-a-5a9349114/" title="linkedin" target="_blank">
+          <img src="https://raw.githubusercontent.com/devinaacs/instafood/development/assets/linkedin.png" height="20" />
+        </a>
+        <a href="https://github.com/rafi-ramdhani" title="github">
+         <img src="https://raw.githubusercontent.com/devinaacs/instafood/development/assets/github.png" height="20" />
+        </a>
+    </td>
+    <td>
+      <img src="https://raw.githubusercontent.com/devinaacs/instafood/development/assets/devina.png" height="150" />
+      <br />
+        <a href="https://www.linkedin.com/in/devinacecilias/" title="linkedin" target="_blank">
+          <img src="https://raw.githubusercontent.com/devinaacs/instafood/development/assets/linkedin.png" height="20" />
+        </a>
+        <a href="https://github.com/devinaacs" title="github">
+         <img src="https://raw.githubusercontent.com/devinaacs/instafood/development/assets/github.png" height="20" />
+        </a>
+    </td>
   </tr> 
 </table> 
 
