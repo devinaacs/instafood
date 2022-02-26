@@ -12,7 +12,11 @@
 <h2> Contributors 🌠 </h2>
 <table>
   <tr>
-    <td><img src="https://raw.githubusercontent.com/devinaacs/instafood/development/assets/daniel.jpg" height="150" /></td>
+    <td>
+     <div>
+     <img src="https://raw.githubusercontent.com/devinaacs/instafood/development/assets/daniel.jpg" height="150" />
+      </div>
+      </td>
     <td><img src="https://raw.githubusercontent.com/devinaacs/instafood/development/assets/bima.png" height="150" /></td>
     <td><img src="https://raw.githubusercontent.com/devinaacs/instafood/development/assets/rafi.png" height="150" /></td>
     <td><img src="https://raw.githubusercontent.com/devinaacs/instafood/development/assets/devina.png" height="150" /></td>
