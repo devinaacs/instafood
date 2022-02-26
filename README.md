@@ -1,4 +1,4 @@
-<h1 align="center"> # InstaFood </h1>
+# InstaFood
  
 - Using Expo Client App (Expo Go) and scan this QR code: 
 <!-- ![expo](./assets/qrcode.png) -->
