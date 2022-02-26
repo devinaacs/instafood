@@ -1,5 +1,9 @@
 # InstaFood
 
+<p align="center">
+ Instafood
+</p>
+ 
 - Using Expo Client App (Expo Go) and scan this QR code: 
 <!-- ![expo](./assets/qrcode.png) -->
 <img src="https://qr.expo.dev/expo-go?owner=devinaacs&slug=instafood&releaseChannel=default&host=exp.host" width="150" height="150" />
