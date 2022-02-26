@@ -1,4 +1,4 @@
-<img src="https://raw.githubusercontent.com/devinaacs/instafood/development/assets/logoinstafood.jpg" /> 
+<img src="https://raw.githubusercontent.com/devinaacs/instafood/development/assets/logoinstafood.jpg" height="100" /> 
 
  
 <h1 align=center>InstaFood</h1>
