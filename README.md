@@ -22,7 +22,7 @@
          <img src="https://raw.githubusercontent.com/devinaacs/instafood/development/assets/github.png" height="20" />
         </a>
     </td>
-    <td align=center height="700">
+    <td align=center height="400" width="400">
       <img src="https://raw.githubusercontent.com/devinaacs/instafood/development/assets/bima.png" height="100" />
       <br />
         <a href="https://www.linkedin.com/in/bimansyah-pratama-345329215/" title="linkedin" target="_blank">
@@ -33,7 +33,7 @@
         </a>
     </td>
     <td align=center>
-      <img src="https://raw.githubusercontent.com/devinaacs/instafood/development/assets/rafi.png" height="150" />
+      <img src="https://raw.githubusercontent.com/devinaacs/instafood/development/assets/rafi.png" height="100" />
       <br />
         <a href="https://www.linkedin.com/in/rafi-ramdhani-a-5a9349114/" title="linkedin" target="_blank">
           <img src="https://raw.githubusercontent.com/devinaacs/instafood/development/assets/linkedin.png" height="20" />
@@ -43,7 +43,7 @@
         </a>
     </td>
     <td align=center>
-      <img src="https://raw.githubusercontent.com/devinaacs/instafood/development/assets/devina.png" height="150" />
+      <img src="https://raw.githubusercontent.com/devinaacs/instafood/development/assets/devina.png" height="100" />
       <br />
         <a href="https://www.linkedin.com/in/devinacecilias/" title="linkedin" target="_blank">
           <img src="https://raw.githubusercontent.com/devinaacs/instafood/development/assets/linkedin.png" height="20" />
