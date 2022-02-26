@@ -17,9 +17,8 @@
     <td><img src="https://raw.githubusercontent.com/devinaacs/instafood/development/assets/rafi.png" height="150" /></td>
     <td><img src="https://raw.githubusercontent.com/devinaacs/instafood/development/assets/devina.png" height="150" /></td>
   </tr>
-  <tr>
+<!--   <tr>
     <td> [<img src="assets/devina.png" height="150" />](https://www.google.com) </td> 
-  </tr>
+  </tr> -->
  </table> 
-[<img src="assets/devina.png" height="150" />](https://www.google.com)
 [![name](assets/devina.png)](https://www.google.com)
