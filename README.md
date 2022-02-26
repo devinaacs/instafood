@@ -13,7 +13,7 @@
 <table>
   <tr>
     <td>
-     <div>
+     <div display=flex>
      <img src="https://raw.githubusercontent.com/devinaacs/instafood/development/assets/daniel.jpg" height="150" />
       [see here](api_docs.md)
       </div>
