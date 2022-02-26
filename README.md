@@ -18,7 +18,7 @@
       <a href="https://www.linkedin.com/in/rl-daniel/" title="linkedin">
        <img src="https://raw.githubusercontent.com/devinaacs/instafood/development/assets/linkedin.png" height="20" />
       </a>
-      <a href="ttps://github.com/danielrylv" title="github">
+      <a href="https://github.com/danielrylv" title="github">
        <img src="https://raw.githubusercontent.com/devinaacs/instafood/development/assets/github.png" height="20" />
       </a>
     </td>
