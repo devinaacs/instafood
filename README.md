@@ -12,7 +12,7 @@
 <h2> Contributors 🌠 </h2>
 <table>
   <tr>
-    <td align=center>
+    <td align=center height="200" width="200">
       <img src="https://raw.githubusercontent.com/devinaacs/instafood/development/assets/daniel.jpg" height="100" />
      <br />
         <a href="https://www.linkedin.com/in/rl-daniel/" title="linkedin" target="_blank">
@@ -32,7 +32,7 @@
          <img src="https://raw.githubusercontent.com/devinaacs/instafood/development/assets/github.png" height="20" />
         </a>
     </td>
-    <td align=center>
+    <td align=center height="200" width="200">
       <img src="https://raw.githubusercontent.com/devinaacs/instafood/development/assets/rafi.png" height="100" />
       <br />
         <a href="https://www.linkedin.com/in/rafi-ramdhani-a-5a9349114/" title="linkedin" target="_blank">
@@ -42,7 +42,7 @@
          <img src="https://raw.githubusercontent.com/devinaacs/instafood/development/assets/github.png" height="20" />
         </a>
     </td>
-    <td align=center>
+    <td align=center height="200" width="200">
       <img src="https://raw.githubusercontent.com/devinaacs/instafood/development/assets/devina.png" height="100" />
       <br />
         <a href="https://www.linkedin.com/in/devinacecilias/" title="linkedin" target="_blank">
