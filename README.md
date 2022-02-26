@@ -15,13 +15,14 @@
     <td>
      <img src="https://raw.githubusercontent.com/devinaacs/instafood/development/assets/daniel.jpg" height="150" />
      <br />
-      [see here](api_docs.md) 
+      <a href="https://github.com/expo/examples/commits?author=EvanBacon" title="Code">💻</a> <a href="https://github.com/expo/examples/commits?author=EvanBacon" title="Documentation">📖</a>
     </td>
     <td><img src="https://raw.githubusercontent.com/devinaacs/instafood/development/assets/bima.png" height="150" /></td>
     <td><img src="https://raw.githubusercontent.com/devinaacs/instafood/development/assets/rafi.png" height="150" /></td>
     <td><img src="https://raw.githubusercontent.com/devinaacs/instafood/development/assets/devina.png" height="150" /></td>
   </tr> 
 </table> 
+
 
 
 
