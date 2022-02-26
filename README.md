@@ -22,4 +22,4 @@
   </tr>
  </table> 
 [<img src="assets/devina.png" height="150" />](https://www.google.com)
-[<img src="assets/devina.png" height="150" />](https://www.google.com)
+[![name](assets/devina.png)](https://www.google.com)
