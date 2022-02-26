@@ -1,9 +1,6 @@
 <p align=center>
 <img src="https://raw.githubusercontent.com/devinaacs/instafood/development/assets/logoinstafood.jpg" height="100" /> 
-</p> 
- 
-<h1 align=center> InstaFood - Food References Social Platform </h1> 
- 
+</p>   
 <h1 align=center> InstaFood - Food References Social Platform </h1>
  
 - Using Expo Client App (Expo Go) and scan this QR code:  
@@ -14,7 +11,7 @@
 
 <h2> Contributors 🌠 </h2>
 <div align="center">
-  <div style="display: flex;"> 
+  <div style="display: inline;"> 
     <div><img src="https://raw.githubusercontent.com/devinaacs/instafood/development/assets/daniel.jpg" height="150" /></div>
     <div><img src="https://raw.githubusercontent.com/devinaacs/instafood/development/assets/bima.png" height="150" /></div>
     <div><img src="https://raw.githubusercontent.com/devinaacs/instafood/development/assets/rafi.png" height="150" /></div>
