@@ -1,7 +1,5 @@
-# InstaFood
-
 <p align="center">
- Instafood
+# InstaFood
 </p>
  
 - Using Expo Client App (Expo Go) and scan this QR code: 
