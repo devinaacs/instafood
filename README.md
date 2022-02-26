@@ -22,7 +22,7 @@
          <img src="https://raw.githubusercontent.com/devinaacs/instafood/development/assets/github.png" height="20" />
         </a>
     </td>
-    <td align=center height="200">
+    <td align=center height="700">
       <img src="https://raw.githubusercontent.com/devinaacs/instafood/development/assets/bima.png" height="100" />
       <br />
         <a href="https://www.linkedin.com/in/bimansyah-pratama-345329215/" title="linkedin" target="_blank">
