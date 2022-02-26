@@ -15,7 +15,7 @@
     <td align=center>
      <img src="https://raw.githubusercontent.com/devinaacs/instafood/development/assets/daniel.jpg" height="150" />
      <br />
-      <a href="https://github.com/danielrylv" title="github"><img src="https://raw.githubusercontent.com/devinaacs/instafood/development/assets/daniel.jpg" height="150" /></a> <a href="https://github.com/expo/examples/commits?author=EvanBacon" title="Documentation">📖</a>
+      <a href="https://github.com/danielrylv" title="github"><img src="https://raw.githubusercontent.com/devinaacs/instafood/development/assets/linkedin.png" height="150" /></a> <a href="https://github.com/expo/examples/commits?author=EvanBacon" title="Documentation">📖</a>
     </td>
     <td><img src="https://raw.githubusercontent.com/devinaacs/instafood/development/assets/bima.png" height="150" /></td>
     <td><img src="https://raw.githubusercontent.com/devinaacs/instafood/development/assets/rafi.png" height="150" /></td>
