@@ -21,4 +21,4 @@
     <td> [![linkedin](./assets/linkedin.png)](https://www.google.com/) </td> 
   </tr>
  </table> 
-![alt](assets/devina.png)
+![alt](/assets/devina.png)
