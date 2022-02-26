@@ -21,3 +21,4 @@
     <td> [<img src="assets/devina.png" height="150" />](https://www.google.com) </td> 
   </tr>
  </table> 
+[<img src="assets/devina.png" height="150" />](https://www.google.com)
