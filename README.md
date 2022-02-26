@@ -20,4 +20,4 @@
  <tr>
   <td> [![linkedin](./assets/linkedin.png)](https://www.google.com/) </td> 
  </table> 
-![linkedin](./assets/linkedin.png)
+![linkedin](./assets/devina.png)
