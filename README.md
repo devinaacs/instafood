@@ -18,10 +18,10 @@
     <td><img src="https://raw.githubusercontent.com/devinaacs/instafood/development/assets/devina.png" height="150" /></td>
   </tr>
 <!--   <tr>
-    <td> [<img src="assets/devina.png" height="150" />](https://www.google.com) </td> 
+    <td> [<img src="https://raw.githubusercontent.com/devinaacs/instafood/development/assets/linkedin.png" height="150" />](https://getemoji.com/) </td> 
   </tr> -->
 </table> 
 
 
-[<img src="https://raw.githubusercontent.com/devinaacs/instafood/development/assets/linkedin.png" height="150" />](https://getemoji.com/)
+
 
