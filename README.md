@@ -21,4 +21,4 @@
     <td> [<img src="assets/devina.png" height="150" />](https://www.google.com) </td> 
   </tr> -->
  </table> 
-[![name](assets/devina.png)](https://www.google.com)
+[![name](./assets/devina.png)](https://www.google.com)
