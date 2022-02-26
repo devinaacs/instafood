@@ -17,8 +17,8 @@
     <td><img src="https://raw.githubusercontent.com/devinaacs/instafood/development/assets/rafi.png" height="150" /></td>
     <td><img src="https://raw.githubusercontent.com/devinaacs/instafood/development/assets/devina.png" height="150" /></td>
   </tr>
- <tr>
-  <td> [![linkedin](./assets/linkedin.png)](https://www.google.com/) </td> 
- </tr>
+  <tr>
+    <td> [![linkedin](./assets/linkedin.png)](https://www.google.com/) </td> 
+  </tr>
  </table> 
 ![alt](./assets/devina.png)
