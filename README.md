@@ -1,5 +1,5 @@
- 
-![](./assets/logoinstafood.jpg)
+<img src="https://raw.githubusercontent.com/devinaacs/instafood/development/assets/logoinstafood.jpg" /> 
+
  
 <h1 align=center>InstaFood</h1>
  
