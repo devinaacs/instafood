@@ -8,7 +8,7 @@
  
 - API URL: https://hacktiv8-instafood.herokuapp.com 
 - API Docs: [see here](api_docs.md)
-[<img src="https://raw.githubusercontent.com/devinaacs/instafood/development/assets/linkedin.png" height="150" />](https://getemoji.com/)
+
 <h2> Contributors 🌠 </h2>
 <table>
   <tr>
@@ -21,4 +21,7 @@
     <td> [<img src="assets/devina.png" height="150" />](https://www.google.com) </td> 
   </tr> -->
 </table> 
+
+
+[<img src="https://raw.githubusercontent.com/devinaacs/instafood/development/assets/linkedin.png" height="150" />](https://getemoji.com/)
 
