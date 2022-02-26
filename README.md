@@ -2,7 +2,7 @@
 <img src="https://raw.githubusercontent.com/devinaacs/instafood/development/assets/logoinstafood.jpg" height="100" /> 
 </p>
  
-<h1 align=center>InstaFood</h1>
+<h1 align=center> InstaFood - Food References Social Platform </h1>
  
 - Using Expo Client App (Expo Go) and scan this QR code: 
 <!-- ![expo](./assets/qrcode.png) -->
