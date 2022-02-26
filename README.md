@@ -14,8 +14,6 @@
   <tr>
     <td align=center>
       <img src="https://raw.githubusercontent.com/devinaacs/instafood/development/assets/daniel.jpg" height="150" />
-     <br /><sub>Deniel</sub><br/>
-
         <a href="https://www.linkedin.com/in/rl-daniel/" title="linkedin" target="_blank">
           <img src="https://raw.githubusercontent.com/devinaacs/instafood/development/assets/linkedin.png" height="20" />
         </a>
