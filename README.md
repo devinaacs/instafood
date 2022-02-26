@@ -18,5 +18,5 @@
     <td><img src="https://raw.githubusercontent.com/devinaacs/instafood/development/assets/devina.png" height="150" /></td>
   </tr>
  <tr>
-  <td>   [<img alt="alt_text" width="40px" src="./assets/linkedin.png" />](https://www.google.com/)</td>
+  <td>   ![<img alt="alt_text" width="40px" src="./assets/linkedin.png" />](https://www.google.com/)</td>
  </table> 
