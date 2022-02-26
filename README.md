@@ -15,14 +15,12 @@
     <td>
      <div>
      <img src="https://raw.githubusercontent.com/devinaacs/instafood/development/assets/daniel.jpg" height="150" />
+      [see here](api_docs.md)
       </div>
       </td>
     <td><img src="https://raw.githubusercontent.com/devinaacs/instafood/development/assets/bima.png" height="150" /></td>
     <td><img src="https://raw.githubusercontent.com/devinaacs/instafood/development/assets/rafi.png" height="150" /></td>
     <td><img src="https://raw.githubusercontent.com/devinaacs/instafood/development/assets/devina.png" height="150" /></td>
-  </tr>
-  <tr>
-    <td>     [see here](api_docs.md)    </td> 
   </tr> 
 </table> 
 
